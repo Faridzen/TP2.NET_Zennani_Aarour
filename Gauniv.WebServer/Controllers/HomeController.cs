@@ -38,15 +38,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
 using X.PagedList.Extensions;
-
+using Microsoft.AspNetCore.Mvc;
+using Gauniv.WebServer.Dtos;
+using System.Collections.Generic;
 namespace Gauniv.WebServer.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class HomeController(ILogger<HomeController> logger, ApplicationDbContext applicationDbContext, UserManager<User> userManager) : Controller
-    {
+    { 
+
         private readonly ILogger<HomeController> _logger = logger;
         private readonly ApplicationDbContext applicationDbContext = applicationDbContext;
         private readonly UserManager<User> userManager = userManager;
-
+        [HttpGet]
         public IActionResult Index()
         {
             return View(new List<Game> { new() { Id = 0 } });

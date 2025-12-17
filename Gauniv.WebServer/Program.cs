@@ -94,6 +94,14 @@ builder.Services.AddHostedService<OnlineService>();
 builder.Services.AddHostedService<SetupService>();
 builder.Services.AddScoped<MappingProfile, MappingProfile>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("LocalDev", p =>
+        p.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -110,6 +118,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors("LocalDev");
 
 app.UseAuthentication();
 app.UseAuthorization();

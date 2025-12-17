@@ -68,7 +68,55 @@ namespace Gauniv.WebServer.Services
                     EmailConfirmed = true
                 }, "password").Result;
 
-                // ....
+                // Add sample games for testing
+                if (!applicationDbContext.Games.Any())
+                {
+                    var local_sampleGames = new List<Game>
+                    {
+                        new Game
+                        {
+                            Title = "Adventure Quest",
+                            Description = "An epic adventure game with stunning graphics and immersive gameplay.",
+                            Price = 29.99m,
+                            Categories = new List<string> { "Adventure", "RPG" },
+                            payload = Encoding.UTF8.GetBytes("Sample game binary for Adventure Quest")
+                        },
+                        new Game
+                        {
+                            Title = "Space Shooter",
+                            Description = "Fast-paced space combat with amazing visual effects.",
+                            Price = 19.99m,
+                            Categories = new List<string> { "Action", "Shooter" },
+                            payload = Encoding.UTF8.GetBytes("Sample game binary for Space Shooter")
+                        },
+                        new Game
+                        {
+                            Title = "Puzzle Master",
+                            Description = "Challenge your mind with hundreds of unique puzzles.",
+                            Price = 9.99m,
+                            Categories = new List<string> { "Puzzle", "Casual" },
+                            payload = Encoding.UTF8.GetBytes("Sample game binary for Puzzle Master")
+                        },
+                        new Game
+                        {
+                            Title = "Racing Champions",
+                            Description = "Experience the thrill of high-speed racing.",
+                            Price = 39.99m,
+                            Categories = new List<string> { "Racing", "Sports" },
+                            payload = Encoding.UTF8.GetBytes("Sample game binary for Racing Champions")
+                        },
+                        new Game
+                        {
+                            Title = "Free to Play MOBA",
+                            Description = "Join millions of players in this free-to-play multiplayer battle arena.",
+                            Price = 0m,
+                            Categories = new List<string> { "MOBA", "Multiplayer" },
+                            payload = Encoding.UTF8.GetBytes("Sample game binary for Free to Play MOBA")
+                        }
+                    };
+
+                    applicationDbContext.Games.AddRange(local_sampleGames);
+                }
 
                 applicationDbContext.SaveChanges();
 

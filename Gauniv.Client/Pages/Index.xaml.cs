@@ -33,5 +33,6 @@ public partial class Index : ContentPage
 	public Index()
 	{
 		InitializeComponent();
+		BindingContext = new ViewModel.IndexViewModel();
 	}
 }

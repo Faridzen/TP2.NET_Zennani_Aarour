@@ -33,5 +33,6 @@ public partial class MyGames : ContentPage
 	public MyGames()
 	{
 		InitializeComponent();
+		BindingContext = new ViewModel.MyGamesViewModel();
 	}
 }
