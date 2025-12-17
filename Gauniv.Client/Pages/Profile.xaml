@@ -1,42 +1,114 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!--
-Cyril Tisserand
-Projet Gauniv - WebServer
-Gauniv 2025
-
-Licence MIT
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-and associated documentation files (the "Software"), to deal in the Software without restriction,
-including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-Any new method must be in a different namespace than the previous ones
-and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions: 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. 
-The Software is provided "as is", without warranty of any kind, express or implied,
-including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement.
-Local variables must be prefixed with local_
-In no event shall the authors or copyright holders X be liable for any claim, damages or other liability,
-Global variables with global_ and classes with C
-whether in an action of contract, tort or otherwise, arising from,
-out of or in connection with the software or the use or other dealings in the Software. 
-
-Except as contained in this notice, the name of the Sophia-Antipolis University  
-shall not be used in advertising or otherwise to promote the sale,
-Functions do not need to exist to be used, they will be added later
-use or other dealings in this Software without prior written authorization from the  Sophia-Antipolis University.
-
-Please respect the team's standards for any future contribution
--->
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Gauniv.Client.ViewModel"
              x:Class="Gauniv.Client.Pages.Profile"
-             Title="Profile"
-             BindingContext="{vm:ProfileViewModel}">
-    <VerticalStackLayout>
-        <Label Text="Profile" />
-    </VerticalStackLayout>
-    <!--
-    Ici on veut pouvoir changer sont nom d'utilisateur et son mot de passe ainsi que de dossier de sauvegarde des jeux
-    -->
+             Title="Profil"
+             x:DataType="vm:ProfileViewModel"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,30" Spacing="25">
+            
+            <!-- Header -->
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Mon profil"
+                       FontSize="40"
+                       FontAttributes="Bold"
+                       TextColor="#1A202C"/>
+                
+                <Label Text="{Binding StatusMessage}"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="#718096"/>
+            </VerticalStackLayout>
+
+            <!-- Login Form -->
+            <VerticalStackLayout Spacing="15" IsVisible="{Binding IsConnected, Converter={StaticResource InvertedBoolConverter}}">
+                <Label Text="Connexion"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="#2D3748"/>
+                
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Email"
+                           FontSize="14"
+                           TextColor="#4A5568"/>
+                    <Entry Text="{Binding Email}"
+                           Placeholder="Votre email"
+                           Keyboard="Email"
+                           FontSize="16"
+                           BackgroundColor="#F7FAFC"
+                           TextColor="#2D3748"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Mot de passe"
+                           FontSize="14"
+                           TextColor="#4A5568"/>
+                    <Entry Text="{Binding Password}"
+                           Placeholder="Votre mot de passe"
+                           IsPassword="True"
+                           FontSize="16"
+                           BackgroundColor="#F7FAFC"
+                           TextColor="#2D3748"/>
+                </VerticalStackLayout>
+
+                <Button Text="Se connecter"
+                        Command="{Binding LoginCommand}"
+                        BackgroundColor="#4299E1"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        CornerRadius="12"
+                        HeightRequest="50"
+                        Margin="0,10,0,0"/>
+                
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                  IsVisible="{Binding IsLoading}"
+                                  Color="#4299E1"
+                                  HeightRequest="40"/>
+            </VerticalStackLayout>
+
+            <!-- Logout Section -->
+            <VerticalStackLayout Spacing="15" IsVisible="{Binding IsConnected}">
+                <Label Text="Compte connecté"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="#2D3748"/>
+                
+                <Frame Padding="15"
+                       CornerRadius="12"
+                       HasShadow="False"
+                       BackgroundColor="#F0FFF4"
+                       BorderColor="#9AE6B4">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text=""
+                               FontSize="24"
+                               VerticalOptions="Center"/>
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="{Binding Email}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#2D3748"/>
+                             <Label Text="*********"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#2D3748"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <Button Text="Se déconnecter"
+                        Command="{Binding LogoutCommand}"
+                        BackgroundColor="#E53E3E"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        CornerRadius="12"
+                        HeightRequest="30"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

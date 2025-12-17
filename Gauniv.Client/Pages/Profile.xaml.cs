@@ -33,5 +33,6 @@ public partial class Profile : ContentPage
 	public Profile()
 	{
 		InitializeComponent();
+		BindingContext = new ViewModel.ProfileViewModel();
 	}
 }

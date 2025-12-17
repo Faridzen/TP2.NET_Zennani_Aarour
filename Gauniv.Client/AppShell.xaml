@@ -7,39 +7,27 @@
        xmlns:vm="clr-namespace:Gauniv.Client.ViewModel"
        xmlns:service="clr-namespace:Gauniv.Client.Services"
        Shell.FlyoutBehavior="Flyout"
-       Shell.NavBarIsVisible="false"
-       Title="Gauniv.Client"
+       Shell.NavBarIsVisible="true"
+       Title="Gauniv"
        BindingContext="{vm:MenuViewModel}"
        x:DataType="vm:MenuViewModel">
 
-    <!--<MenuItem Text="Help"
-              IconImageSource="help.png"
-              Command="{Binding GoToProfileCommand}"/>-->
-    <FlyoutItem Title="Games"
+    <FlyoutItem Title="Catalogue"
+                Icon="🎮"
                 Route="games">
         <ShellContent ContentTemplate="{DataTemplate local:Index}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Profile"
+    <FlyoutItem Title="Ma Bibliothèque"
+                Icon="📚"
+                Route="mygames"
+                IsVisible="{Binding IsConnected}">
+        <ShellContent ContentTemplate="{DataTemplate local:MyGames}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Profil"
+                Icon="👤"
                 Route="profile">
         <ShellContent ContentTemplate="{DataTemplate local:Profile}" />
-    </FlyoutItem>
-    <FlyoutItem Title="My Games"
-                Route="mygames">
-        <FlyoutItem.Style>
-            <Style TargetType="FlyoutItem">
-                <Setter Property="IsVisible"
-                        Value="false" />
-                <Style.Triggers>
-                    <DataTrigger TargetType="FlyoutItem"
-                                 Binding="{Binding IsConnected}"
-                                 Value="True">
-                        <Setter Property="IsVisible"
-                                Value="True" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </FlyoutItem.Style>
-        <ShellContent ContentTemplate="{DataTemplate local:MyGames}" />
     </FlyoutItem>
 </Shell>

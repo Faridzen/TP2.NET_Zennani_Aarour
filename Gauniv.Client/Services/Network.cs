@@ -59,6 +59,7 @@ namespace Gauniv.Client.Services
         }
 
         public event Action OnConnected;
+        public event Action OnDisconnected;
 
         /// <summary>
         /// Login to the server and retrieve authentication token
@@ -280,6 +281,7 @@ namespace Gauniv.Client.Services
         {
             Token = null;
             httpClient.DefaultRequestHeaders.Authorization = null;
+            OnDisconnected?.Invoke();
         }
     }
 }

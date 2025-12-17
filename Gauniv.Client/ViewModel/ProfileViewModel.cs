@@ -1,4 +1,6 @@
-﻿using Gauniv.Client.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Gauniv.Client.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +9,83 @@ using System.Threading.Tasks;
 
 namespace Gauniv.Client.ViewModel
 {
-    internal class ProfileViewModel
+    public partial class ProfileViewModel : ObservableObject
     {
+        private readonly NetworkService _networkService;
+
+        [ObservableProperty]
+        private string email = "";
+
+        [ObservableProperty]
+        private string password = "";
+
+        [ObservableProperty]
+        private string statusMessage = "Non connecté";
+
+        [ObservableProperty]
+        private bool isConnected = false;
+
+        [ObservableProperty]
+        private bool isLoading = false;
+
         public ProfileViewModel()
         {
+            _networkService = NetworkService.Instance;
+            CheckConnectionStatus();
+        }
+
+        private void CheckConnectionStatus()
+        {
+            IsConnected = !string.IsNullOrEmpty(_networkService.Token);
+            StatusMessage = IsConnected ? "✅ Connecté" : "❌ Non connecté";
+        }
+
+        [RelayCommand]
+        private async Task LoginAsync()
+        {
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+            {
+                StatusMessage = "⚠️ Email et mot de passe requis";
+                return;
+            }
+
+            IsLoading = true;
+            StatusMessage = "Connexion en cours...";
+
+            try
+            {
+                bool local_success = await _networkService.LoginAsync(Email, Password);
+
+                if (local_success)
+                {
+                    IsConnected = true;
+                    StatusMessage = "✅ Connexion réussie !";
+                }
+                else
+                {
+                    IsConnected = false;
+                    StatusMessage = "❌ Échec de la connexion";
+                }
+            }
+            catch (Exception ex)
+            {
+                IsConnected = false;
+                StatusMessage = $"❌ Erreur: {ex.Message}";
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        [RelayCommand]
+        private void Logout()
+        {
+            _networkService.Logout();
+            IsConnected = false;
+            StatusMessage = "Vous n'êtes plus connecté";
+            Email = "";
+            Password = "";
         }
     }
 }

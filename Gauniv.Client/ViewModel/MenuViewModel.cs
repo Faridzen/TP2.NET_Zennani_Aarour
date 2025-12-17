@@ -21,11 +21,17 @@ namespace Gauniv.Client.ViewModel
         public MenuViewModel()
         {
             NetworkService.Instance.OnConnected += Instance_OnConnected;
+            NetworkService.Instance.OnDisconnected += Instance_OnDisconnected;
         }
 
         private void Instance_OnConnected()
         {
             IsConnected = true;
+        }
+
+        private void Instance_OnDisconnected()
+        {
+            IsConnected = false;
         }
     }
 }

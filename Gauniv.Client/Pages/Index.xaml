@@ -1,32 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!--
-Cyril Tisserand
-Projet Gauniv - WebServer
-Gauniv 2025
-
-Licence MIT
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software
-and associated documentation files (the "Software"), to deal in the Software without restriction,
-including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-Any new method must be in a different namespace than the previous ones
-and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the conditions: 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. 
-The Software is provided "as is", without warranty of any kind, express or implied,
-including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement.
-Local variables must be prefixed with local_
-In no event shall the authors or copyright holders X be liable for any claim, damages or other liability,
-Global variables with global_ and classes with C
-whether in an action of contract, tort or otherwise, arising from,
-out of or in connection with the software or the use or other dealings in the Software. 
-
-Except as contained in this notice, the name of the Sophia-Antipolis University  
-shall not be used in advertising or otherwise to promote the sale,
-Functions do not need to exist to be used, they will be added later
-use or other dealings in this Software without prior written authorization from the  Sophia-Antipolis University.
-
-Please respect the team's standards for any future contribution
--->
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Gauniv.Client.ViewModel"
@@ -36,13 +8,9 @@ Please respect the team's standards for any future contribution
              x:DataType="vm:IndexViewModel"
              BackgroundColor="White">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="☰" Order="Primary" Priority="0"/>
-    </ContentPage.ToolbarItems>
-
     <Grid RowDefinitions="Auto,Auto,*" Padding="0">
         
-        <!-- Header moderne et épuré -->
+        <!-- Header -->
         <Grid Grid.Row="0" Padding="20,30,20,20" BackgroundColor="White">
             <VerticalStackLayout Spacing="10">
                 <Label Text="Catalogue de Jeux"
@@ -58,7 +26,7 @@ Please respect the team's standards for any future contribution
             </VerticalStackLayout>
         </Grid>
 
-        <!-- Bouton de chargement -->
+        <!-- Bouton -->
         <Button Grid.Row="1"
                 Text="Charger tous les jeux"
                 Command="{Binding LoadGamesCommand}"
@@ -68,8 +36,7 @@ Please respect the team's standards for any future contribution
                 FontSize="16"
                 CornerRadius="12"
                 HeightRequest="50"
-                Margin="20,0,20,15"
-                Shadow="{Shadow Brush=#4299E1, Opacity=0.3, Radius=8, Offset='0,4'}"/>
+                Margin="20,0,20,15"/>
         
         <ActivityIndicator Grid.Row="1"
                           IsRunning="{Binding IsLoading}"
@@ -79,7 +46,7 @@ Please respect the team's standards for any future contribution
                           VerticalOptions="Center"
                           Margin="0,60,0,0"/>
 
-        <!-- Liste des jeux -->
+        <!-- Liste -->
         <ScrollView Grid.Row="2" Padding="15,0,15,20">
             <CollectionView ItemsSource="{Binding Games}"
                            SelectionMode="None">
@@ -101,7 +68,6 @@ Please respect the team's standards for any future contribution
                             <Grid RowDefinitions="Auto,Auto,Auto,Auto" 
                                   Padding="20">
                                 
-                                <!-- Titre -->
                                 <Label Grid.Row="0"
                                        Text="{Binding Title}"
                                        FontSize="22"
@@ -109,7 +75,6 @@ Please respect the team's standards for any future contribution
                                        TextColor="#1A202C"
                                        Margin="0,0,0,8"/>
                                 
-                                <!-- Description -->
                                 <Label Grid.Row="1"
                                        Text="{Binding Description}"
                                        FontSize="14"
@@ -118,47 +83,13 @@ Please respect the team's standards for any future contribution
                                        MaxLines="2"
                                        Margin="0,0,0,15"/>
                                 
-                                <!-- Prix et Catégories -->
-                                <FlexLayout Grid.Row="2"
-                                           Wrap="Wrap"
-                                           JustifyContent="Start"
-                                           AlignItems="Center"
-                                           Margin="0,0,0,15">
-                                    
-                                    <!-- Prix -->
-                                    <Frame Padding="12,6"
-                                           Margin="0,0,8,8"
-                                           CornerRadius="8"
-                                           HasShadow="False"
-                                           BackgroundColor="#48BB78"
-                                           BorderColor="Transparent">
-                                        <Label Text="{Binding Price, StringFormat='{0:C}'}"
-                                               FontSize="16"
-                                               FontAttributes="Bold"
-                                               TextColor="White"/>
-                                    </Frame>
-                                    
-                                    <!-- Catégories -->
-                                    <BindableLayout.ItemsSource>
-                                        <Binding Path="Categories"/>
-                                    </BindableLayout.ItemsSource>
-                                    <BindableLayout.ItemTemplate>
-                                        <DataTemplate x:DataType="x:String">
-                                            <Frame Padding="10,5"
-                                                   Margin="0,0,6,8"
-                                                   CornerRadius="8"
-                                                   HasShadow="False"
-                                                   BackgroundColor="#EDF2F7"
-                                                   BorderColor="Transparent">
-                                                <Label Text="{Binding .}"
-                                                       FontSize="13"
-                                                       TextColor="#2D3748"/>
-                                            </Frame>
-                                        </DataTemplate>
-                                    </BindableLayout.ItemTemplate>
-                                </FlexLayout>
+                                <Label Grid.Row="2"
+                                       Text="{Binding Price, StringFormat='{0:C}'}"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       TextColor="#48BB78"
+                                       Margin="0,0,0,15"/>
                                 
-                                <!-- Bouton Acheter -->
                                 <Button Grid.Row="3"
                                         Text="Acheter ce jeu"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:IndexViewModel}}, Path=PurchaseGameCommand}"
@@ -168,18 +99,12 @@ Please respect the team's standards for any future contribution
                                         FontAttributes="Bold"
                                         FontSize="16"
                                         CornerRadius="12"
-                                        HeightRequest="48">
-                                    <Button.Shadow>
-                                        <Shadow Brush="#4299E1" Opacity="0.3" Radius="8" Offset="0,4"/>
-                                    </Button.Shadow>
-                                </Button>
-                                
+                                        HeightRequest="48"/>
                             </Grid>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 
-                <!-- Message si aucun jeu -->
                 <CollectionView.EmptyView>
                     <VerticalStackLayout HorizontalOptions="Center" 
                                         VerticalOptions="Center"
@@ -193,11 +118,10 @@ Please respect the team's standards for any future contribution
                                FontAttributes="Bold"
                                TextColor="#2D3748"
                                HorizontalOptions="Center"/>
-                        <Label Text="Cliquez sur 'Charger tous les jeux' pour voir le catalogue"
+                        <Label Text="Cliquez sur 'Charger tous les jeux'"
                                FontSize="14"
                                TextColor="#718096"
                                HorizontalOptions="Center"
-                               HorizontalTextAlignment="Center"
                                Margin="0,10,0,0"/>
                     </VerticalStackLayout>
                 </CollectionView.EmptyView>

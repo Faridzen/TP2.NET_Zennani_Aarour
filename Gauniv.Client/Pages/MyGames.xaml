@@ -36,10 +36,6 @@ Please respect the team's standards for any future contribution
              x:DataType="vm:MyGamesViewModel"
              BackgroundColor="White">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="☰" Order="Primary" Priority="0"/>
-    </ContentPage.ToolbarItems>
-
     <Grid RowDefinitions="Auto,Auto,*" Padding="0">
         
         <!-- Header -->
