@@ -35,8 +35,16 @@ namespace Gauniv.WebServer.Data
 {
     public class Game
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
+        [MaxLength(128)]
+        public string Title { get; set; }
+        public string Description { get; set; } 
+        public byte[] payload { get; set; }
+        //[Column(TypeName = "decimal(18,2)")]
+        public decimal Price { get; set; }
+        public List<String> Categories { get; set; } = new List<string>();
     }
 }

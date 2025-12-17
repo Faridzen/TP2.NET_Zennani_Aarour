@@ -39,5 +39,31 @@ namespace Gauniv.WebServer.Data
         {
         }
         public DbSet<Game> Games { get; set; }
+        public DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("User");
+
+                entity.HasIndex(e => e.UserName).IsUnique();
+            });
+
+            modelBuilder.Entity<Game>(entity =>
+            {
+                
+
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(128);
+
+                
+            });
+        }
+        
+        
     }
 }
