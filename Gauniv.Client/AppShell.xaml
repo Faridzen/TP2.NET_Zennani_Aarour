@@ -31,4 +31,6 @@
         <ShellContent ContentTemplate="{DataTemplate local:Profile}" />
     </FlyoutItem>
 
+    <ShellContent Route="gamedetails"
+                  ContentTemplate="{DataTemplate local:GameDetails}" />
 </Shell>
