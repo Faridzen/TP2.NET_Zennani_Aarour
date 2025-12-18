@@ -35,102 +35,95 @@
                           Color="#66c0f4"
                           HeightRequest="60"/>
 
-        <!-- Liste des jeux possédés -->
-        <ScrollView Grid.Row="2" IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}">
-            <CollectionView ItemsSource="{Binding Games}"
-                           SelectionMode="None"
-                           Margin="15,10">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="12"/>
-                </CollectionView.ItemsLayout>
-                
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="dto:GameDto">
-                        <Frame Padding="0"
-                               CornerRadius="4"
-                               HasShadow="False"
-                               BorderColor="Transparent"
-                               BackgroundColor="#16202d">
+        <!-- Grille des jeux possédés -->
+        <CollectionView Grid.Row="2"
+                       ItemsSource="{Binding Games}"
+                       SelectionMode="None"
+                       Margin="15,10"
+                       IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" 
+                                 Span="3" 
+                                 HorizontalItemSpacing="15" 
+                                 VerticalItemSpacing="20"/>
+            </CollectionView.ItemsLayout>
+            
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="dto:GameDto">
+                    <Frame Padding="0"
+                           CornerRadius="8"
+                           HasShadow="True"
+                           BorderColor="#2a475e"
+                           BackgroundColor="#16202d"
+                           HeightRequest="380">
+                        
+                        <Grid RowDefinitions="180,*,Auto">
                             
-                            <Grid ColumnDefinitions="200,*" Padding="0">
+                            <!-- Image du jeu -->
+                            <Frame Grid.Row="0"
+                                  Padding="0"
+                                  CornerRadius="0"
+                                  HasShadow="False"
+                                  BackgroundColor="#2a475e"
+                                  BorderColor="Transparent">
+                                <Image Source="{Binding ImageUrl}"
+                                      Aspect="AspectFill"
+                                      HorizontalOptions="Fill"
+                                      VerticalOptions="Fill"/>
+                            </Frame>
+                            
+                            <!-- Info du jeu -->
+                            <VerticalStackLayout Grid.Row="1" Padding="15" Spacing="8">
+                                <!-- Titre -->
+                                <Label Text="{Binding Title}"
+                                      FontSize="18"
+                                      FontAttributes="Bold"
+                                      TextColor="#c7d5e0"
+                                      LineBreakMode="TailTruncation"
+                                      MaxLines="1"/>
                                 
-                                <!-- Image placeholder -->
-                                <Frame Grid.Column="0"
-                                      Padding="0"
-                                      CornerRadius="0"
-                                      HasShadow="False"
-                                      BackgroundColor="#2a475e"
-                                      BorderColor="Transparent"
-                                      HeightRequest="100">
-                                    <Image Source="{Binding ImageUrl}"
-                                          Aspect="AspectFill"
-                                          HorizontalOptions="Fill"
-                                          VerticalOptions="Fill"/>
-                                </Frame>
-                                
-                                <!-- Info du jeu -->
-                                <Grid Grid.Column="1" 
-                                     RowDefinitions="Auto,*,Auto"
-                                     Padding="15,10">
-                                    
-                                    <!-- Titre -->
-                                    <Label Grid.Row="0"
-                                          Text="{Binding Title}"
-                                          FontSize="18"
-                                          FontAttributes="Bold"
-                                          TextColor="#c7d5e0"
-                                          Margin="0,0,0,5"/>
-                                    
-                                    <!-- Description -->
-                                    <Label Grid.Row="1"
-                                          Text="{Binding Description}"
-                                          FontSize="13"
-                                          TextColor="#8f98a0"
-                                          LineBreakMode="WordWrap"
-                                          MaxLines="2"
-                                          Margin="0,0,0,10"/>
-                                    
-                                    <!-- Catégories et bouton -->
-                                    <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
-                                        <!-- Catégories -->
-                                        <FlexLayout Grid.Column="0"
-                                                   BindableLayout.ItemsSource="{Binding Categories}"
-                                                   Wrap="Wrap"
-                                                   AlignItems="Center">
-                                            <BindableLayout.ItemTemplate>
-                                                <DataTemplate x:DataType="x:String">
-                                                    <Frame Padding="6,3"
-                                                          Margin="0,0,5,0"
-                                                          CornerRadius="2"
-                                                          HasShadow="False"
-                                                          BackgroundColor="#1b2838"
-                                                          BorderColor="Transparent">
-                                                        <Label Text="{Binding .}"
-                                                              FontSize="11"
-                                                              TextColor="#66c0f4"/>
-                                                    </Frame>
-                                                </DataTemplate>
-                                            </BindableLayout.ItemTemplate>
-                                        </FlexLayout>
-                                        
-                                        <!-- Bouton Télécharger -->
-                                        <Button Grid.Column="1"
-                                               Text="Télécharger"
-                                               Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyGamesViewModel}}, Path=DownloadGameCommand}"
-                                               CommandParameter="{Binding .}"
-                                               BackgroundColor="#5c7e10"
-                                               TextColor="White"
-                                               FontSize="14"
-                                               Padding="20,8"
-                                               CornerRadius="3"
-                                               VerticalOptions="Center"/>
-                                    </Grid>
-                                </Grid>
+                                <!-- Catégories -->
+                                <FlexLayout BindableLayout.ItemsSource="{Binding Categories}"
+                                           Wrap="Wrap"
+                                           AlignItems="Center">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="x:String">
+                                            <Label Text="{Binding .}"
+                                                   FontSize="10"
+                                                   TextColor="#66c0f4"
+                                                   Margin="0,0,8,4"/>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </FlexLayout>
+
+                                <!-- Description courte -->
+                                <Label Text="{Binding Description}"
+                                      FontSize="12"
+                                      TextColor="#8f98a0"
+                                      LineBreakMode="WordWrap"
+                                      MaxLines="3"/>
+                            </VerticalStackLayout>
+                            
+                            <!-- Footer: Bouton Télécharger -->
+                            <Grid Grid.Row="2" 
+                                  Padding="15,10" 
+                                  BackgroundColor="#1b2838">
+                                <Button Text="TÉLÉCHARGER"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyGamesViewModel}}, Path=DownloadGameCommand}"
+                                       CommandParameter="{Binding .}"
+                                       BackgroundColor="#5c7e10"
+                                       TextColor="White"
+                                       FontAttributes="Bold"
+                                       FontSize="14"
+                                       Padding="0"
+                                       CornerRadius="4"
+                                       HeightRequest="40"
+                                       HorizontalOptions="Fill"/>
                             </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </ScrollView>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>

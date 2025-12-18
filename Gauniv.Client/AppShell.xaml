@@ -10,7 +10,105 @@
        Shell.NavBarIsVisible="true"
        Title="Gauniv"
        BindingContext="{vm:MenuViewModel}"
-       x:DataType="vm:MenuViewModel">
+       x:DataType="vm:MenuViewModel"
+       FlyoutBackgroundColor="#171a21"
+       FlyoutVerticalScrollMode="Auto">
+
+    <!-- Flyout Header -->
+    <Shell.FlyoutHeader>
+        <Grid HeightRequest="180" Padding="20">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#171a21" Offset="0.1" />
+                    <GradientStop Color="#2a475e" Offset="0.9" />
+                </LinearGradientBrush>
+            </Grid.Background>
+            
+            <VerticalStackLayout VerticalOptions="End" Spacing="5">
+                <!-- Avatar Placeholder -->
+                <Frame HeightRequest="60" 
+                       WidthRequest="60" 
+                       CornerRadius="30" 
+                       Padding="0" 
+                       HorizontalOptions="Start"
+                       BackgroundColor="#316282"
+                       BorderColor="#66c0f4">
+                    <Label Text="👤" 
+                           FontSize="30" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center"/>
+                </Frame>
+
+                <Label Text="{Binding UserName}" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       TextColor="White" />
+                
+                <Label Text="{Binding UserEmail}" 
+                       FontSize="12" 
+                       TextColor="#8f98a0" />
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <!-- Global TitleView (Navbar) -->
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="*,Auto" Padding="10,0">
+            <Label Text="GAUNIV" 
+                   FontSize="20" 
+                   FontAttributes="Bold" 
+                   TextColor="White" 
+                   VerticalOptions="Center"
+                   CharacterSpacing="2"/>
+            
+            <HorizontalStackLayout Grid.Column="1" Spacing="15" VerticalOptions="Center">
+                <Label Text="🔔" FontSize="18" VerticalOptions="Center"/>
+                <Frame Padding="5" CornerRadius="15" BackgroundColor="#316282" BorderColor="Transparent" HeightRequest="30" WidthRequest="30">
+                    <Label Text="👤" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToProfileCommand}"/>
+                    </Frame.GestureRecognizers>
+                </Frame>
+            </HorizontalStackLayout>
+        </Grid>
+    </Shell.TitleView>
+
+    <!-- Flyout Item Template -->
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid ColumnDefinitions="Auto,*" Padding="15,10" Margin="5,2">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                    <Setter TargetName="ItemLabel" Property="Label.TextColor" Value="#c7d5e0" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#3d4450" />
+                                    <Setter TargetName="ItemLabel" Property="Label.TextColor" Value="White" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+
+                <Label Text="{Binding Icon}" 
+                       FontSize="20" 
+                       VerticalOptions="Center" 
+                       Margin="0,0,15,0"/>
+                
+                <Label x:Name="ItemLabel"
+                       Grid.Column="1"
+                       Text="{Binding Title}"
+                       FontSize="16"
+                       VerticalOptions="Center"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
 
     <FlyoutItem Title="Catalogue"
                 Icon="🎮"

@@ -23,6 +23,12 @@ namespace Gauniv.Client.ViewModel
         [NotifyPropertyChangedFor(nameof(IsNotAdmin))]
         private bool isAdmin = NetworkService.Instance.IsAdmin;
 
+        [ObservableProperty]
+        private string userName = "Invité";
+
+        [ObservableProperty]
+        private string userEmail = "Connectez-vous pour voir vos jeux";
+
         public bool IsNotAdmin => IsConnected && !IsAdmin;
 
         public MenuViewModel()
@@ -30,6 +36,21 @@ namespace Gauniv.Client.ViewModel
             NetworkService.Instance.OnConnected += Instance_OnConnected;
             NetworkService.Instance.OnDisconnected += Instance_OnDisconnected;
             NetworkService.Instance.PropertyChanged += Instance_PropertyChanged;
+            
+            if (IsConnected)
+            {
+                _ = LoadUserProfileAsync();
+            }
+        }
+
+        private async Task LoadUserProfileAsync()
+        {
+            var local_profile = await NetworkService.Instance.GetProfileAsync();
+            if (local_profile != null)
+            {
+                UserName = $"{local_profile.FirstName} {local_profile.LastName}";
+                UserEmail = local_profile.Email;
+            }
         }
 
         private void Instance_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -46,12 +67,15 @@ namespace Gauniv.Client.ViewModel
             IsConnected = true;
             IsAdmin = NetworkService.Instance.IsAdmin;
             OnPropertyChanged(nameof(IsNotAdmin));
+            _ = LoadUserProfileAsync();
         }
 
         private void Instance_OnDisconnected()
         {
             IsConnected = false;
             IsAdmin = false;
+            UserName = "Invité";
+            UserEmail = "Connectez-vous pour voir vos jeux";
             OnPropertyChanged(nameof(IsNotAdmin));
         }
     }

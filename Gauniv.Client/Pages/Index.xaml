@@ -197,7 +197,7 @@
                               Color="#66c0f4"
                               HeightRequest="60"/>
 
-            <!-- Liste des jeux -->
+            <!-- Grille des jeux -->
             <CollectionView Grid.Row="2"
                            ItemsSource="{Binding Games}"
                            SelectionMode="None"
@@ -206,32 +206,35 @@
                            RemainingItemsThreshold="5"
                            RemainingItemsThresholdReachedCommand="{Binding LoadMoreGamesCommand}">
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="12"/>
+                    <GridItemsLayout Orientation="Vertical" 
+                                     Span="3" 
+                                     HorizontalItemSpacing="15" 
+                                     VerticalItemSpacing="20"/>
                 </CollectionView.ItemsLayout>
                 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="dto:GameDto">
                         <Frame Padding="0"
-                               CornerRadius="4"
-                               HasShadow="False"
-                               BorderColor="Transparent"
-                               BackgroundColor="#16202d">
+                               CornerRadius="8"
+                               HasShadow="True"
+                               BorderColor="#2a475e"
+                               BackgroundColor="#16202d"
+                               HeightRequest="380">
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer 
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:IndexViewModel}}, Path=ViewGameDetailsCommand}"
                                     CommandParameter="{Binding .}"/>
                             </Frame.GestureRecognizers>
                             
-                            <Grid ColumnDefinitions="200,*" Padding="0">
+                            <Grid RowDefinitions="180,*,Auto">
                                 
-                                <!-- Image placeholder -->
-                                <Frame Grid.Column="0"
+                                <!-- Image du jeu -->
+                                <Frame Grid.Row="0"
                                       Padding="0"
                                       CornerRadius="0"
                                       HasShadow="False"
                                       BackgroundColor="#2a475e"
-                                      BorderColor="Transparent"
-                                      HeightRequest="100">
+                                      BorderColor="Transparent">
                                     <Image Source="{Binding ImageUrl}"
                                           Aspect="AspectFill"
                                           HorizontalOptions="Fill"
@@ -239,84 +242,78 @@
                                 </Frame>
                                 
                                 <!-- Info du jeu -->
-                                <Grid Grid.Column="1" 
-                                     RowDefinitions="Auto,*,Auto"
-                                     Padding="15,10">
-                                    
+                                <VerticalStackLayout Grid.Row="1" Padding="15" Spacing="8">
                                     <!-- Titre -->
-                                    <Label Grid.Row="0"
-                                          Text="{Binding Title}"
+                                    <Label Text="{Binding Title}"
                                           FontSize="18"
                                           FontAttributes="Bold"
                                           TextColor="#c7d5e0"
-                                          Margin="0,0,0,5"/>
+                                          LineBreakMode="TailTruncation"
+                                          MaxLines="1"/>
                                     
-                                    <!-- Description -->
-                                    <Label Grid.Row="1"
-                                          Text="{Binding Description}"
-                                          FontSize="13"
+                                    <!-- Catégories -->
+                                    <FlexLayout BindableLayout.ItemsSource="{Binding Categories}"
+                                               Wrap="Wrap"
+                                               AlignItems="Center">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="x:String">
+                                                <Label Text="{Binding .}"
+                                                       FontSize="10"
+                                                       TextColor="#66c0f4"
+                                                       Margin="0,0,8,4"/>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </FlexLayout>
+
+                                    <!-- Description courte -->
+                                    <Label Text="{Binding Description}"
+                                          FontSize="12"
                                           TextColor="#8f98a0"
                                           LineBreakMode="WordWrap"
-                                          MaxLines="2"
-                                          Margin="0,0,0,10"/>
+                                          MaxLines="3"/>
+                                </VerticalStackLayout>
+                                
+                                <!-- Footer: Prix / Statut -->
+                                <Grid Grid.Row="2" 
+                                      Padding="15,10" 
+                                      BackgroundColor="#1b2838"
+                                      ColumnDefinitions="*,Auto">
                                     
-                                    <!-- Prix et catégories -->
-                                    <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
-                                        <!-- Catégories -->
-                                        <FlexLayout Grid.Column="0"
-                                                   BindableLayout.ItemsSource="{Binding Categories}"
-                                                   Wrap="Wrap"
-                                                   AlignItems="Center">
-                                            <BindableLayout.ItemTemplate>
-                                                <DataTemplate x:DataType="x:String">
-                                                    <Frame Padding="6,3"
-                                                          Margin="0,0,5,0"
-                                                          CornerRadius="2"
-                                                          HasShadow="False"
-                                                          BackgroundColor="#1b2838"
-                                                          BorderColor="Transparent">
-                                                        <Label Text="{Binding .}"
-                                                              FontSize="11"
-                                                              TextColor="#66c0f4"/>
-                                                    </Frame>
-                                                </DataTemplate>
-                                            </BindableLayout.ItemTemplate>
-                                        </FlexLayout>
-                                        
-                                        <!-- Prix ou Badge "Déjà acheté" -->
-                                        <Grid Grid.Column="1" VerticalOptions="Center" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:IndexViewModel}}, Path=IsNotAdmin}">
-                                            <!-- Prix (si pas possédé) -->
-                                            <Label Text="{Binding Price, StringFormat='{0:C}'}"
-                                                  FontSize="18"
-                                                  FontAttributes="Bold"
-                                                  TextColor="#beee11"
-                                                  VerticalOptions="Center">
-                                                <Label.Triggers>
-                                                    <DataTrigger TargetType="Label" Binding="{Binding IsOwned}" Value="True">
-                                                        <Setter Property="IsVisible" Value="False"/>
-                                                    </DataTrigger>
-                                                </Label.Triggers>
-                                            </Label>
-                                            
-                                            <Frame Padding="8,4"
-                                                   BackgroundColor="#4c6b22"
-                                                   CornerRadius="2"
-                                                   HasShadow="False"
-                                                   BorderColor="Transparent"
-                                                   IsVisible="False"
-                                                   HorizontalOptions="End">
-                                                <Frame.Triggers>
-                                                    <DataTrigger TargetType="Frame" Binding="{Binding IsOwned}" Value="True">
-                                                        <Setter Property="IsVisible" Value="True"/>
-                                                    </DataTrigger>
-                                                </Frame.Triggers>
-                                                <Label Text="DÉJÀ ACHETÉ"
-                                                       FontSize="11"
-                                                       FontAttributes="Bold"
-                                                       TextColor="#beee11"/>
-                                            </Frame>
-                                        </Grid>
-                                    </Grid>
+                                    <!-- Prix -->
+                                    <Label Grid.Column="0"
+                                          Text="{Binding Price, StringFormat='{0:C}'}"
+                                          FontSize="18"
+                                          FontAttributes="Bold"
+                                          TextColor="#beee11"
+                                          VerticalOptions="Center">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsOwned}" Value="True">
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    
+                                    <!-- Badge Possédé -->
+                                    <Label Grid.Column="0"
+                                           Text="DÉJÀ ACHETÉ"
+                                           FontSize="12"
+                                           FontAttributes="Bold"
+                                           TextColor="#beee11"
+                                           VerticalOptions="Center"
+                                           IsVisible="False">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsOwned}" Value="True">
+                                                <Setter Property="IsVisible" Value="True"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+
+                                    <!-- Bouton Détails (Visuel uniquement) -->
+                                    <Label Grid.Column="1"
+                                           Text="➔"
+                                           TextColor="#66c0f4"
+                                           FontSize="20"
+                                           VerticalOptions="Center"/>
                                 </Grid>
                             </Grid>
                         </Frame>
