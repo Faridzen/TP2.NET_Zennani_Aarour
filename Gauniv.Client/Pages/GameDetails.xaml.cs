@@ -28,10 +28,29 @@
 #endregion
 namespace Gauniv.Client.Pages;
 
+[QueryProperty(nameof(GameId), "gameId")]
 public partial class GameDetails : ContentPage
 {
+	private ViewModel.GameDetailsViewModel _viewModel;
+
+	public string GameId
+	{
+		set
+		{
+			if (int.TryParse(value, out int local_id))
+			{
+				MainThread.BeginInvokeOnMainThread(async () =>
+				{
+					await _viewModel.LoadGameAsync(local_id);
+				});
+			}
+		}
+	}
+
 	public GameDetails()
 	{
 		InitializeComponent();
+		_viewModel = new ViewModel.GameDetailsViewModel();
+		BindingContext = _viewModel;
 	}
 }

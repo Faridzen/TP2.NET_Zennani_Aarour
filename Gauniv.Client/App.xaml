@@ -12,6 +12,9 @@
             </ResourceDictionary.MergedDictionaries>
             
             <converters:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
+            <converters:IsNullConverter x:Key="IsNullConverter"/>
+            <converters:IsNotNullConverter x:Key="IsNotNullConverter"/>
+            <converters:CategoryColorConverter x:Key="CategoryColorConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

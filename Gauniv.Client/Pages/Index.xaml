@@ -3,131 +3,327 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Gauniv.Client.ViewModel"
              xmlns:dto="clr-namespace:Gauniv.Client.Dtos"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Gauniv.Client.Pages.Index"
-             Title="Catalogue"
+             Title="Catalogue de Jeux"
              x:DataType="vm:IndexViewModel"
-             BackgroundColor="White">
+             BackgroundColor="#1b2838">
 
-    <Grid RowDefinitions="Auto,Auto,*" Padding="0">
+    <Grid ColumnDefinitions="280,*">
         
-        <!-- Header -->
-        <Grid Grid.Row="0" Padding="20,30,20,20" BackgroundColor="White">
-            <VerticalStackLayout Spacing="10">
-                <Label Text="Catalogue de Jeux"
-                       FontSize="32"
-                       FontAttributes="Bold"
-                       TextColor="#1A202C"
-                       HorizontalOptions="Start"/>
+        <!-- Panneau de filtres à gauche -->
+        <ScrollView Grid.Column="0" BackgroundColor="#171a21" Padding="15">
+            <VerticalStackLayout Spacing="20">
                 
-                <Label Text="{Binding StatusMessage}"
-                       FontSize="14"
-                       TextColor="#718096"
-                       HorizontalOptions="Start"/>
+                <!-- Titre Filtres -->
+                <Label Text="FILTRES"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#c7d5e0"
+                       Margin="0,10,0,0"/>
+
+                <!-- Recherche -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Rechercher"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#8f98a0"/>
+                    <Frame Padding="0"
+                           CornerRadius="3"
+                           HasShadow="False"
+                           BackgroundColor="#316282"
+                           BorderColor="Transparent">
+                        <SearchBar Placeholder="Titre du jeu..."
+                                  Text="{Binding SearchText}"
+                                  PlaceholderColor="#8f98a0"
+                                  TextColor="White"
+                                  BackgroundColor="Transparent"
+                                  CancelButtonColor="#66c0f4"/>
+                    </Frame>
+                </VerticalStackLayout>
+
+                <!-- Séparateur -->
+                <BoxView HeightRequest="1" BackgroundColor="#2a475e"/>
+
+                <!-- Catégories -->
+                <toolkit:Expander IsExpanded="True">
+                    <toolkit:Expander.Header>
+                        <Grid ColumnDefinitions="*,Auto" Padding="0,5">
+                            <Label Text="Catégories"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#8f98a0"
+                                   VerticalOptions="Center"/>
+                            <Label Grid.Column="1" 
+                                   Text="▼" 
+                                   TextColor="#8f98a0"
+                                   VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" 
+                                                 Binding="{Binding Source={RelativeSource AncestorType={x:Type toolkit:Expander}}, Path=IsExpanded}" 
+                                                 Value="True">
+                                        <Setter Property="Text" Value="▲"/>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Grid>
+                    </toolkit:Expander.Header>
+                    <toolkit:Expander.Content>
+                        <CollectionView ItemsSource="{Binding CategoryItems}"
+                                        SelectionMode="None"
+                                        Margin="0,10,0,0">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="vm:CategoryItem">
+                                    <Grid ColumnDefinitions="Auto,*" Padding="5,2">
+                                        <CheckBox IsChecked="{Binding IsSelected}"
+                                                  Color="#66c0f4"/>
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               TextColor="#c7d5e0"
+                                               FontSize="13"
+                                               VerticalOptions="Center"
+                                               Margin="5,0,0,0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </toolkit:Expander.Content>
+                </toolkit:Expander>
+
+                <!-- Séparateur -->
+                <BoxView HeightRequest="1" BackgroundColor="#2a475e"/>
+
+                <!-- Prix -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Prix"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#8f98a0"/>
+                    
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="{Binding MinPrice, StringFormat='Min: {0:C}'}"
+                               FontSize="12"
+                               TextColor="#66c0f4"/>
+                        <Slider Minimum="0"
+                               Maximum="100"
+                               Value="{Binding MinPriceSlider}"
+                               MinimumTrackColor="#66c0f4"
+                               MaximumTrackColor="#2a475e"
+                               ThumbColor="#66c0f4"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="{Binding MaxPrice, StringFormat='Max: {0:C}'}"
+                               FontSize="12"
+                               TextColor="#66c0f4"/>
+                        <Slider Minimum="0"
+                               Maximum="100"
+                               Value="{Binding MaxPriceSlider}"
+                               MinimumTrackColor="#66c0f4"
+                               MaximumTrackColor="#2a475e"
+                               ThumbColor="#66c0f4"/>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Séparateur -->
+                <BoxView HeightRequest="1" BackgroundColor="#2a475e"/>
+
             </VerticalStackLayout>
-        </Grid>
+        </ScrollView>
 
-        <!-- Bouton -->
-        <Button Grid.Row="1"
-                Text="Charger tous les jeux"
-                Command="{Binding LoadGamesCommand}"
-                BackgroundColor="#4299E1"
-                TextColor="White"
-                FontAttributes="Bold"
-                FontSize="16"
-                CornerRadius="12"
-                HeightRequest="50"
-                Margin="20,0,20,15"/>
-        
-        <ActivityIndicator Grid.Row="1"
-                          IsRunning="{Binding IsLoading}"
-                          IsVisible="{Binding IsLoading}"
-                          Color="#4299E1"
-                          HeightRequest="40"
-                          VerticalOptions="Center"
-                          Margin="0,60,0,0"/>
+        <!-- Contenu principal -->
+        <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*">
+            
+            <!-- Bannière Moderne -->
+            <Grid Grid.Row="0" HeightRequest="180" Margin="0,0,0,10">
+                <Frame Padding="0" HasShadow="False" BorderColor="Transparent" CornerRadius="0">
+                    <Frame.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#171a21" Offset="0.1" />
+                            <GradientStop Color="#2a475e" Offset="0.5" />
+                            <GradientStop Color="#1b2838" Offset="0.9" />
+                        </LinearGradientBrush>
+                    </Frame.Background>
+                    
+                    <Grid>
+                        <!-- Effet de lumière subtil -->
+                        <Ellipse Fill="#66c0f4" 
+                                 Opacity="0.1" 
+                                 WidthRequest="400" 
+                                 HeightRequest="400" 
+                                 HorizontalOptions="Center" 
+                                 VerticalOptions="Center" />
+                        
+                        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="5">
+                            <Label Text="GAUNIV"
+                                   FontSize="48"
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"
+                                   CharacterSpacing="5">
+                                <Label.Shadow>
+                                    <Shadow Brush="Black" Offset="2,2" Radius="5" Opacity="0.5" />
+                                </Label.Shadow>
+                            </Label>
+                            
+                            <BoxView HeightRequest="2" 
+                                     WidthRequest="100" 
+                                     Color="#66c0f4" 
+                                     HorizontalOptions="Center" />
+                            
+                            <Label Text="EXPLOREZ VOTRE PROCHAINE AVENTURE"
+                                   FontSize="12"
+                                   TextColor="#8f98a0"
+                                   HorizontalOptions="Center"
+                                   CharacterSpacing="2"
+                                   Margin="0,5,0,0"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+            </Grid>
 
-        <!-- Liste -->
-        <ScrollView Grid.Row="2" Padding="15,0,15,20">
-            <CollectionView ItemsSource="{Binding Games}"
-                           SelectionMode="None">
+            <!-- Status message -->
+            <Label Grid.Row="1"
+                   Text="{Binding StatusMessage}"
+                   TextColor="#8f98a0"
+                   FontSize="13"
+                   Padding="20,10"
+                   IsVisible="{Binding StatusMessage, Converter={StaticResource IsNotNullConverter}}"/>
+
+            <!-- Loading -->
+            <ActivityIndicator Grid.Row="2"
+                              IsRunning="{Binding IsLoading}"
+                              IsVisible="{Binding IsLoading}"
+                              Color="#66c0f4"
+                              HeightRequest="60"/>
+
+            <!-- Liste des jeux -->
+            <CollectionView Grid.Row="2"
+                           ItemsSource="{Binding Games}"
+                           SelectionMode="None"
+                           Margin="15,10"
+                           IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
+                           RemainingItemsThreshold="5"
+                           RemainingItemsThresholdReachedCommand="{Binding LoadMoreGamesCommand}">
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="15"/>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="12"/>
                 </CollectionView.ItemsLayout>
                 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="dto:GameDto">
                         <Frame Padding="0"
-                               CornerRadius="16"
+                               CornerRadius="4"
                                HasShadow="False"
-                               BorderColor="#E2E8F0"
-                               BackgroundColor="White">
-                            <Frame.Shadow>
-                                <Shadow Brush="Black" Opacity="0.08" Radius="12" Offset="0,2"/>
-                            </Frame.Shadow>
+                               BorderColor="Transparent"
+                               BackgroundColor="#16202d">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:IndexViewModel}}, Path=ViewGameDetailsCommand}"
+                                    CommandParameter="{Binding .}"/>
+                            </Frame.GestureRecognizers>
                             
-                            <Grid RowDefinitions="Auto,Auto,Auto,Auto" 
-                                  Padding="20">
+                            <Grid ColumnDefinitions="200,*" Padding="0">
                                 
-                                <Label Grid.Row="0"
-                                       Text="{Binding Title}"
-                                       FontSize="22"
-                                       FontAttributes="Bold"
-                                       TextColor="#1A202C"
-                                       Margin="0,0,0,8"/>
+                                <!-- Image placeholder -->
+                                <Frame Grid.Column="0"
+                                      Padding="0"
+                                      CornerRadius="0"
+                                      HasShadow="False"
+                                      BackgroundColor="#2a475e"
+                                      BorderColor="Transparent"
+                                      HeightRequest="100">
+                                    <Image Source="{Binding ImageUrl}"
+                                          Aspect="AspectFill"
+                                          HorizontalOptions="Fill"
+                                          VerticalOptions="Fill"/>
+                                </Frame>
                                 
-                                <Label Grid.Row="1"
-                                       Text="{Binding Description}"
-                                       FontSize="14"
-                                       TextColor="#4A5568"
-                                       LineBreakMode="WordWrap"
-                                       MaxLines="2"
-                                       Margin="0,0,0,15"/>
-                                
-                                <Label Grid.Row="2"
-                                       Text="{Binding Price, StringFormat='{0:C}'}"
-                                       FontSize="20"
-                                       FontAttributes="Bold"
-                                       TextColor="#48BB78"
-                                       Margin="0,0,0,15"/>
-                                
-                                <Button Grid.Row="3"
-                                        Text="Acheter ce jeu"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:IndexViewModel}}, Path=PurchaseGameCommand}"
-                                        CommandParameter="{Binding .}"
-                                        BackgroundColor="#4299E1"
-                                        TextColor="White"
-                                        FontAttributes="Bold"
-                                        FontSize="16"
-                                        CornerRadius="12"
-                                        HeightRequest="48"/>
+                                <!-- Info du jeu -->
+                                <Grid Grid.Column="1" 
+                                     RowDefinitions="Auto,*,Auto"
+                                     Padding="15,10">
+                                    
+                                    <!-- Titre -->
+                                    <Label Grid.Row="0"
+                                          Text="{Binding Title}"
+                                          FontSize="18"
+                                          FontAttributes="Bold"
+                                          TextColor="#c7d5e0"
+                                          Margin="0,0,0,5"/>
+                                    
+                                    <!-- Description -->
+                                    <Label Grid.Row="1"
+                                          Text="{Binding Description}"
+                                          FontSize="13"
+                                          TextColor="#8f98a0"
+                                          LineBreakMode="WordWrap"
+                                          MaxLines="2"
+                                          Margin="0,0,0,10"/>
+                                    
+                                    <!-- Prix et catégories -->
+                                    <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
+                                        <!-- Catégories -->
+                                        <FlexLayout Grid.Column="0"
+                                                   BindableLayout.ItemsSource="{Binding Categories}"
+                                                   Wrap="Wrap"
+                                                   AlignItems="Center">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate x:DataType="x:String">
+                                                    <Frame Padding="6,3"
+                                                          Margin="0,0,5,0"
+                                                          CornerRadius="2"
+                                                          HasShadow="False"
+                                                          BackgroundColor="#1b2838"
+                                                          BorderColor="Transparent">
+                                                        <Label Text="{Binding .}"
+                                                              FontSize="11"
+                                                              TextColor="#66c0f4"/>
+                                                    </Frame>
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </FlexLayout>
+                                        
+                                        <!-- Prix ou Badge "Déjà acheté" -->
+                                        <Grid Grid.Column="1" VerticalOptions="Center">
+                                            <!-- Prix (si pas possédé) -->
+                                            <Label Text="{Binding Price, StringFormat='{0:C}'}"
+                                                  FontSize="18"
+                                                  FontAttributes="Bold"
+                                                  TextColor="#beee11"
+                                                  VerticalOptions="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsOwned}" Value="True">
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            
+                                            <!-- Badge "Déjà acheté" (si possédé) -->
+                                            <Frame Padding="8,4"
+                                                   BackgroundColor="#4c6b22"
+                                                   CornerRadius="2"
+                                                   HasShadow="False"
+                                                   BorderColor="Transparent"
+                                                   IsVisible="False"
+                                                   HorizontalOptions="End">
+                                                <Frame.Triggers>
+                                                    <DataTrigger TargetType="Frame" Binding="{Binding IsOwned}" Value="True">
+                                                        <Setter Property="IsVisible" Value="True"/>
+                                                    </DataTrigger>
+                                                </Frame.Triggers>
+                                                <Label Text="DÉJÀ ACHETÉ"
+                                                       FontSize="11"
+                                                       FontAttributes="Bold"
+                                                       TextColor="#beee11"/>
+                                            </Frame>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-                
-                <CollectionView.EmptyView>
-                    <VerticalStackLayout HorizontalOptions="Center" 
-                                        VerticalOptions="Center"
-                                        Padding="40">
-                        <Label Text="🎮"
-                               FontSize="60"
-                               HorizontalOptions="Center"
-                               Margin="0,0,0,20"/>
-                        <Label Text="Aucun jeu disponible"
-                               FontSize="20"
-                               FontAttributes="Bold"
-                               TextColor="#2D3748"
-                               HorizontalOptions="Center"/>
-                        <Label Text="Cliquez sur 'Charger tous les jeux'"
-                               FontSize="14"
-                               TextColor="#718096"
-                               HorizontalOptions="Center"
-                               Margin="0,10,0,0"/>
-                    </VerticalStackLayout>
-                </CollectionView.EmptyView>
-                
             </CollectionView>
-        </ScrollView>
-        
+        </Grid>
     </Grid>
 </ContentPage>

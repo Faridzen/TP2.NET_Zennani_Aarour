@@ -16,7 +16,13 @@ namespace Gauniv.Client.ViewModel
     public partial class MyGamesViewModel: ObservableObject
     {
         private readonly NetworkService _networkService;
+        private bool _hasLoadedOnce = false;
+        private int _currentOffset = 0;
+        private const int PageSize = 30;
+        private int _totalCount = 0;
+        private bool _isLoadingMore = false;
 
+        // Collection observable pour afficher les jeux dans l'UI
         [ObservableProperty]
         private ObservableCollection<Dtos.GameDto> games = new();
 
@@ -24,11 +30,46 @@ namespace Gauniv.Client.ViewModel
         private bool isLoading = false;
 
         [ObservableProperty]
-        private string statusMessage = "Connectez-vous pour voir vos jeux";
+        private string statusMessage = "";
 
         public MyGamesViewModel()
         {
             _networkService = NetworkService.Instance;
+            
+            // Écouter l'événement de connexion
+            _networkService.OnConnected += OnUserConnected;
+            
+            // Écouter l'événement d'achat de jeu
+            _networkService.OnGamePurchased += OnGamePurchased;
+            
+            // Charger les jeux si déjà connecté
+            if (!string.IsNullOrEmpty(_networkService.Token))
+            {
+                _ = LoadMyGamesAsync();
+            }
+            else
+            {
+                StatusMessage = "Connectez-vous pour voir vos jeux";
+            }
+        }
+
+        private void OnUserConnected()
+        {
+            // Charger seulement si pas déjà en cours de chargement et pas déjà chargé
+            if (!IsLoading && !_hasLoadedOnce)
+            {
+                _ = LoadMyGamesAsync();
+            }
+        }
+
+        private void OnGamePurchased()
+        {
+            // Recharger la bibliothèque après un achat
+            _hasLoadedOnce = false; // Réinitialiser pour permettre le rechargement
+            if (!IsLoading)
+            {
+                _ = LoadMyGamesAsync();
+            }
         }
 
         [RelayCommand]
@@ -60,6 +101,7 @@ namespace Gauniv.Client.ViewModel
                 }
 
                 StatusMessage = $"Vous possédez {local_result.TotalCount} jeu(x)";
+                _hasLoadedOnce = true;
             }
             catch (Exception ex)
             {

@@ -68,7 +68,24 @@ namespace Gauniv.WebServer.Api
                 // Filter by categories if provided
                 if (category != null && category.Length > 0)
                 {
-                    local_query = local_query.Where(g => g.Categories.Any(c => category.Contains(c)));
+                    // Note: Some EF providers (like in-memory or older versions) can't translate Any on collection properties.
+                    // If this fails, we might need to fetch all and filter in memory, but for now we try to keep it as efficient as possible.
+                    // Actually, let's fetch IDs first if it fails, or just fetch all if the dataset is small.
+                    // For this project, we'll fetch and filter in memory to be safe across all environments.
+                    var local_allGames = await local_query.ToListAsync();
+                    local_allGames = local_allGames.Where(g => g.Categories.Any(c => category.Contains(c))).ToList();
+                    
+                    var local_count = local_allGames.Count;
+                    var local_paged = local_allGames.Skip(offset).Take(limit).ToList();
+                    var local_dtos = mapper.Map<List<GameDto>>(local_paged);
+
+                    return Ok(new PagedResultDto<GameDto>
+                    {
+                        Items = local_dtos,
+                        TotalCount = local_count,
+                        PageNumber = (offset / limit) + 1,
+                        PageSize = limit
+                    });
                 }
 
                 var local_totalCount = await local_query.CountAsync();
@@ -127,11 +144,13 @@ namespace Gauniv.WebServer.Api
         {
             try
             {
-                var local_categories = await appDbContext.Games
+                var local_allGames = await appDbContext.Games.ToListAsync();
+                var local_categories = local_allGames
                     .SelectMany(g => g.Categories)
                     .Distinct()
                     .Select(c => new CategoryDto { Name = c })
-                    .ToListAsync();
+                    .OrderBy(c => c.Name)
+                    .ToList();
 
                 return Ok(local_categories);
             }

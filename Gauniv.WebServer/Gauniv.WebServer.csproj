@@ -45,4 +45,10 @@
   <ItemGroup>
     <None Include="D:\Université\2025-26\TP2.NET\Gauniv.WebServer\.editorconfig" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\games.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

@@ -30,4 +30,5 @@
                 Route="profile">
         <ShellContent ContentTemplate="{DataTemplate local:Profile}" />
     </FlyoutItem>
+
 </Shell>

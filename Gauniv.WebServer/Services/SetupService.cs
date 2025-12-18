@@ -71,49 +71,61 @@ namespace Gauniv.WebServer.Services
                 // Add sample games for testing
                 if (!applicationDbContext.Games.Any())
                 {
-                    var local_sampleGames = new List<Game>
+                    var local_sampleGames = new List<Game>();
+                    var local_csvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "games.csv");
+                    
+                    if (File.Exists(local_csvPath))
                     {
-                        new Game
+                        var local_lines = File.ReadAllLines(local_csvPath);
+                        // Skip header line
+                        for (int i = 1; i < local_lines.Length; i++)
                         {
-                            Title = "Adventure Quest",
-                            Description = "An epic adventure game with stunning graphics and immersive gameplay.",
-                            Price = 29.99m,
-                            Categories = new List<string> { "Adventure", "RPG" },
-                            payload = Encoding.UTF8.GetBytes("Sample game binary for Adventure Quest")
-                        },
-                        new Game
-                        {
-                            Title = "Space Shooter",
-                            Description = "Fast-paced space combat with amazing visual effects.",
-                            Price = 19.99m,
-                            Categories = new List<string> { "Action", "Shooter" },
-                            payload = Encoding.UTF8.GetBytes("Sample game binary for Space Shooter")
-                        },
-                        new Game
-                        {
-                            Title = "Puzzle Master",
-                            Description = "Challenge your mind with hundreds of unique puzzles.",
-                            Price = 9.99m,
-                            Categories = new List<string> { "Puzzle", "Casual" },
-                            payload = Encoding.UTF8.GetBytes("Sample game binary for Puzzle Master")
-                        },
-                        new Game
-                        {
-                            Title = "Racing Champions",
-                            Description = "Experience the thrill of high-speed racing.",
-                            Price = 39.99m,
-                            Categories = new List<string> { "Racing", "Sports" },
-                            payload = Encoding.UTF8.GetBytes("Sample game binary for Racing Champions")
-                        },
-                        new Game
-                        {
-                            Title = "Free to Play MOBA",
-                            Description = "Join millions of players in this free-to-play multiplayer battle arena.",
-                            Price = 0m,
-                            Categories = new List<string> { "MOBA", "Multiplayer" },
-                            payload = Encoding.UTF8.GetBytes("Sample game binary for Free to Play MOBA")
+                            var local_parts = local_lines[i].Split(',');
+                            if (local_parts.Length >= 5)
+                            {
+                                var local_title = local_parts[0];
+                                var local_description = local_parts[1];
+                                var local_price = decimal.Parse(local_parts[2]);
+                                var local_categories = local_parts[3].Trim('"').Split(',').Select(c => c.Trim()).ToList();
+                                var local_imageUrl = local_parts[4];
+                                
+                                local_sampleGames.Add(new Game
+                                {
+                                    Title = local_title,
+                                    Description = local_description,
+                                    Price = local_price,
+                                    Categories = local_categories,
+                                    ImageUrl = local_imageUrl,
+                                    payload = Encoding.UTF8.GetBytes($"Sample game binary for {local_title}")
+                                });
+                            }
                         }
-                    };
+                    }
+                    else
+                    {
+                        // Fallback to hardcoded games if CSV not found
+                        local_sampleGames = new List<Game>
+                        {
+                            new Game
+                            {
+                                Title = "Adventure Quest",
+                                Description = "An epic adventure game with stunning graphics and immersive gameplay.",
+                                Price = 29.99m,
+                                Categories = new List<string> { "Adventure", "RPG" },
+                                ImageUrl = "https://picsum.photos/seed/adventure/400/200",
+                                payload = Encoding.UTF8.GetBytes("Sample game binary for Adventure Quest")
+                            },
+                            new Game
+                            {
+                                Title = "Space Shooter",
+                                Description = "Fast-paced space combat with amazing visual effects.",
+                                Price = 19.99m,
+                                Categories = new List<string> { "Action", "Shooter" },
+                                ImageUrl = "https://picsum.photos/seed/space/400/200",
+                                payload = Encoding.UTF8.GetBytes("Sample game binary for Space Shooter")
+                            }
+                        };
+                    }
 
                     applicationDbContext.Games.AddRange(local_sampleGames);
                 }

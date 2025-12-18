@@ -43,5 +43,6 @@ namespace Gauniv.WebServer.Dtos
         public string Description { get; set; }
         public decimal Price { get; set; }
         public List<string> Categories { get; set; } = new List<string>();
+        public string? ImageUrl { get; set; }
     }
 }

@@ -60,10 +60,9 @@ namespace Gauniv.Client.Services
 
         public event Action OnConnected;
         public event Action OnDisconnected;
+        public event Action OnGamePurchased;
 
-        /// <summary>
-        /// Login to the server and retrieve authentication token
-        /// </summary>
+
         public async Task<bool> LoginAsync(string email, string password)
         {
             try
@@ -105,9 +104,7 @@ namespace Gauniv.Client.Services
             }
         }
 
-        /// <summary>
-        /// Get paginated list of all games with optional category filter
-        /// </summary>
+       
         public async Task<PagedResultDto<GameDto>> GetGamesAsync(int offset = 0, int limit = 10, string[]? categories = null)
         {
             try
@@ -144,9 +141,6 @@ namespace Gauniv.Client.Services
             }
         }
 
-        /// <summary>
-        /// Get paginated list of games owned by the authenticated user
-        /// </summary>
         public async Task<PagedResultDto<GameDto>> GetMyGamesAsync(int offset = 0, int limit = 10)
         {
             try
@@ -174,9 +168,7 @@ namespace Gauniv.Client.Services
             }
         }
 
-        /// <summary>
-        /// Get details of a specific game
-        /// </summary>
+      
         public async Task<GameDto?> GetGameDetailsAsync(int gameId)
         {
             try
@@ -203,9 +195,7 @@ namespace Gauniv.Client.Services
             }
         }
 
-        /// <summary>
-        /// Get all available categories
-        /// </summary>
+        
         public async Task<List<CategoryDto>> GetCategoriesAsync()
         {
             try
@@ -232,15 +222,19 @@ namespace Gauniv.Client.Services
             }
         }
 
-        /// <summary>
-        /// Purchase a game
-        /// </summary>
+       
         public async Task<bool> PurchaseGameAsync(int gameId)
         {
             try
             {
                 var local_response = await httpClient.PostAsync($"{BaseUrl}Purchase/{gameId}", null);
-                return local_response.IsSuccessStatusCode;
+                
+                if (local_response.IsSuccessStatusCode)
+                {
+                    OnGamePurchased?.Invoke();
+                    return true;
+                }
+                return false;
             }
             catch (Exception ex)
             {
@@ -249,9 +243,7 @@ namespace Gauniv.Client.Services
             }
         }
 
-        /// <summary>
-        /// Download game binary to specified path
-        /// </summary>
+        
         public async Task<bool> DownloadGameAsync(int gameId, string savePath)
         {
             try
@@ -274,9 +266,6 @@ namespace Gauniv.Client.Services
             }
         }
 
-        /// <summary>
-        /// Logout and clear authentication token
-        /// </summary>
         public void Logout()
         {
             Token = null;

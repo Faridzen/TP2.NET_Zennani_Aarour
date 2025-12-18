@@ -36,9 +36,7 @@ using Microsoft.Maui.Controls;
 
 namespace Gauniv.Client.Services
 {
-    /// <summary>
-    /// Aucune raison de toucher a quelque chose ici
-    /// </summary>
+ 
     public partial class NavigationService() : ObservableObject
     {
         public static NavigationService Instance { get; private set; } = new NavigationService();

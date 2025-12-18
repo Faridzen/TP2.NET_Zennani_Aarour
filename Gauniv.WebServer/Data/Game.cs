@@ -46,5 +46,6 @@ namespace Gauniv.WebServer.Data
         //[Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
         public List<String> Categories { get; set; } = new List<string>();
+        public string? ImageUrl { get; set; }
     }
 }
