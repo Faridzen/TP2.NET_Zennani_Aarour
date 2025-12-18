@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Gauniv.Client.ViewModel"
+             xmlns:dto="clr-namespace:Gauniv.Client.Dtos"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Gauniv.Client.Pages.AdminPage"
+             Title="Administration"
+             x:DataType="vm:AdminViewModel"
+             BackgroundColor="#1b2838">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+        
+        <!-- Header Banner -->
+        <Grid Grid.Row="0" HeightRequest="100" BackgroundColor="#171a21">
+            <Label Text="PANNEAU D'ADMINISTRATION"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   CharacterSpacing="2"/>
+        </Grid>
+
+        <!-- Status Bar -->
+        <Grid Grid.Row="1" BackgroundColor="#2a475e" Padding="10">
+            <Label Text="{Binding StatusMessage}" 
+                   TextColor="#66c0f4" 
+                   HorizontalOptions="Center"
+                   FontSize="12"/>
+        </Grid>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,*">
+            
+            <!-- Section Jeux (Gauche) -->
+            <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" Padding="20">
+                <Label Text="GESTION DES JEUX" FontSize="18" FontAttributes="Bold" TextColor="#c7d5e0" Margin="0,0,0,10"/>
+                
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Games}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="dto:GameDto">
+                            <Frame BackgroundColor="#16202d" BorderColor="#2a475e" Margin="0,0,0,5" Padding="10">
+                                <Grid ColumnDefinitions="*,Auto,Auto">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Title}" FontAttributes="Bold" TextColor="White"/>
+                                        <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="12" TextColor="#beee11"/>
+                                    </VerticalStackLayout>
+                                    
+                                    <Button Grid.Column="1" Text="✎" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminViewModel}}, Path=SelectGameCommand}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="Transparent" TextColor="#66c0f4" FontSize="18"/>
+                                    
+                                    <Button Grid.Column="2" Text="🗑" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminViewModel}}, Path=DeleteGameCommand}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="Transparent" TextColor="#ff4d4d" FontSize="18"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Formulaire Jeu -->
+                <Frame Grid.Row="2" BackgroundColor="#171a21" BorderColor="#66c0f4" Padding="15" Margin="0,10,0,0">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Éditer / Ajouter un Jeu" FontAttributes="Bold" TextColor="#66c0f4"/>
+                        <Entry Placeholder="Titre" Text="{Binding GameTitle}" TextColor="White" PlaceholderColor="#8f98a0"/>
+                        <Editor Placeholder="Description" Text="{Binding GameDescription}" HeightRequest="80" TextColor="White" PlaceholderColor="#8f98a0"/>
+                        <Entry Placeholder="Prix" Text="{Binding GamePrice}" Keyboard="Numeric" TextColor="White" PlaceholderColor="#8f98a0"/>
+                        <Entry Placeholder="URL Image" Text="{Binding GameImageUrl}" TextColor="White" PlaceholderColor="#8f98a0"/>
+                        <Entry Placeholder="Catégories (Action, RPG...)" Text="{Binding GameCategoriesCsv}" TextColor="White" PlaceholderColor="#8f98a0"/>
+                        
+                        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                            <Button Text="Enregistrer" Command="{Binding SaveGameCommand}" BackgroundColor="#66c0f4" TextColor="White"/>
+                            <Button Text="Nouveau" Command="{Binding PrepareNewGameCommand}" BackgroundColor="#2a475e" TextColor="White"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <!-- Section Catégories (Droite) -->
+            <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto" Padding="20" BackgroundColor="#171a21">
+                <Label Text="GESTION DES CATÉGORIES" FontSize="18" FontAttributes="Bold" TextColor="#c7d5e0" Margin="0,0,0,10"/>
+
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Categories}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="dto:CategoryDto">
+                            <Frame BackgroundColor="#1b2838" BorderColor="#2a475e" Margin="0,0,0,5" Padding="10">
+                                <Grid ColumnDefinitions="*,Auto,Auto">
+                                    <Label Text="{Binding Name}" VerticalOptions="Center" TextColor="White"/>
+                                    
+                                    <Button Grid.Column="1" Text="✎" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminViewModel}}, Path=SelectCategoryCommand}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="Transparent" TextColor="#66c0f4" FontSize="18"/>
+
+                                    <Button Grid.Column="2" Text="🗑" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminViewModel}}, Path=DeleteCategoryCommand}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="Transparent" TextColor="#ff4d4d" FontSize="18"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Formulaire Catégorie -->
+                <Frame Grid.Row="2" BackgroundColor="#1b2838" BorderColor="#66c0f4" Padding="15" Margin="0,10,0,0">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Éditer / Ajouter une Catégorie" FontAttributes="Bold" TextColor="#66c0f4"/>
+                        <Entry Placeholder="Nom de la catégorie" Text="{Binding CategoryName}" TextColor="White" PlaceholderColor="#8f98a0"/>
+                        
+                        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                            <Button Text="Enregistrer" Command="{Binding SaveCategoryCommand}" BackgroundColor="#66c0f4" TextColor="White"/>
+                            <Button Text="Nouveau" Command="{Binding PrepareNewCategoryCommand}" BackgroundColor="#2a475e" TextColor="White"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+        </Grid>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.RowSpan="3" BackgroundColor="#80000000" IsVisible="{Binding IsLoading}">
+            <ActivityIndicator IsRunning="True" Color="#66c0f4" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="50" HeightRequest="50"/>
+        </Grid>
+    </Grid>
+</ContentPage>

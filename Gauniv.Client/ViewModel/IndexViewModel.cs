@@ -59,6 +59,11 @@ namespace Gauniv.Client.ViewModel
         [ObservableProperty]
         private string statusMessage = "";
 
+        [ObservableProperty]
+        private bool isAdmin = false;
+
+        public bool IsNotAdmin => !IsAdmin;
+
         public IndexViewModel()
         {
             _networkService = NetworkService.Instance;
@@ -70,8 +75,15 @@ namespace Gauniv.Client.ViewModel
             
             // Vérifier l'état initial
             UpdateConnectionStatus();
+            UpdateAdminStatus();
             
             _ = LoadInitialDataAsync();
+        }
+
+        private void UpdateAdminStatus()
+        {
+            IsAdmin = _networkService.IsAdmin;
+            OnPropertyChanged(nameof(IsNotAdmin));
         }
 
         private void OnGamePurchased()
@@ -83,6 +95,7 @@ namespace Gauniv.Client.ViewModel
         private void UpdateConnectionStatus()
         {
             IsConnected = !string.IsNullOrEmpty(_networkService.Token);
+            UpdateAdminStatus();
             if (IsConnected)
             {
                 _ = LoadOwnedGamesAsync();
@@ -311,12 +324,10 @@ namespace Gauniv.Client.ViewModel
 
             try
             {
-                // D'abord se connecter
-                bool local_loginSuccess = await _networkService.LoginAsync("test@test.com", "password");
-
-                if (!local_loginSuccess)
+                // Vérifier si on est connecté
+                if (string.IsNullOrEmpty(_networkService.Token))
                 {
-                    StatusMessage = "Échec de la connexion";
+                    StatusMessage = "Veuillez vous connecter d'abord";
                     return;
                 }
 
@@ -356,8 +367,8 @@ namespace Gauniv.Client.ViewModel
                 // Vérifier si on est connecté
                 if (string.IsNullOrEmpty(_networkService.Token))
                 {
-                    // Se connecter d'abord
-                    await _networkService.LoginAsync("test@test.com", "password");
+                    StatusMessage = "Veuillez vous connecter pour acheter";
+                    return;
                 }
 
                 // Acheter le jeu

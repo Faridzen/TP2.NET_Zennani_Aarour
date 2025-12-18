@@ -61,12 +61,35 @@ namespace Gauniv.WebServer.Services
                     throw new Exception("ApplicationDbContext is null");
                 }
 
-                var r = userSignInManager?.CreateAsync(new User()
+                // Create Admin account
+                if (userSignInManager?.FindByNameAsync("admin").Result == null)
                 {
-                    UserName = "test@test.com",
-                    Email = "test@test.com",
-                    EmailConfirmed = true
-                }, "password").Result;
+                    var local_adminUser = new User()
+                    {
+                        UserName = "admin",
+                        Email = "admin",
+                        EmailConfirmed = true,
+                        IsAdmin = true,
+                        FirstName = "Admin",
+                        LastName = "Admin"
+                    };
+                    var local_res = userSignInManager.CreateAsync(local_adminUser, "admin").Result;
+                }
+
+                // Create User account
+                if (userSignInManager?.FindByNameAsync("user").Result == null)
+                {
+                    var local_normalUser = new User()
+                    {
+                        UserName = "user",
+                        Email = "user",
+                        EmailConfirmed = true,
+                        IsAdmin = false,
+                        FirstName = "User",
+                        LastName = "User"
+                    };
+                    var local_res = userSignInManager.CreateAsync(local_normalUser, "user").Result;
+                }
 
                 // Add sample games for testing
                 if (!applicationDbContext.Games.Any())
@@ -101,33 +124,17 @@ namespace Gauniv.WebServer.Services
                             }
                         }
                     }
-                    else
-                    {
-                        // Fallback to hardcoded games if CSV not found
-                        local_sampleGames = new List<Game>
-                        {
-                            new Game
-                            {
-                                Title = "Adventure Quest",
-                                Description = "An epic adventure game with stunning graphics and immersive gameplay.",
-                                Price = 29.99m,
-                                Categories = new List<string> { "Adventure", "RPG" },
-                                ImageUrl = "https://picsum.photos/seed/adventure/400/200",
-                                payload = Encoding.UTF8.GetBytes("Sample game binary for Adventure Quest")
-                            },
-                            new Game
-                            {
-                                Title = "Space Shooter",
-                                Description = "Fast-paced space combat with amazing visual effects.",
-                                Price = 19.99m,
-                                Categories = new List<string> { "Action", "Shooter" },
-                                ImageUrl = "https://picsum.photos/seed/space/400/200",
-                                payload = Encoding.UTF8.GetBytes("Sample game binary for Space Shooter")
-                            }
-                        };
-                    }
-
+                    
                     applicationDbContext.Games.AddRange(local_sampleGames);
+
+                    // Populate Categories table from the unique categories found in games
+                    var local_uniqueCategories = local_sampleGames
+                        .SelectMany(g => g.Categories)
+                        .Distinct()
+                        .Select(name => new Category { Name = name })
+                        .ToList();
+                    
+                    applicationDbContext.Categories.AddRange(local_uniqueCategories);
                 }
 
                 applicationDbContext.SaveChanges();

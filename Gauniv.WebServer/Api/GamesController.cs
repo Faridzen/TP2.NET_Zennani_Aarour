@@ -144,13 +144,10 @@ namespace Gauniv.WebServer.Api
         {
             try
             {
-                var local_allGames = await appDbContext.Games.ToListAsync();
-                var local_categories = local_allGames
-                    .SelectMany(g => g.Categories)
-                    .Distinct()
-                    .Select(c => new CategoryDto { Name = c })
+                var local_categories = await appDbContext.Categories
                     .OrderBy(c => c.Name)
-                    .ToList();
+                    .Select(c => new CategoryDto { Name = c.Name })
+                    .ToListAsync();
 
                 return Ok(local_categories);
             }
@@ -287,6 +284,29 @@ namespace Gauniv.WebServer.Api
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<UserDto>> Profile()
+        {
+            try
+            {
+                var local_user = await userManager.GetUserAsync(User);
+                if (local_user == null) return NotFound("User not found");
+
+                return Ok(new UserDto
+                {
+                    Email = local_user.Email ?? "",
+                    UserName = local_user.UserName ?? "",
+                    FirstName = local_user.FirstName,
+                    LastName = local_user.LastName,
+                    IsAdmin = local_user.IsAdmin
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error retrieving profile: {ex.Message}");
             }
         }
     }

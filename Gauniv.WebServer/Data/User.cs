@@ -38,6 +38,7 @@ namespace Gauniv.WebServer.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)][Key]public int Id { get; set; }
         public String FirstName { get; set; } = string.Empty;
         public String LastName { get; set; } = string.Empty;
+        public bool IsAdmin { get; set; } = false;
         public String[] purchasedGames { get; set; } = Array.Empty<string>();
     }
 }

@@ -19,18 +19,26 @@
     </FlyoutItem>
 
     <FlyoutItem Title="Ma Bibliothèque"
-                Icon="📚"
-                Route="mygames"
-                IsVisible="{Binding IsConnected}">
+                 Icon="📚"
+                 Route="mygames"
+                 IsVisible="{Binding IsNotAdmin}">
         <ShellContent ContentTemplate="{DataTemplate local:MyGames}" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Gestion des jeux"
+                 Icon="🛠️"
+                 Route="admin"
+                 IsVisible="{Binding IsAdmin}">
+        <ShellContent ContentTemplate="{DataTemplate local:AdminPage}" />
+    </FlyoutItem>
+
     <FlyoutItem Title="Profil"
-                Icon="👤"
-                Route="profile">
+                 Icon="👤"
+                 Route="profile">
         <ShellContent ContentTemplate="{DataTemplate local:Profile}" />
     </FlyoutItem>
 
     <ShellContent Route="gamedetails"
+                  FlyoutItemIsVisible="False"
                   ContentTemplate="{DataTemplate local:GameDetails}" />
 </Shell>

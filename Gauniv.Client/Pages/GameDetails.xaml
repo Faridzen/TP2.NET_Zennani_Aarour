@@ -95,13 +95,19 @@
                         </VerticalStackLayout>
                     </Frame>
 
-                    <!-- Price Section (if not owned) -->
                     <Frame Padding="20"
                            CornerRadius="4"
                            HasShadow="False"
                            BackgroundColor="#16202d"
-                           BorderColor="Transparent"
-                           IsVisible="{Binding IsOwned, Converter={StaticResource InvertedBoolConverter}}">
+                           BorderColor="Transparent">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding IsOwned}" Value="True">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame" Binding="{Binding IsNotAdmin}" Value="False">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
                         <VerticalStackLayout Spacing="15">
                             <Label Text="{Binding Game.Price, StringFormat='Prix: {0:C}'}"
                                    FontSize="24"
@@ -124,8 +130,15 @@
                            CornerRadius="4"
                            HasShadow="False"
                            BackgroundColor="#16202d"
-                           BorderColor="Transparent"
-                           IsVisible="{Binding IsOwned}">
+                           BorderColor="Transparent">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding IsOwned}" Value="False">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame" Binding="{Binding IsNotAdmin}" Value="False">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
                         <VerticalStackLayout Spacing="15">
                             <HorizontalStackLayout Spacing="10">
                                 <Label Text="✅"

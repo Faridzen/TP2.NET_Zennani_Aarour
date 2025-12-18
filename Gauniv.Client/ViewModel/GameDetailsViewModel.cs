@@ -27,9 +27,21 @@ namespace Gauniv.Client.ViewModel
         [ObservableProperty]
         private string statusMessage = "";
 
+        [ObservableProperty]
+        private bool isAdmin = false;
+
+        public bool IsNotAdmin => !IsAdmin;
+
         public GameDetailsViewModel()
         {
             _networkService = NetworkService.Instance;
+            UpdateAdminStatus();
+        }
+
+        private void UpdateAdminStatus()
+        {
+            IsAdmin = _networkService.IsAdmin;
+            OnPropertyChanged(nameof(IsNotAdmin));
         }
 
         public async Task LoadGameAsync(int gameId)
@@ -92,12 +104,8 @@ namespace Gauniv.Client.ViewModel
                 // Se connecter si nécessaire
                 if (string.IsNullOrEmpty(_networkService.Token))
                 {
-                    bool local_loginSuccess = await _networkService.LoginAsync("test@test.com", "password");
-                    if (!local_loginSuccess)
-                    {
-                        StatusMessage = "Connexion requise pour acheter";
-                        return;
-                    }
+                    StatusMessage = "Connexion requise pour acheter";
+                    return;
                 }
 
                 bool local_success = await _networkService.PurchaseGameAsync(Game.Id);

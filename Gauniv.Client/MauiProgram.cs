@@ -45,9 +45,16 @@ namespace Gauniv.Client
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-#endif
+            builder.Services.AddTransient<Pages.Index>();
+            builder.Services.AddTransient<ViewModel.IndexViewModel>();
+            builder.Services.AddTransient<Pages.MyGames>();
+            builder.Services.AddTransient<ViewModel.MyGamesViewModel>();
+            builder.Services.AddTransient<Pages.GameDetails>();
+            builder.Services.AddTransient<ViewModel.GameDetailsViewModel>();
+            builder.Services.AddTransient<Pages.Profile>();
+            builder.Services.AddTransient<ViewModel.ProfileViewModel>();
+            builder.Services.AddTransient<Pages.AdminPage>();
+            builder.Services.AddTransient<ViewModel.AdminViewModel>();
 
             var app = builder.Build();
 

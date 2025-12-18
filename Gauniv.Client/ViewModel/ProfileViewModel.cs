@@ -28,6 +28,9 @@ namespace Gauniv.Client.ViewModel
         [ObservableProperty]
         private bool isLoading = false;
 
+        [ObservableProperty]
+        private bool isAdmin = false;
+
         public ProfileViewModel()
         {
             _networkService = NetworkService.Instance;
@@ -37,6 +40,7 @@ namespace Gauniv.Client.ViewModel
         private void CheckConnectionStatus()
         {
             IsConnected = !string.IsNullOrEmpty(_networkService.Token);
+            IsAdmin = _networkService.IsAdmin;
             StatusMessage = IsConnected ? "✅ Connecté" : "❌ Non connecté";
         }
 
@@ -58,7 +62,9 @@ namespace Gauniv.Client.ViewModel
 
                 if (local_success)
                 {
+                    await _networkService.GetProfileAsync();
                     IsConnected = true;
+                    IsAdmin = _networkService.IsAdmin;
                     StatusMessage = "✅ Connexion réussie !";
                 }
                 else
@@ -83,9 +89,16 @@ namespace Gauniv.Client.ViewModel
         {
             _networkService.Logout();
             IsConnected = false;
+            IsAdmin = false;
             StatusMessage = "Vous n'êtes plus connecté";
             Email = "";
             Password = "";
+        }
+
+        [RelayCommand]
+        private async Task GoToAdminAsync()
+        {
+            await Shell.Current.GoToAsync("///admin");
         }
     }
 }

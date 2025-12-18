@@ -80,12 +80,10 @@ namespace Gauniv.Client.ViewModel
 
             try
             {
-                // Se connecter d'abord
-                bool local_loginSuccess = await _networkService.LoginAsync("test@test.com", "password");
-
-                if (!local_loginSuccess)
+                // Vérifier si on est connecté
+                if (string.IsNullOrEmpty(_networkService.Token))
                 {
-                    StatusMessage = "Échec de la connexion";
+                    StatusMessage = "Veuillez vous connecter d'abord";
                     return;
                 }
 
@@ -125,7 +123,8 @@ namespace Gauniv.Client.ViewModel
                 // Vérifier si on est connecté
                 if (string.IsNullOrEmpty(_networkService.Token))
                 {
-                    await _networkService.LoginAsync("test@test.com", "password");
+                    StatusMessage = "Veuillez vous connecter pour télécharger";
+                    return;
                 }
 
                 // Télécharger le jeu

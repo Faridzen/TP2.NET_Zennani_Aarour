@@ -47,10 +47,14 @@ namespace Gauniv.Client.Services
         
         [ObservableProperty]
         private string token;
+
+        [ObservableProperty]
+        private bool isAdmin;
         
         public HttpClient httpClient;
 
         private const string BaseUrl = "http://localhost:5231/api/1.0.0/Games/";
+        private const string AdminUrl = "http://localhost:5231/api/1.0.0/Admin/";
         private const string AuthUrl = "http://localhost:5231/Bearer/login";
 
         public NetworkService() {
@@ -223,6 +227,29 @@ namespace Gauniv.Client.Services
         }
 
        
+        public async Task<UserDto?> GetProfileAsync()
+        {
+            try
+            {
+                var local_response = await httpClient.GetAsync($"{BaseUrl}Profile");
+                if (local_response.IsSuccessStatusCode)
+                {
+                    var local_json = await local_response.Content.ReadAsStringAsync();
+                    var local_user = JsonSerializer.Deserialize<UserDto>(local_json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                    if (local_user != null)
+                    {
+                        IsAdmin = local_user.IsAdmin;
+                    }
+                    return local_user;
+                }
+                return null;
+            }
+            catch { return null; }
+        }
+
         public async Task<bool> PurchaseGameAsync(int gameId)
         {
             try
@@ -266,9 +293,84 @@ namespace Gauniv.Client.Services
             }
         }
 
+        #region Admin Operations
+
+        public async Task<bool> AddGameAsync(GameDto game)
+        {
+            try
+            {
+                var local_json = JsonSerializer.Serialize(game);
+                var local_content = new StringContent(local_json, Encoding.UTF8, "application/json");
+                var local_response = await httpClient.PostAsync($"{AdminUrl}AddGame", local_content);
+                return local_response.IsSuccessStatusCode;
+            }
+            catch { return false; }
+        }
+
+        public async Task<bool> UpdateGameAsync(GameDto game)
+        {
+            try
+            {
+                var local_json = JsonSerializer.Serialize(game);
+                var local_content = new StringContent(local_json, Encoding.UTF8, "application/json");
+                var local_response = await httpClient.PutAsync($"{AdminUrl}UpdateGame/{game.Id}", local_content);
+                return local_response.IsSuccessStatusCode;
+            }
+            catch { return false; }
+        }
+
+        public async Task<bool> DeleteGameAsync(int gameId)
+        {
+            try
+            {
+                var local_response = await httpClient.DeleteAsync($"{AdminUrl}DeleteGame/{gameId}");
+                return local_response.IsSuccessStatusCode;
+            }
+            catch { return false; }
+        }
+
+        public async Task<bool> AddCategoryAsync(string name)
+        {
+            try
+            {
+                var local_cat = new CategoryDto { Name = name };
+                var local_json = JsonSerializer.Serialize(local_cat);
+                var local_content = new StringContent(local_json, Encoding.UTF8, "application/json");
+                var local_response = await httpClient.PostAsync($"{AdminUrl}AddCategory", local_content);
+                return local_response.IsSuccessStatusCode;
+            }
+            catch { return false; }
+        }
+
+        public async Task<bool> UpdateCategoryAsync(int id, string newName)
+        {
+            try
+            {
+                var local_cat = new CategoryDto { Id = id, Name = newName };
+                var local_json = JsonSerializer.Serialize(local_cat);
+                var local_content = new StringContent(local_json, Encoding.UTF8, "application/json");
+                var local_response = await httpClient.PutAsync($"{AdminUrl}UpdateCategory/{id}", local_content);
+                return local_response.IsSuccessStatusCode;
+            }
+            catch { return false; }
+        }
+
+        public async Task<bool> DeleteCategoryAsync(int id)
+        {
+            try
+            {
+                var local_response = await httpClient.DeleteAsync($"{AdminUrl}DeleteCategory/{id}");
+                return local_response.IsSuccessStatusCode;
+            }
+            catch { return false; }
+        }
+
+        #endregion
+
         public void Logout()
         {
             Token = null;
+            IsAdmin = false;
             httpClient.DefaultRequestHeaders.Authorization = null;
             OnDisconnected?.Invoke();
         }
