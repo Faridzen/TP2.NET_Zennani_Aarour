@@ -55,6 +55,8 @@ namespace Gauniv.Client
             builder.Services.AddTransient<ViewModel.ProfileViewModel>();
             builder.Services.AddTransient<Pages.AdminPage>();
             builder.Services.AddTransient<ViewModel.AdminViewModel>();
+            builder.Services.AddTransient<Pages.PurchaseSuccessPage>();
+            builder.Services.AddTransient<ViewModel.PurchaseSuccessViewModel>();
 
             var app = builder.Build();
 

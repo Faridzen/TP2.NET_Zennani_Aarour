@@ -377,6 +377,13 @@ namespace Gauniv.Client.ViewModel
                 if (local_success)
                 {
                     StatusMessage = $"{game.Title} acheté avec succès !";
+                    
+                    // Naviguer vers la page de succès
+                    var local_navParam = new Dictionary<string, object>
+                    {
+                        { "Game", game }
+                    };
+                    await Shell.Current.GoToAsync("///purchasesuccess", local_navParam);
                 }
                 else
                 {

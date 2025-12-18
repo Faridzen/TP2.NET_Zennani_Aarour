@@ -41,4 +41,8 @@
     <ShellContent Route="gamedetails"
                   FlyoutItemIsVisible="False"
                   ContentTemplate="{DataTemplate local:GameDetails}" />
+
+    <ShellContent Route="purchasesuccess"
+                  FlyoutItemIsVisible="False"
+                  ContentTemplate="{DataTemplate local:PurchaseSuccessPage}" />
 </Shell>

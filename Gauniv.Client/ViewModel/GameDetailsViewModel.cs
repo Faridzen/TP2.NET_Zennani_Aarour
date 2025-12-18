@@ -114,6 +114,13 @@ namespace Gauniv.Client.ViewModel
                 {
                     IsOwned = true;
                     StatusMessage = "✅ Jeu acheté avec succès !";
+                    
+                    // Naviguer vers la page de succès
+                    var local_navParam = new Dictionary<string, object>
+                    {
+                        { "Game", Game }
+                    };
+                    await Shell.Current.GoToAsync("///purchasesuccess", local_navParam);
                 }
                 else
                 {
