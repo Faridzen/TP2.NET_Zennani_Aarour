@@ -29,7 +29,20 @@ namespace Gauniv.Client.ViewModel
         [ObservableProperty]
         private string userEmail = "Connectez-vous pour voir vos jeux";
 
-        public bool IsNotAdmin => IsConnected && !IsAdmin;
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsNotOnProfilePage))]
+        private bool isOnProfilePage;
+
+        public bool IsNotOnProfilePage => !IsOnProfilePage;
+
+        public bool IsNotAdmin => !IsAdmin;
+
+        [RelayCommand]
+        public void Logout()
+        {
+            NetworkService.Instance.Logout();
+            NavigationService.Instance.Navigate<Pages.Index>([]);
+        }
 
         public MenuViewModel()
         {
