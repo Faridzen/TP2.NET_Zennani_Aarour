@@ -36,20 +36,51 @@ namespace Gauniv.Client.ViewModel
         [ObservableProperty]
         private bool isRunning = false;
 
-        private Process? _gameProcess = null;
+        partial void OnIsRunningChanged(bool value)
+        {
+            OnPropertyChanged(nameof(CanPlay));
+            PlayCommand.NotifyCanExecuteChanged();
+        }
 
         public bool IsNotAdmin => !IsAdmin;
+
+        public bool CanPlay => IsRunning || !_networkService.IsAnyGameRunning;
 
         public GameDetailsViewModel()
         {
             _networkService = NetworkService.Instance;
             UpdateAdminStatus();
+
+            // S'abonner aux changements de l'état global
+            _networkService.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(NetworkService.IsAnyGameRunning))
+                {
+                    OnPropertyChanged(nameof(CanPlay));
+                    PlayCommand.NotifyCanExecuteChanged();
+                }
+                if (e.PropertyName == nameof(NetworkService.RunningGameId))
+                {
+                    SyncRunningStatus();
+                    OnPropertyChanged(nameof(CanPlay));
+                    PlayCommand.NotifyCanExecuteChanged();
+                }
+            };
+        }
+
+        private void SyncRunningStatus()
+        {
+            if (Game != null)
+            {
+                IsRunning = _networkService.RunningGameId == Game.Id;
+            }
         }
 
         private void UpdateAdminStatus()
         {
             IsAdmin = _networkService.IsAdmin;
             OnPropertyChanged(nameof(IsNotAdmin));
+            OnPropertyChanged(nameof(CanPlay));
         }
 
         public async Task LoadGameAsync(int gameId)
@@ -74,6 +105,9 @@ namespace Gauniv.Client.ViewModel
                     
                     // Vérifier si le jeu est téléchargé
                     CheckIfDownloaded();
+
+                    // Synchroniser l'état du bouton Play
+                    SyncRunningStatus();
                 }
                 else
                 {
@@ -220,7 +254,7 @@ namespace Gauniv.Client.ViewModel
             }
         }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanPlay))]
         private async Task PlayAsync()
         {
             if (Game == null || string.IsNullOrEmpty(Game.LocalPath)) return;
@@ -230,57 +264,16 @@ namespace Gauniv.Client.ViewModel
                 if (IsRunning)
                 {
                     StatusMessage = "🛑 Arrêt du jeu...";
-                    try 
-                    {
-                        if (_gameProcess != null && !_gameProcess.HasExited)
-                        {
-                            _gameProcess.Kill();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine($"Error killing process: {ex.Message}");
-                    }
-                    
-                    IsRunning = false;
-                    StatusMessage = "✅ Jeu arrêté de force";
+                    _networkService.StopActiveGame();
                     return;
                 }
 
                 StatusMessage = "🎮 Lancement du jeu...";
-                IsRunning = true;
-
-                // Lancer l'exécutable
-                _gameProcess = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = Game.LocalPath,
-                        UseShellExecute = true
-                    },
-                    EnableRaisingEvents = true
-                };
-
-                _gameProcess.Exited += (sender, args) =>
-                {
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        if (IsRunning) // Si on n'a pas arrêté de force
-                        {
-                            IsRunning = false;
-                            StatusMessage = "✅ Le jeu s'est terminé";
-                        }
-                        _gameProcess?.Dispose();
-                        _gameProcess = null;
-                    });
-                };
-
-                _gameProcess.Start();
-                StatusMessage = "✅ Jeu lancé !";
+                _networkService.StartGame(Game.LocalPath, Game.Id);
             }
             catch (Exception ex)
             {
-                IsRunning = false;
+                Debug.WriteLine($"Error in PlayAsync: {ex.Message}");
                 StatusMessage = $"❌ Erreur: {ex.Message}";
             }
         }

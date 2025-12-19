@@ -30,6 +30,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Security;
@@ -50,8 +51,19 @@ namespace Gauniv.Client.Services
 
         [ObservableProperty]
         private bool isAdmin;
+
+        [ObservableProperty]
+        private bool isAnyGameRunning;
+
+        [ObservableProperty]
+        private int? runningGameId;
+
+        [ObservableProperty]
+        private int? runningProcessId;
         
         public HttpClient httpClient;
+
+        private Process? _runningProcess;
 
         private const string BaseUrl = "http://localhost:5231/api/1.0.0/Games/";
         private const string AdminUrl = "http://localhost:5231/api/1.0.0/Admin/";
@@ -421,8 +433,90 @@ namespace Gauniv.Client.Services
 
         #endregion
 
+
+
+        public void StartGame(string localPath, int gameId)
+        {
+            if (IsAnyGameRunning) StopActiveGame();
+
+            try
+            {
+                _runningProcess = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = localPath,
+                        UseShellExecute = true
+                    },
+                    EnableRaisingEvents = true
+                };
+
+                _runningProcess.Exited += (s, e) =>
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        _runningProcess?.Dispose();
+                        _runningProcess = null;
+                        IsAnyGameRunning = false;
+                        RunningGameId = null;
+                        RunningProcessId = null;
+                    });
+                };
+
+                _runningProcess.Start();
+                
+                IsAnyGameRunning = true;
+                RunningGameId = gameId;
+                RunningProcessId = _runningProcess.Id;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error starting game: {ex.Message}");
+                IsAnyGameRunning = false;
+                RunningGameId = null;
+                RunningProcessId = null;
+                throw;
+            }
+        }
+
+        public void StopActiveGame()
+        {
+            try
+            {
+                if (_runningProcess != null && !_runningProcess.HasExited)
+                {
+                    _runningProcess.Kill(true);
+                }
+                else if (RunningProcessId.HasValue)
+                {
+                    try
+                    {
+                        var local_p = Process.GetProcessById(RunningProcessId.Value);
+                        if (local_p != null && !local_p.HasExited)
+                        {
+                            local_p.Kill(true);
+                        }
+                    }
+                    catch { /* Handle already exited */ }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error stopping game: {ex.Message}");
+            }
+            finally
+            {
+                _runningProcess?.Dispose();
+                _runningProcess = null;
+                IsAnyGameRunning = false;
+                RunningGameId = null;
+                RunningProcessId = null;
+            }
+        }
+
         public void Logout()
         {
+            StopActiveGame();
             Token = null;
             IsAdmin = false;
             httpClient.DefaultRequestHeaders.Authorization = null;

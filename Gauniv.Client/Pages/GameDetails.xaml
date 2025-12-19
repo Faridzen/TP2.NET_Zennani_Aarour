@@ -190,9 +190,19 @@
                                     <DataTrigger TargetType="Button" Binding="{Binding IsDownloaded}" Value="False">
                                         <Setter Property="IsVisible" Value="False"/>
                                     </DataTrigger>
+                                    
+                                    <!-- Si un AUTRE jeu tourne : Gris + Session en cours -->
+                                    <DataTrigger TargetType="Button" Binding="{Binding CanPlay}" Value="False">
+                                        <Setter Property="BackgroundColor" Value="#3d4450"/>
+                                        <Setter Property="Text" Value="⚠️ Session en cours"/>
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </DataTrigger>
+
+                                    <!-- Si CE jeu tourne : Rouge + Arrêter (Priorité haute) -->
                                     <DataTrigger TargetType="Button" Binding="{Binding IsRunning}" Value="True">
                                         <Setter Property="BackgroundColor" Value="#c23030"/>
                                         <Setter Property="Text" Value="🛑 Arrêter"/>
+                                        <Setter Property="Opacity" Value="1.0"/>
                                     </DataTrigger>
                                 </Button.Triggers>
                             </Button>
