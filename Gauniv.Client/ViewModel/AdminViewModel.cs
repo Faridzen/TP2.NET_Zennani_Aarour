@@ -144,10 +144,14 @@ namespace Gauniv.Client.ViewModel
             {
                 var local_result = await FilePicker.Default.PickAsync(new PickOptions
                 {
-                    PickerTitle = "Sélectionnez l'exécutable du jeu (.exe)",
+                    PickerTitle = "Sélectionnez l'exécutable ou le package du jeu (.exe, .dmg, .zip, .app)",
                     FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
                     {
-                        { DevicePlatform.WinUI, new[] { ".exe" } }
+                        { DevicePlatform.WinUI, new[] { ".exe", ".zip", ".msi" } },
+                        { DevicePlatform.MacCatalyst, new[] { "exe", "dmg", "zip", "pkg", "app" } },
+                        { DevicePlatform.macOS, new[] { "exe", "dmg", "zip", "pkg", "app" } },
+                        { DevicePlatform.Android, new[] { ".exe", ".apk", ".zip" } },
+                        { DevicePlatform.iOS, new[] { "exe", "zip" } }
                     })
                 });
 

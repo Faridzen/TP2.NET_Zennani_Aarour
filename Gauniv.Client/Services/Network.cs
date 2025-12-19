@@ -106,6 +106,10 @@ namespace Gauniv.Client.Services
                     {
                         Token = local_tokenResponse.AccessToken;
                         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+                        
+                        // Détecter si l'utilisateur est admin
+                        await GetProfileAsync();
+                        
                         OnConnected?.Invoke();
                         return true;
                     }
