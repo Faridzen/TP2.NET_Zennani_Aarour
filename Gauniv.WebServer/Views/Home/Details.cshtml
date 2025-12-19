@@ -1,0 +1,111 @@
+@model Gauniv.WebServer.Data.Game
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="py-4">
+    <a asp-action="Index" class="text-decoration-none text-muted mb-4 d-inline-block hover-translate-x">
+        <i class="bi bi-chevron-left me-1"></i> Retour au catalogue
+    </a>
+
+    <div class="row g-4">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="game-card overflow-hidden" style="cursor: default;">
+                <div class="game-card-img-wrapper" style="aspect-ratio: 21/9;">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" class="game-card-img" alt="@Model.Title">
+                    }
+                    else
+                    {
+                        <div class="game-card-img d-flex align-items-center justify-content-center bg-dark text-muted">
+                            <i class="bi bi-joystick display-1"></i>
+                        </div>
+                    }
+                </div>
+                <div class="p-4 p-md-5">
+                    <h1 class="display-4 fw-bold mb-4">@Model.Title</h1>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-muted border-bottom border-secondary pb-2 mb-3">À propos du jeu</h4>
+                        <div class="lead" style="white-space: pre-wrap; color: #cbd5e1;">@Model.Description</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Actions -->
+        <div class="col-lg-4">
+            <div class="form-gauniv sticky-top" style="top: 100px;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <span class="display-6 fw-bold">@(Model.Price == 0 ? "Gratuit" : Model.Price.ToString("C"))</span>
+                    @if (Model.Price > 0)
+                    {
+                        <span class="badge badge-gauniv bg-opacity-10 bg-info text-info"><i class="bi bi-shield-check"></i> Achat sécurisé</span>
+                    }
+                </div>
+
+                <div class="d-grid gap-3">
+                    @if (ViewBag.IsOwned == true)
+                    {
+                        <div class="alert alert-success d-flex align-items-center mb-0" role="alert" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: var(--accent);">
+                            <i class="bi bi-check-circle-fill me-3 fs-4"></i>
+                            <div>
+                                <strong>Vous possédez ce jeu</strong>
+                                <div class="small opacity-75">Lancez-le depuis l'application Gauniv pour y jouer.</div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <form asp-action="Purchase" asp-route-id="@Model.Id" method="post">
+                            <button class="game-btn py-3 fs-3 w-100" @(Model.Price > 0 || Model.Price == 0 ? "" : "disabled")>
+                                <i class="bi bi-cart-plus me-2"></i> @(Model.Price == 0 ? "Ajouter à la bibliothèque" : "Acheter maintenant")
+                            </button>
+                        </form>
+                    }
+                    <button class="btn btn-outline-secondary py-3 border-secondary text-white border-opacity-25 ripple-effect">
+                        <i class="bi bi-heart me-2"></i> Ajouter aux favoris
+                    </button>
+                </div>
+
+                <hr class="my-4 border-secondary opacity-25">
+
+                <div class="game-info-list">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Éditeur</span>
+                        <span>Gauniv Game Studios</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Date de sortie</span>
+                        <span>Aujourd'hui</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <span class="text-muted me-2">Catégories</span>
+                        <div class="text-end">
+                            @foreach (var local_cat in Model.Categories)
+                            {
+                                <span class="badge rounded-pill bg-secondary bg-opacity-25 ms-1">@local_cat</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-translate-x { transition: var(--transition); }
+    .hover-translate-x:hover { transform: translateX(-5px); color: var(--text-main) !important; }
+    
+    .ripple-effect {
+        transition: var(--transition);
+        background: transparent;
+    }
+    .ripple-effect:hover {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(255,255,255,0.5) !important;
+    }
+</style>

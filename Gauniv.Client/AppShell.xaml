@@ -71,6 +71,13 @@
         <ShellContent ContentTemplate="{DataTemplate local:AdminPage}" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Mes Amis"
+                  Icon="👥"
+                  Route="friends"
+                  IsVisible="{Binding IsNotAdmin}">
+        <ShellContent ContentTemplate="{DataTemplate local:MyFriends}" />
+    </FlyoutItem>
+
     <FlyoutItem Title="Profil"
                   Icon="👤"
                   Route="profile">

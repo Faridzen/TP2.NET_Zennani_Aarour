@@ -53,6 +53,10 @@ namespace Gauniv.WebServer.Services
             using (var scope = serviceProvider.CreateScope()) // this will use `IServiceScopeFactory` internally
             {
                 applicationDbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                if (applicationDbContext != null)
+                {
+                    applicationDbContext.Database.EnsureCreated();
+                }
                 var userSignInManager = scope.ServiceProvider.GetService<UserManager<User>>();
                 var signInManager = scope.ServiceProvider.GetService<SignInManager<User>>();
 

@@ -92,6 +92,20 @@ namespace Gauniv.Client.ViewModel
                 Games.Clear();
                 foreach (var local_game in local_result.Items)
                 {
+                    // Check if game is downloaded
+                     string local_savePath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                        "Gauniv",
+                        "Games",
+                        $"{local_game.Title}.exe"
+                    );
+
+                    if (File.Exists(local_savePath))
+                    {
+                        local_game.IsDownloaded = true;
+                        local_game.LocalPath = local_savePath;
+                    }
+
                     Games.Add(local_game);
                 }
 
@@ -129,7 +143,7 @@ namespace Gauniv.Client.ViewModel
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     "Gauniv",
                     "Games",
-                    $"{game.Title}.bin"
+                    $"{game.Title}.exe"
                 );
 
                 bool local_success = await _networkService.DownloadGameAsync(game.Id, local_savePath);
@@ -150,6 +164,34 @@ namespace Gauniv.Client.ViewModel
         }
 
         [RelayCommand]
+        private async Task PlayGameAsync(Dtos.GameDto game)
+        {
+            if (game == null || string.IsNullOrEmpty(game.LocalPath)) 
+            {
+                StatusMessage = "Exécutable introuvable";
+                return;
+            }
+
+            try
+            {
+                if (_networkService.IsAnyGameRunning && _networkService.RunningGameId == game.Id)
+                {
+                    StatusMessage = "🛑 Arrêt du jeu...";
+                    _networkService.StopActiveGame();
+                    return;
+                }
+
+                StatusMessage = $"🎮 Lancement de {game.Title}...";
+                _networkService.StartGame(game.LocalPath, game.Id);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in PlayGameAsync: {ex.Message}");
+                StatusMessage = $"❌ Erreur: {ex.Message}";
+            }
+        }
+
+        [RelayCommand]
         private async Task ViewGameDetailsAsync(Dtos.GameDto game)
         {
             if (game == null) return;
@@ -158,7 +200,7 @@ namespace Gauniv.Client.ViewModel
 
             try
             {
-                await Shell.Current.GoToAsync($"///gamedetails?gameId={game.Id}");
+                await Shell.Current.GoToAsync($"gamedetails?gameId={game.Id}");
             }
             catch (Exception ex)
             {

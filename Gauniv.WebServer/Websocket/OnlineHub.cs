@@ -39,23 +39,68 @@ public class OnlineStatus()
 
 namespace Gauniv.WebServer.Websocket
 {
-    public class OnlineHub : Hub
+    [Microsoft.AspNetCore.Authorization.Authorize]
+    public class OnlineHub(OnlineService _onlineService, ApplicationDbContext _db) : Hub
     {
-
-        public static Dictionary<string, OnlineStatus> ConnectedUsers = [];
-        private readonly UserManager<User> userManager;
-
-        public OnlineHub(UserManager<User> userManager)
+        public override async Task OnConnectedAsync()
         {
-            this.userManager = userManager;
+            var local_userId = Context.UserIdentifier;
+            if (local_userId != null)
+            {
+                _onlineService.OnUserConnected(Context.ConnectionId, local_userId);
+                await NotifyFriends(local_userId, "FriendOnline");
+            }
+            await base.OnConnectedAsync();
         }
 
-        public async override Task OnConnectedAsync()
+        public override async Task OnDisconnectedAsync(Exception? exception)
         {
+            var local_userId = Context.UserIdentifier;
+            if (local_userId != null)
+            {
+                _onlineService.OnUserDisconnected(Context.ConnectionId);
+                await NotifyFriends(local_userId, "FriendOffline");
+            }
+            await base.OnDisconnectedAsync(exception);
         }
 
-        public async override Task OnDisconnectedAsync(Exception? exception)
+        private async Task NotifyFriends(string userId, string method)
         {
+            try
+            {
+                // Find all accepted friends of this user
+                var local_friendIds = await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync(
+                    _db.UserFriends
+                    .Where(f => (f.SourceUserId == userId || f.TargetUserId == userId) && f.IsAccepted)
+                    .Select(f => f.SourceUserId == userId ? f.TargetUserId : f.SourceUserId));
+
+                var local_connectionIds = new List<string>();
+                var local_connectedUsers = _onlineService.GetConnectedUserIds(); // This returns IDs, not connections. Use the mapped retrieval.
+
+                // Ideally OnlineService should expose a way to get Connections for UserIds. 
+                // But OnlineService stores <ConnectionId, UserId>. We need reverse lookup.
+                // For simplicity, we can fetch all connections and filter in memory since scale is small.
+                // Optimization: Add GetConnectionsForUser in OnlineService.
+                
+                // HACK: for MVP, iterate.
+                // We'll update OnlineService to expose GetConnections(userId).
+                
+                // Assuming OnlineService update:
+                 foreach (var friendId in local_friendIds)
+                 {
+                     var friendConnections = _onlineService.GetConnectionsForUser(friendId);
+                     local_connectionIds.AddRange(friendConnections);
+                 }
+
+                if (local_connectionIds.Count > 0)
+                {
+                    await Clients.Clients(local_connectionIds).SendAsync(method, userId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error notifying friends: {ex.Message}");
+            }
         }
     }
 }

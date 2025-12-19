@@ -35,10 +35,12 @@ namespace Gauniv.WebServer.Data
     public class User : IdentityUser
     {
         
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)][Key]public int Id { get; set; }
         public String FirstName { get; set; } = string.Empty;
         public String LastName { get; set; } = string.Empty;
         public bool IsAdmin { get; set; } = false;
         public String[] purchasedGames { get; set; } = Array.Empty<string>();
+        
+        public virtual ICollection<UserFriend> Following { get; set; } = new List<UserFriend>();
+        public virtual ICollection<UserFriend> Followers { get; set; } = new List<UserFriend>();
     }
 }

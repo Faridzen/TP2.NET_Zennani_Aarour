@@ -66,7 +66,7 @@ namespace Gauniv.WebServer.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [EmailAddress]
+            [Display(Name = "Identifiant")]
             public string Email { get; set; }
 
             /// <summary>
@@ -112,6 +112,7 @@ namespace Gauniv.WebServer.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                // We attempt login using the input as both potentially email or username
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {

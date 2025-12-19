@@ -44,6 +44,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Gauniv.WebServer.Api
 {
     [Route("api/1.0.0/[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class GamesController(ApplicationDbContext appDbContext, IMapper mapper, UserManager<User> userManager, MappingProfile mp) : ControllerBase
     {
@@ -263,14 +264,28 @@ namespace Gauniv.WebServer.Api
                     return Forbid("User does not own this game");
                 }
 
-                // Return the binary as a file stream
-                if (local_game.payload == null || local_game.payload.Length == 0)
+                // Smart Binary Fallback: If this game has no binary, find the first game that has one
+                var local_payload = local_game.payload;
+                var local_downloadTitle = local_game.Title;
+
+                if (local_payload == null || local_payload.Length == 0)
                 {
-                    return NotFound("Game binary not available");
+                    var local_sharedGame = await appDbContext.Games
+                        .Where(g => g.payload != null && g.payload.Length > 0)
+                        .OrderBy(g => g.Id)
+                        .FirstOrDefaultAsync();
+
+                    if (local_sharedGame == null)
+                    {
+                        return NotFound("No game binary available on the server.");
+                    }
+                    
+                    local_payload = local_sharedGame.payload;
+                    local_downloadTitle = $"{local_game.Title} (via {local_sharedGame.Title})";
                 }
 
-                var local_stream = new MemoryStream(local_game.payload);
-                return File(local_stream, "application/octet-stream", $"{local_game.Title}.bin");
+                var local_stream = new MemoryStream(local_payload);
+                return File(local_stream, "application/octet-stream", $"{local_downloadTitle}.exe");
             }
             catch (Exception ex)
             {

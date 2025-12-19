@@ -1,0 +1,90 @@
+@model List<Gauniv.WebServer.Data.Game>
+@{
+    ViewData["Title"] = "Administration";
+    var local_categories = ViewBag.Categories as List<Gauniv.WebServer.Data.Category>;
+}
+
+<div class="hero-section" style="padding: 3rem 0;">
+    <h1 class="hero-title" style="font-size: 3rem;">Administration</h1>
+    <p class="hero-subtitle">Gérez le catalogue de jeux et les catégories.</p>
+</div>
+
+<div class="row g-5">
+    <!-- Games Management -->
+    <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Jeux (@Model.Count)</h2>
+            <a asp-action="CreateGame" class="game-btn">
+                <i class="bi bi-plus-lg me-2"></i> Ajouter un jeu
+            </a>
+        </div>
+
+        <div class="game-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+            @foreach (var local_game in Model)
+            {
+                <div class="game-card p-3 d-flex flex-column h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        @if (!string.IsNullOrEmpty(local_game.ImageUrl))
+                        {
+                            <img src="@local_game.ImageUrl" alt="@local_game.Title" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="rounded me-3 d-flex align-items-center justify-content-center bg-dark text-muted" style="width: 60px; height: 60px;">
+                                <i class="bi bi-joystick fs-4"></i>
+                            </div>
+                        }
+                        <div>
+                            <h5 class="game-title mb-1" style="font-size: 1.2rem;">@local_game.Title</h5>
+                            <span class="text-muted">@local_game.Price.ToString("C")</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-end gap-2">
+                        <a asp-controller="Home" asp-action="Details" asp-route-id="@local_game.Id" class="btn btn-sm btn-outline-light">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <form asp-action="DeleteGame" asp-route-id="@local_game.Id" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce jeu ?');">
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Categories Management -->
+    <div class="col-lg-4">
+        <div class="form-gauniv sticky-top" style="top: 100px;">
+            <h3 class="mb-4">Catégories</h3>
+            
+            <form asp-action="AddCategory" method="post" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="name" class="form-control form-control-gauniv" placeholder="Nouvelle catégorie" required style="border-radius: 0.75rem 0 0 0.75rem !important;">
+                    <button class="btn btn-primary" type="submit" style="border-radius: 0 0.75rem 0.75rem 0;">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div class="d-flex flex-wrap gap-2">
+                @if (local_categories != null)
+                {
+                    @foreach (var local_cat in local_categories)
+                    {
+                        <div class="badge rounded-pill bg-secondary bg-opacity-25 p-2 px-3 d-flex align-items-center gap-2">
+                            <span style="font-size: 1rem;">@local_cat.Name</span>
+                            <form asp-action="DeleteCategory" asp-route-id="@local_cat.Id" method="post" class="d-inline m-0 p-0">
+                                <button type="submit" class="btn btn-link p-0 text-danger text-decoration-none" style="line-height: 1;">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </form>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

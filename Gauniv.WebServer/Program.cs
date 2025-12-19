@@ -70,8 +70,18 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 /*builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));*/
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseInMemoryDatabase("Gauniv.db"));
+    options.UseSqlite("Data Source=Gauniv.db"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+// Allow unrestricted upload size for game files
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = long.MaxValue;
+});
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Limits.MaxRequestBodySize = long.MaxValue;
+});
 
 builder.Services.AddIdentityApiEndpoints<User>(options => {
     options.SignIn.RequireConfirmedAccount = false;
@@ -80,6 +90,8 @@ builder.Services.AddIdentityApiEndpoints<User>(options => {
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
+    options.User.RequireUniqueEmail = false;
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews().AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
 builder.Services.AddOpenApi(options =>
@@ -90,7 +102,8 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddMapster();
 builder.Services.AddSignalR();
-builder.Services.AddHostedService<OnlineService>();
+builder.Services.AddSingleton<OnlineService>();
+builder.Services.AddHostedService(sp => sp.GetRequiredService<OnlineService>());
 builder.Services.AddHostedService<SetupService>();
 builder.Services.AddScoped<MappingProfile, MappingProfile>();
 
@@ -116,7 +129,7 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("LocalDev");
 

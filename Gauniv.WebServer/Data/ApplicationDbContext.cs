@@ -41,6 +41,7 @@ namespace Gauniv.WebServer.Data
         public DbSet<Game> Games { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<UserFriend> UserFriends { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -61,7 +62,24 @@ namespace Gauniv.WebServer.Data
                     .IsRequired()
                     .HasMaxLength(128);
 
-                
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(128);
+            });
+
+            modelBuilder.Entity<UserFriend>(entity =>
+            {
+                entity.HasKey(e => new { e.SourceUserId, e.TargetUserId });
+
+                entity.HasOne(e => e.SourceUser)
+                    .WithMany(u => u.Following)
+                    .HasForeignKey(e => e.SourceUserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.TargetUser)
+                    .WithMany(u => u.Followers)
+                    .HasForeignKey(e => e.TargetUserId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
         

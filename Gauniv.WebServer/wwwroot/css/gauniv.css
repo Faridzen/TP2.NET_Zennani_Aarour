@@ -1,0 +1,413 @@
+/* Gauniv Premium Web Styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+
+:root {
+    --bg-main: #0a0c10;
+    --bg-card: rgba(255, 255, 255, 0.05);
+    --bg-glass: rgba(255, 255, 255, 0.03);
+    --border-glass: rgba(255, 255, 255, 0.1);
+    --primary: #4f46e5;
+    --primary-hover: #6366f1;
+    --accent: #10b981;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --glass-blur: 15px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Container Scale */
+.container {
+    max-width: 1800px !important;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    font-size: 1.3rem;
+    /* Global scale increase */
+}
+
+/* Glassmorphism Background */
+.glass-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.1), transparent),
+        radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.05), transparent);
+    z-index: -1;
+}
+
+/* Navbar */
+.navbar-gauniv {
+    background: var(--bg-glass) !important;
+    backdrop-filter: blur(var(--glass-blur));
+    border-bottom: 1px solid var(--border-glass) !important;
+    padding: 1rem 2rem !important;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 2.5rem;
+    /* Larger brand */
+    color: var(--text-main) !important;
+    letter-spacing: -0.5px;
+}
+
+.navbar-brand span {
+    color: var(--primary);
+}
+
+.nav-link {
+    color: var(--text-muted) !important;
+    font-weight: 500;
+    transition: var(--transition);
+    margin: 0 1.5rem;
+    font-size: 1.4rem;
+    /* Larger links */
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--text-main) !important;
+    transform: translateY(-2px);
+}
+
+/* Game Layout with Sidebar */
+.catalog-container {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    /* Increased sidebar width */
+    gap: 4rem;
+    align-items: start;
+}
+
+@media (max-width: 1200px) {
+    .catalog-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Game Grid */
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    /* Larger cards */
+    gap: 3rem;
+}
+
+/* Game Card */
+.game-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    backdrop-filter: blur(5px);
+}
+
+.game-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(79, 70, 229, 0.2);
+}
+
+.game-card-img-wrapper {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+}
+
+.game-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.game-card:hover .game-card-img {
+    transform: scale(1.1);
+}
+
+.game-card-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.game-title {
+    font-size: 2rem;
+    /* Larger title */
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+}
+
+.game-description {
+    font-size: 1.2rem;
+    /* Larger description */
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+}
+
+.game-metadata {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.game-price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent);
+}
+
+.game-btn {
+    background: var(--primary);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.75rem;
+    color: white;
+    font-weight: 600;
+    transition: var(--transition);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.game-btn:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    color: white;
+}
+
+/* Status Badges */
+.badge-gauniv {
+    padding: 0.4rem 0.8rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-possesse {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--accent);
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.hero-section {
+    padding: 6rem 0;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 6rem;
+    /* Massive title */
+    margin-bottom: 2rem;
+    background: linear-gradient(90deg, #fff, var(--text-muted));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+    font-size: 1.8rem;
+    /* Larger subtitle */
+    color: var(--text-muted);
+    max-width: 900px;
+    margin: 0 auto 4rem;
+}
+
+/* Forms */
+.form-gauniv {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    padding: 2.5rem;
+    border-radius: 2rem;
+    backdrop-filter: blur(var(--glass-blur));
+}
+
+.form-control-gauniv {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: white !important;
+    border-radius: 1.2rem !important;
+    padding: 1.2rem 1.8rem !important;
+    /* Larger inputs */
+    font-size: 1.3rem;
+}
+
+.form-control-gauniv:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2) !important;
+}
+
+/* Filters Sidebar */
+.filters-sidebar {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    border-radius: 2rem;
+    padding: 2.5rem;
+    position: sticky;
+    top: 6rem;
+    backdrop-filter: blur(var(--glass-blur));
+}
+
+.filters-title {
+    font-size: 1.5rem;
+    margin-bottom: 2.5rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filters-title::before {
+    content: '\f3fc';
+    font-family: 'bootstrap-icons';
+    color: var(--primary);
+}
+
+.filter-group {
+    margin-bottom: 2.5rem;
+}
+
+.filter-label {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box i {
+    position: absolute;
+    left: 1rem;
+    color: var(--text-muted);
+}
+
+.filter-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    border-radius: 0.75rem;
+    padding: 0.6rem 1rem 0.6rem 2.5rem;
+    color: var(--text-main);
+    transition: var(--transition);
+}
+
+.filter-input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.filter-range {
+    width: 100%;
+    accent-color: var(--primary);
+}
+
+.price-value {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.categories-container {
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.categories-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.categories-container::-webkit-scrollbar-thumb {
+    background: var(--border-glass);
+    border-radius: 10px;
+}
+
+.category-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    transition: var(--transition);
+}
+
+.category-checkbox:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.category-checkbox input {
+    accent-color: var(--primary);
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.category-checkbox label {
+    margin-bottom: 0;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+.btn-reset {
+    display: block;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.btn-reset:hover {
+    color: var(--text-main);
+}
+
+/* Footer */
+.footer-gauniv {
+    padding: 4rem 0 2rem;
+    border-top: 1px solid var(--border-glass);
+    margin-top: 4rem;
+    color: var(--text-muted);
+}

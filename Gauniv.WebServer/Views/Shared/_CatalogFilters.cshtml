@@ -1,0 +1,45 @@
+@model Gauniv.WebServer.Models.CatalogViewModel
+
+<div class="filters-sidebar glass-card">
+    <h3 class="filters-title">Filtres</h3>
+    <form method="get" asp-action="@(Model.IsLibrary ? "Library" : "Index")">
+        <div class="filter-group">
+            <label class="filter-label">Rechercher</label>
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" name="search" value="@Model.Search" placeholder="Titre du jeu..." class="filter-input">
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="filter-label mb-0">Prix Max</label>
+                <span class="price-value" id="priceDisplay">@(Model.MaxPrice?.ToString("0") ?? "100")€</span>
+            </div>
+            <input type="range" name="maxPrice" min="0" max="100" step="5" 
+                   value="@(Model.MaxPrice ?? 100)" class="filter-range" id="priceRange"
+                   oninput="document.getElementById('priceDisplay').innerText = this.value + '€'">
+            <div class="d-flex justify-content-between mt-1 text-muted" style="font-size: 0.7rem;">
+                <span>0€</span>
+                <span>100€+</span>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label class="filter-label">Catégories</label>
+            <div class="categories-container">
+                @foreach (var cat in Model.AllCategories)
+                {
+                    <div class="category-checkbox">
+                        <input type="checkbox" name="categories" value="@cat" id="cat-@cat" 
+                               @(Model.SelectedCategories.Contains(cat) ? "checked" : "")>
+                        <label for="cat-@cat">@cat</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <button type="submit" class="game-btn w-100 mt-4">Appliquer</button>
+        <a asp-action="@(Model.IsLibrary ? "Library" : "Index")" class="btn-reset">Réinitialiser</a>
+    </form>
+</div>

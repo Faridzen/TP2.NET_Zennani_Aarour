@@ -35,16 +35,32 @@ namespace Gauniv.WebServer.Services
     public class OnlineService(IHubContext<OnlineHub> hubContext) : IHostedService
     {
         private readonly IHubContext<OnlineHub> hubContext = hubContext;
-        private Task? task;
+        
+        // Dictionary<ConnectionId, UserId>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, string> ConnectedUsers = new();
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+        public void OnUserConnected(string connectionId, string userId)
         {
-            return Task.CompletedTask;
+            ConnectedUsers.TryAdd(connectionId, userId);
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public void OnUserDisconnected(string connectionId)
         {
-            return Task.CompletedTask;
+            ConnectedUsers.TryRemove(connectionId, out _);
+        }
+
+        public List<string> GetConnectedUserIds()
+        {
+            // Return unique user IDs
+            return ConnectedUsers.Values.Distinct().ToList();
+        }
+
+        public List<string> GetConnectionsForUser(string userId)
+        {
+            return ConnectedUsers.Where(x => x.Value == userId).Select(x => x.Key).ToList();
         }
     }
 }

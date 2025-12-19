@@ -38,6 +38,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Gauniv.Client.Dtos;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Gauniv.Client.Services
 {
@@ -62,21 +63,28 @@ namespace Gauniv.Client.Services
         private int? runningProcessId;
         
         public HttpClient httpClient;
+        private HubConnection? hubConnection;
 
         private Process? _runningProcess;
 
         private const string BaseUrl = "http://localhost:5231/api/1.0.0/Games/";
         private const string AdminUrl = "http://localhost:5231/api/1.0.0/Admin/";
         private const string AuthUrl = "http://localhost:5231/Bearer/login";
+        private const string HubUrl = "http://localhost:5231/online";
 
         public NetworkService() {
-            httpClient = new HttpClient();
+            var local_handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+            };
+            httpClient = new HttpClient(local_handler);
             Token = null;
         }
 
         public event Action OnConnected;
         public event Action OnDisconnected;
         public event Action OnGamePurchased;
+        public event Action<string, bool> OnFriendStatusChanged;
 
 
         public async Task<bool> LoginAsync(string email, string password)
@@ -110,6 +118,9 @@ namespace Gauniv.Client.Services
                         // Détecter si l'utilisateur est admin
                         await GetProfileAsync();
                         
+                        // Start SignalR
+                        await InitializeSignalR();
+
                         OnConnected?.Invoke();
                         return true;
                     }
@@ -121,6 +132,46 @@ namespace Gauniv.Client.Services
             {
                 Console.WriteLine($"Login error: {ex.Message}");
                 return false;
+            }
+        }
+
+        private async Task InitializeSignalR()
+        {
+            try
+            {
+                if (hubConnection != null) await hubConnection.DisposeAsync();
+
+                hubConnection = new HubConnectionBuilder()
+                    .WithUrl(HubUrl, options =>
+                    {
+                        options.AccessTokenProvider = () => Task.FromResult(Token);
+                        options.HttpMessageHandlerFactory = (handler) =>
+                        {
+                            if (handler is HttpClientHandler clientHandler)
+                            {
+                                clientHandler.ServerCertificateCustomValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+                            }
+                            return handler;
+                        };
+                    })
+                    .WithAutomaticReconnect()
+                    .Build();
+
+                hubConnection.On<string>("FriendOnline", (userId) =>
+                {
+                    OnFriendStatusChanged?.Invoke(userId, true);
+                });
+
+                hubConnection.On<string>("FriendOffline", (userId) =>
+                {
+                    OnFriendStatusChanged?.Invoke(userId, false);
+                });
+
+                await hubConnection.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"SignalR Error: {ex.Message}");
             }
         }
 
@@ -477,6 +528,78 @@ namespace Gauniv.Client.Services
                 return local_response.IsSuccessStatusCode;
             }
             catch { return false; }
+        }
+
+        #endregion
+
+        #region Friend Operations
+
+        public async Task<List<FriendDto>> GetFriendsAsync()
+        {
+            try
+            {
+                var local_response = await httpClient.GetAsync("http://localhost:5231/api/Friends/List");
+                if (local_response.IsSuccessStatusCode)
+                {
+                    var local_json = await local_response.Content.ReadAsStringAsync();
+                    var local_result = JsonSerializer.Deserialize<List<FriendDto>>(local_json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                    return local_result ?? new List<FriendDto>();
+                }
+                return new List<FriendDto>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"GetFriends error: {ex.Message}");
+                return new List<FriendDto>();
+            }
+        }
+
+        public async Task<(bool, string)> AddFriendAsync(string username)
+        {
+            try
+            {
+                var local_response = await httpClient.PostAsync($"http://localhost:5231/api/Friends/Add/{username}", null);
+                if (local_response.IsSuccessStatusCode) return (true, "");
+                
+                var local_error = await local_response.Content.ReadAsStringAsync();
+                return (false, local_error);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"AddFriend error: {ex.Message}");
+                return (false, ex.Message);
+            }
+        }
+
+        public async Task<bool> AcceptFriendAsync(string userId)
+        {
+            try
+            {
+                var local_response = await httpClient.PostAsync($"http://localhost:5231/api/Friends/Accept/{userId}", null);
+                return local_response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"AcceptFriend error: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> RemoveFriendAsync(string userId)
+        {
+            try
+            {
+                var local_response = await httpClient.PostAsync($"http://localhost:5231/api/Friends/Remove/{userId}", null);
+                return local_response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"RemoveFriend error: {ex.Message}");
+                return false;
+            }
         }
 
         #endregion

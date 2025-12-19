@@ -47,17 +47,54 @@ namespace Gauniv.WebServer.Controllers
         private readonly ApplicationDbContext applicationDbContext = applicationDbContext;
         private readonly UserManager<User> userManager = userManager;
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search, decimal? maxPrice, List<string> categories)
         {
-            var local_games = await applicationDbContext.Games
+            var local_allGames = await applicationDbContext.Games
                                 .OrderBy(g => g.Title)
                                 .ToListAsync();
-            return View(local_games);
+
+            var local_filtered = local_allGames.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                local_filtered = local_filtered.Where(g => 
+                    (g.Title != null && g.Title.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
+                    (g.Description != null && g.Description.Contains(search, StringComparison.OrdinalIgnoreCase)));
+            }
+
+            if (maxPrice.HasValue)
+            {
+                local_filtered = local_filtered.Where(g => g.Price <= maxPrice.Value);
+            }
+
+            if (categories != null && categories.Any())
+            {
+                local_filtered = local_filtered.Where(g => 
+                    g.Categories != null && 
+                    g.Categories.Any(c => categories.Contains(c, StringComparer.OrdinalIgnoreCase)));
+            }
+
+            var local_allCats = await applicationDbContext.Categories
+                                .OrderBy(c => c.Name)
+                                .Select(c => c.Name)
+                                .ToListAsync();
+
+            var local_model = new CatalogViewModel
+            {
+                Games = local_filtered.ToList(),
+                AllCategories = local_allCats,
+                Search = search ?? "",
+                MaxPrice = maxPrice,
+                SelectedCategories = categories ?? new List<string>(),
+                IsLibrary = false
+            };
+
+            return View(local_model);
         }
 
         [Authorize]
         [HttpGet("Library")]
-        public async Task<IActionResult> Library()
+        public async Task<IActionResult> Library(string search, decimal? maxPrice, List<string> categories)
         {
             var local_user = await userManager.GetUserAsync(User);
             if (local_user == null) return Challenge();
@@ -67,12 +104,48 @@ namespace Gauniv.WebServer.Controllers
                                     .Where(id => id != -1)
                                     .ToList();
 
-            var local_games = await applicationDbContext.Games
+            var local_allGames = await applicationDbContext.Games
                                 .Where(g => local_ownedIds.Contains(g.Id))
                                 .OrderBy(g => g.Title)
                                 .ToListAsync();
 
-            return View(local_games);
+            var local_filtered = local_allGames.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                local_filtered = local_filtered.Where(g => 
+                    (g.Title != null && g.Title.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
+                    (g.Description != null && g.Description.Contains(search, StringComparison.OrdinalIgnoreCase)));
+            }
+
+            if (maxPrice.HasValue)
+            {
+                local_filtered = local_filtered.Where(g => g.Price <= maxPrice.Value);
+            }
+
+            if (categories != null && categories.Any())
+            {
+                local_filtered = local_filtered.Where(g => 
+                    g.Categories != null && 
+                    g.Categories.Any(c => categories.Contains(c, StringComparer.OrdinalIgnoreCase)));
+            }
+
+            var local_allCats = await applicationDbContext.Categories
+                                .OrderBy(c => c.Name)
+                                .Select(c => c.Name)
+                                .ToListAsync();
+
+            var local_model = new CatalogViewModel
+            {
+                Games = local_filtered.ToList(),
+                AllCategories = local_allCats,
+                Search = search ?? "",
+                MaxPrice = maxPrice,
+                SelectedCategories = categories ?? new List<string>(),
+                IsLibrary = true
+            };
+
+            return View(local_model);
         }
 
         [HttpGet("Details/{id}")]
@@ -83,7 +156,43 @@ namespace Gauniv.WebServer.Controllers
 
             if (local_game == null) return NotFound();
 
+            // Check if user owns the game
+            var local_user = await userManager.GetUserAsync(User);
+            var local_isOwned = false;
+            
+            if (local_user != null)
+            {
+                local_isOwned = local_user.purchasedGames.Contains(id.ToString());
+            }
+
+            ViewBag.IsOwned = local_isOwned;
             return View(local_game);
+        }
+
+        [Authorize]
+        [HttpPost("Purchase/{id}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Purchase(int id)
+        {
+            var local_game = await applicationDbContext.Games.FindAsync(id);
+            if (local_game == null) return NotFound();
+
+            var local_user = await userManager.GetUserAsync(User);
+            if (local_user == null) return Challenge();
+
+            // Add game to user's library if not already owned
+            if (!local_user.purchasedGames.Contains(id.ToString()))
+            {
+                // In a real app we would process payment here
+                // For this project, we just add it directly
+                var local_list = local_user.purchasedGames.ToList();
+                local_list.Add(id.ToString());
+                local_user.purchasedGames = local_list.ToArray();
+                
+                await userManager.UpdateAsync(local_user);
+            }
+
+            return RedirectToAction(nameof(Library));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

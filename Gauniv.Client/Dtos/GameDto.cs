@@ -29,7 +29,7 @@
 
 namespace Gauniv.Client.Dtos
 {
-    public class GameDto
+    public partial class GameDto : CommunityToolkit.Mvvm.ComponentModel.ObservableObject
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -39,8 +39,13 @@ namespace Gauniv.Client.Dtos
         public string? ImageUrl { get; set; }
         
         // Propriété locale pour l'UI
-        public bool IsOwned { get; set; }
-        public bool IsDownloaded { get; set; }
-        public string? LocalPath { get; set; }
+        [CommunityToolkit.Mvvm.ComponentModel.ObservableProperty]
+        private bool isOwned;
+
+        [CommunityToolkit.Mvvm.ComponentModel.ObservableProperty]
+        private bool isDownloaded;
+
+        [CommunityToolkit.Mvvm.ComponentModel.ObservableProperty]
+        private string? localPath;
     }
 }

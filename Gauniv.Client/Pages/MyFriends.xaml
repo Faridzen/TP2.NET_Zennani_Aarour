@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Gauniv.Client.ViewModel"
+             xmlns:dto="clr-namespace:Gauniv.Client.Dtos"
+             x:Class="Gauniv.Client.Pages.MyFriends"
+             Title="Mes Amis"
+             x:DataType="vm:MyFriendsViewModel"
+             BackgroundColor="#1b2838">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
+        
+        <!-- Header -->
+        <Grid Grid.Row="0" Padding="20,15" BackgroundColor="#171a21">
+            <Label Text="Mes Amis" FontSize="28" FontAttributes="Bold" TextColor="#c7d5e0"/>
+        </Grid>
+
+        <!-- Add Friend -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Padding="20" ColumnSpacing="10">
+            <Entry Grid.Column="0" Placeholder="Rechercher un pseudo..." 
+                   Text="{Binding FriendSearchText}" 
+                   BackgroundColor="#2a475e" TextColor="White"/>
+            <Button Grid.Column="1" Text="Ajouter" 
+                    Command="{Binding AddFriendCommand}" 
+                    BackgroundColor="#66c0f4"/>
+        </Grid>
+        <Label Grid.Row="1" Text="{Binding StatusMessage}" TextColor="#ff6b6b" 
+               VerticalOptions="End" HorizontalOptions="Center" Margin="0,55,0,0"/>
+
+        <!-- Tabs (Simple Buttons for now, or Sections) -->
+        <!-- We will just list them all with headers for simplicity in V1 of sections -->
+        
+        <ScrollView Grid.Row="3" Padding="20">
+            <VerticalStackLayout Spacing="20">
+                
+                <!-- Pending Requests -->
+                <VerticalStackLayout IsVisible="{Binding IncomingRequests.Count, Converter={StaticResource IntToBoolConverter}}"> 
+                    <!-- Note: assuming we have converter, if not default behavior might be needed or just show header -->
+                    <Label Text="Demandes Reçues" FontSize="18" TextColor="#66c0f4" FontAttributes="Bold" Margin="0,0,0,10"/>
+                    <CollectionView ItemsSource="{Binding IncomingRequests}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="dto:FriendDto">
+                                <Frame BackgroundColor="#2a475e" BorderColor="#66c0f4" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                        <Label Grid.Column="0" Text="{Binding UserName}" FontSize="18" TextColor="White" VerticalOptions="Center"/>
+                                        <Button Grid.Column="1" Text="✔" BackgroundColor="#10b981" TextColor="White" Margin="0,0,10,0" WidthRequest="40"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyFriendsViewModel}}, Path=AcceptRequestCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                        <Button Grid.Column="2" Text="✖" BackgroundColor="#ff6b6b" TextColor="White" WidthRequest="40"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyFriendsViewModel}}, Path=RemoveFriendCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <!-- Outgoing Requests -->
+                <VerticalStackLayout IsVisible="{Binding OutgoingRequests.Count, Converter={StaticResource IntToBoolConverter}}">
+                    <Label Text="Demandes Envoyées" FontSize="18" TextColor="#TextMuted" FontAttributes="Bold" Margin="0,0,0,10"/>
+                    <CollectionView ItemsSource="{Binding OutgoingRequests}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="dto:FriendDto">
+                                <Frame BackgroundColor="#16202d" BorderColor="#2a475e" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0" Text="{Binding UserName}" FontSize="18" TextColor="#TextMuted" VerticalOptions="Center"/>
+                                        <Button Grid.Column="1" Text="Annuler" BackgroundColor="Transparent" TextColor="#TextMuted"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyFriendsViewModel}}, Path=RemoveFriendCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <!-- My Friends -->
+                <VerticalStackLayout>
+                    <Label Text="Mes Amis" FontSize="20" TextColor="White" FontAttributes="Bold" Margin="0,0,0,10"/>
+                    <CollectionView ItemsSource="{Binding Friends}">
+                        <CollectionView.EmptyView>
+                            <Label Text="Aucun ami pour le moment." TextColor="#TextMuted" HorizontalOptions="Center" Margin="20"/>
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="dto:FriendDto">
+                                <Frame BackgroundColor="#16202d" BorderColor="#2a475e" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <VerticalStackLayout Grid.Column="0">
+                                            <Label Text="{Binding UserName}" FontSize="18" FontAttributes="Bold" TextColor="White"/>
+                                            <HorizontalStackLayout Spacing="5">
+                                                <Label Text="🟢" IsVisible="{Binding IsOnline}" FontSize="12"/>
+                                                <Label Text="{Binding IsOnline, Converter={StaticResource BoolToStringConverter}, ConverterParameter='En ligne|Hors ligne'}" TextColor="{StaticResource TextMuted}" FontSize="12"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                        <Button Grid.Column="1" Text="X" TextColor="#ff6b6b" BackgroundColor="Transparent"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyFriendsViewModel}}, Path=RemoveFriendCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+                
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
