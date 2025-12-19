@@ -177,10 +177,11 @@ namespace Gauniv.Client.ViewModel
         [RelayCommand]
         private async Task LoadMoreGamesAsync()
         {
-            if (_isLoadingMore || _currentOffset >= _totalCount)
+            if (_isLoadingMore || IsLoading || _currentOffset >= _totalCount)
                 return;
 
             _isLoadingMore = true;
+            StatusMessage = "Chargement de la suite...";
 
             try
             {

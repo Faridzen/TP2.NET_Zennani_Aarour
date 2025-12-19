@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Gauniv.Client.Dtos;
 using Gauniv.Client.Services;
 using System.Collections.ObjectModel;
+using Microsoft.Maui.Storage;
 
 namespace Gauniv.Client.ViewModel
 {
@@ -45,9 +46,17 @@ namespace Gauniv.Client.ViewModel
         [ObservableProperty]
         private string gameCategoriesCsv = ""; // Comma separated categories for the game
 
-        // Form fields for Category
         [ObservableProperty]
         private string categoryName = "";
+
+        // Executable upload
+        [ObservableProperty]
+        private string executablePath = "";
+
+        [ObservableProperty]
+        private string executableFileName = "Aucun fichier sélectionné";
+
+        public bool HasSelectedExecutable => !string.IsNullOrEmpty(ExecutablePath);
 
         public AdminViewModel()
         {
@@ -89,6 +98,36 @@ namespace Gauniv.Client.ViewModel
             GamePrice = 0;
             GameImageUrl = "";
             GameCategoriesCsv = "";
+            ExecutablePath = "";
+            ExecutableFileName = "Aucun fichier sélectionné";
+            OnPropertyChanged(nameof(HasSelectedExecutable));
+        }
+
+        [RelayCommand]
+        private async Task PickExecutableAsync()
+        {
+            try
+            {
+                var local_result = await FilePicker.Default.PickAsync(new PickOptions
+                {
+                    PickerTitle = "Sélectionnez l'exécutable du jeu (.exe)",
+                    FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+                    {
+                        { DevicePlatform.WinUI, new[] { ".exe" } }
+                    })
+                });
+
+                if (local_result != null)
+                {
+                    ExecutablePath = local_result.FullPath;
+                    ExecutableFileName = local_result.FileName;
+                    OnPropertyChanged(nameof(HasSelectedExecutable));
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Erreur lors de la sélection: {ex.Message}";
+            }
         }
 
         [RelayCommand]
@@ -110,23 +149,33 @@ namespace Gauniv.Client.ViewModel
             IsLoading = true;
             try
             {
-                var local_game = new GameDto
-                {
-                    Id = SelectedGame?.Id ?? 0,
-                    Title = GameTitle,
-                    Description = GameDescription,
-                    Price = GamePrice,
-                    ImageUrl = GameImageUrl,
-                    Categories = GameCategoriesCsv.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                                                 .Select(c => c.Trim())
-                                                 .ToList()
-                };
-
                 bool local_success;
-                if (local_game.Id == 0)
-                    local_success = await _networkService.AddGameAsync(local_game);
+                if (SelectedGame == null)
+                {
+                    // Upload new game with optional executable
+                    local_success = await _networkService.UploadGameAsync(
+                        GameTitle, 
+                        GameDescription, 
+                        GamePrice, 
+                        GameCategoriesCsv, 
+                        ExecutablePath);
+                }
                 else
+                {
+                    // Update existing game (no executable update in this view yet)
+                    var local_game = new GameDto
+                    {
+                        Id = SelectedGame.Id,
+                        Title = GameTitle,
+                        Description = GameDescription,
+                        Price = GamePrice,
+                        ImageUrl = GameImageUrl,
+                        Categories = GameCategoriesCsv.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                                     .Select(c => c.Trim())
+                                                     .ToList()
+                    };
                     local_success = await _networkService.UpdateGameAsync(local_game);
+                }
 
                 if (local_success)
                 {

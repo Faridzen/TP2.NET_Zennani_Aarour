@@ -72,6 +72,19 @@
                         <Entry Placeholder="URL Image" Text="{Binding GameImageUrl}" TextColor="White" PlaceholderColor="#8f98a0"/>
                         <Entry Placeholder="Catégories (Action, RPG...)" Text="{Binding GameCategoriesCsv}" TextColor="White" PlaceholderColor="#8f98a0"/>
                         
+                        <VerticalStackLayout Spacing="5" Margin="0,5">
+                            <Label Text="Exécutable du jeu (.exe)" TextColor="#66c0f4" FontSize="12" FontAttributes="Bold"/>
+                            <HorizontalStackLayout Spacing="10">
+                                <Button Text="Choisir un fichier" 
+                                        Command="{Binding PickExecutableCommand}"
+                                        BackgroundColor="#2a475e" TextColor="White"
+                                        FontSize="12" Padding="10,0"/>
+                                <Label Text="{Binding ExecutableFileName}" 
+                                       TextColor="#8f98a0" VerticalOptions="Center" FontSize="12"
+                                       LineBreakMode="HeadTruncation"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                        
                         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
                             <Button Text="Enregistrer" Command="{Binding SaveGameCommand}" BackgroundColor="#66c0f4" TextColor="White"/>
                             <Button Text="Nouveau" Command="{Binding PrepareNewGameCommand}" BackgroundColor="#2a475e" TextColor="White"/>

@@ -34,6 +34,44 @@ namespace Gauniv.WebServer.Api
             }
         }
 
+        [HttpPost]
+        public async Task<ActionResult<GameDto>> UploadGame([FromForm] string title, [FromForm] string description, 
+            [FromForm] decimal price, [FromForm] string? categories, [FromForm] IFormFile? executable)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(title))
+                    return BadRequest("Title is required");
+
+                var local_game = new Game
+                {
+                    Title = title,
+                    Description = description ?? "",
+                    Price = price,
+                    Categories = string.IsNullOrWhiteSpace(categories) 
+                        ? new List<string>() 
+                        : categories.Split(',').Select(c => c.Trim()).ToList()
+                };
+
+                // Upload executable if provided
+                if (executable != null && executable.Length > 0)
+                {
+                    using var local_memoryStream = new MemoryStream();
+                    await executable.CopyToAsync(local_memoryStream);
+                    local_game.payload = local_memoryStream.ToArray();
+                }
+
+                appDbContext.Games.Add(local_game);
+                await appDbContext.SaveChangesAsync();
+
+                return Ok(mapper.Map<GameDto>(local_game));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error uploading game: {ex.Message}");
+            }
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<GameDto>> UpdateGame(int id, [FromBody] GameDto gameDto)
         {

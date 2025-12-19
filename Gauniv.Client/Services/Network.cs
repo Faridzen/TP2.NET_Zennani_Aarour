@@ -307,6 +307,34 @@ namespace Gauniv.Client.Services
             catch { return false; }
         }
 
+        public async Task<bool> UploadGameAsync(string title, string description, decimal price, string categoriesCsv, string executablePath)
+        {
+            try
+            {
+                using var local_content = new MultipartFormDataContent();
+                
+                local_content.Add(new StringContent(title), "title");
+                local_content.Add(new StringContent(description ?? ""), "description");
+                local_content.Add(new StringContent(price.ToString()), "price");
+                local_content.Add(new StringContent(categoriesCsv ?? ""), "categories");
+
+                if (!string.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
+                {
+                    var local_fileContent = new ByteArrayContent(await File.ReadAllBytesAsync(executablePath));
+                    local_fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
+                    local_content.Add(local_fileContent, "executable", Path.GetFileName(executablePath));
+                }
+
+                var local_response = await httpClient.PostAsync($"{AdminUrl}UploadGame", local_content);
+                return local_response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"UploadGame error: {ex.Message}");
+                return false;
+            }
+        }
+
         public async Task<bool> UpdateGameAsync(GameDto game)
         {
             try

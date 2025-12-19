@@ -30,6 +30,14 @@ namespace Gauniv.Client.ViewModel
         [ObservableProperty]
         private bool isAdmin = false;
 
+        [ObservableProperty]
+        private bool isDownloaded = false;
+
+        [ObservableProperty]
+        private bool isRunning = false;
+
+        private Process? _gameProcess = null;
+
         public bool IsNotAdmin => !IsAdmin;
 
         public GameDetailsViewModel()
@@ -63,6 +71,9 @@ namespace Gauniv.Client.ViewModel
                     {
                         await CheckOwnershipAsync();
                     }
+                    
+                    // Vérifier si le jeu est téléchargé
+                    CheckIfDownloaded();
                 }
                 else
                 {
@@ -92,6 +103,25 @@ namespace Gauniv.Client.ViewModel
             }
         }
 
+        private void CheckIfDownloaded()
+        {
+            if (Game == null) return;
+
+            string local_savePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "Gauniv",
+                "Games",
+                $"{Game.Title}.exe"
+            );
+
+            IsDownloaded = File.Exists(local_savePath);
+            if (IsDownloaded && Game != null)
+            {
+                Game.LocalPath = local_savePath;
+                Game.IsDownloaded = true;
+            }
+        }
+
         [RelayCommand]
         private async Task PurchaseAsync()
         {
@@ -115,6 +145,9 @@ namespace Gauniv.Client.ViewModel
                     IsOwned = true;
                     StatusMessage = "✅ Jeu acheté avec succès !";
                     
+                    // Recharger pour être sûr
+                    await CheckOwnershipAsync();
+
                     // Naviguer vers la page de succès
                     var local_navParam = new Dictionary<string, object>
                     {
@@ -124,12 +157,13 @@ namespace Gauniv.Client.ViewModel
                 }
                 else
                 {
-                    StatusMessage = "❌ Échec de l'achat";
+                    StatusMessage = "❌ Échec de l'achat. Veuillez vérifier votre solde ou votre connexion.";
                 }
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Erreur: {ex.Message}";
+                StatusMessage = $"❌ Erreur d'achat: {ex.Message}";
+                Debug.WriteLine($"Purchase error: {ex}");
             }
         }
 
@@ -146,23 +180,121 @@ namespace Gauniv.Client.ViewModel
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     "Gauniv",
                     "Games",
-                    $"{Game.Title}.bin"
+                    $"{Game.Title}.exe"
                 );
+
+                // Créer le dossier si nécessaire
+                Directory.CreateDirectory(Path.GetDirectoryName(local_savePath)!);
 
                 bool local_success = await _networkService.DownloadGameAsync(Game.Id, local_savePath);
 
                 if (local_success)
                 {
-                    StatusMessage = $"✅ Téléchargé dans: {local_savePath}";
+                    Game.LocalPath = local_savePath;
+                    Game.IsDownloaded = true;
+                    IsDownloaded = true;
+                    StatusMessage = $"✅ Téléchargé avec succès";
                 }
                 else
                 {
-                    StatusMessage = "❌ Échec du téléchargement";
+                    StatusMessage = "❌ Échec du téléchargement. Le serveur est peut-être indisponible.";
                 }
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Erreur: {ex.Message}";
+                StatusMessage = $"❌ Erreur de téléchargement: {ex.Message}";
+                Debug.WriteLine($"Download error: {ex}");
+            }
+        }
+
+        [RelayCommand]
+        private async Task PlayAsync()
+        {
+            if (Game == null || string.IsNullOrEmpty(Game.LocalPath)) return;
+
+            try
+            {
+                if (IsRunning)
+                {
+                    StatusMessage = "⚠️ Le jeu est déjà en cours d'exécution";
+                    return;
+                }
+
+                StatusMessage = "🎮 Lancement du jeu...";
+                IsRunning = true;
+
+                // Lancer l'exécutable
+                _gameProcess = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = Game.LocalPath,
+                        UseShellExecute = true
+                    },
+                    EnableRaisingEvents = true
+                };
+
+                _gameProcess.Exited += (sender, args) =>
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        IsRunning = false;
+                        StatusMessage = "✅ Le jeu s'est terminé";
+                        _gameProcess?.Dispose();
+                        _gameProcess = null;
+                    });
+                };
+
+                _gameProcess.Start();
+                StatusMessage = "✅ Jeu lancé !";
+            }
+            catch (Exception ex)
+            {
+                IsRunning = false;
+                StatusMessage = $"❌ Erreur lors du lancement: {ex.Message}";
+            }
+        }
+
+        [RelayCommand]
+        private async Task DeleteAsync()
+        {
+            if (Game == null || string.IsNullOrEmpty(Game.LocalPath)) return;
+
+            try
+            {
+                if (IsRunning)
+                {
+                    StatusMessage = "⚠️ Impossible de supprimer: le jeu est en cours d'exécution";
+                    return;
+                }
+
+                bool local_confirm = await Application.Current!.MainPage!.DisplayAlert(
+                    "Confirmation",
+                    $"Voulez-vous vraiment supprimer {Game.Title} ?",
+                    "Oui",
+                    "Non"
+                );
+
+                if (!local_confirm) return;
+
+                StatusMessage = "Suppression en cours...";
+
+                if (File.Exists(Game.LocalPath))
+                {
+                    File.Delete(Game.LocalPath);
+                    Game.LocalPath = null;
+                    Game.IsDownloaded = false;
+                    IsDownloaded = false;
+                    StatusMessage = "✅ Jeu supprimé avec succès";
+                }
+                else
+                {
+                    StatusMessage = "⚠️ Fichier introuvable";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"❌ Erreur lors de la suppression: {ex.Message}";
             }
         }
 

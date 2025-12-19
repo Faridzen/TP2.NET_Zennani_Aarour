@@ -40,5 +40,7 @@ namespace Gauniv.Client.Dtos
         
         // Propriété locale pour l'UI
         public bool IsOwned { get; set; }
+        public bool IsDownloaded { get; set; }
+        public string? LocalPath { get; set; }
     }
 }

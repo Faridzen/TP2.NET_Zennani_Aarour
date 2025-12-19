@@ -190,21 +190,15 @@
                    Padding="20,10"
                    IsVisible="{Binding StatusMessage, Converter={StaticResource IsNotNullConverter}}"/>
 
-            <!-- Loading -->
-            <ActivityIndicator Grid.Row="2"
-                              IsRunning="{Binding IsLoading}"
-                              IsVisible="{Binding IsLoading}"
-                              Color="#66c0f4"
-                              HeightRequest="60"/>
-
-            <!-- Grille des jeux -->
+            <!-- Grille des jeux avec Infinite Scroll -->
             <CollectionView Grid.Row="2"
                            ItemsSource="{Binding Games}"
                            SelectionMode="None"
                            Margin="15,10"
-                           IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
-                           RemainingItemsThreshold="5"
-                           RemainingItemsThresholdReachedCommand="{Binding LoadMoreGamesCommand}">
+                           RemainingItemsThreshold="15"
+                           RemainingItemsThresholdReachedCommand="{Binding LoadMoreGamesCommand}"
+                           VerticalOptions="Fill"
+                           HorizontalOptions="Fill">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" 
                                      Span="3" 
@@ -264,13 +258,6 @@
                                             </DataTemplate>
                                         </BindableLayout.ItemTemplate>
                                     </FlexLayout>
-
-                                    <!-- Description courte -->
-                                    <Label Text="{Binding Description}"
-                                          FontSize="12"
-                                          TextColor="#8f98a0"
-                                          LineBreakMode="WordWrap"
-                                          MaxLines="3"/>
                                 </VerticalStackLayout>
                                 
                                 <!-- Footer: Prix / Statut -->
@@ -307,19 +294,23 @@
                                             </DataTrigger>
                                         </Label.Triggers>
                                     </Label>
-
-                                    <!-- Bouton Détails (Visuel uniquement) -->
-                                    <Label Grid.Column="1"
-                                           Text="➔"
-                                           TextColor="#66c0f4"
-                                           FontSize="20"
-                                           VerticalOptions="Center"/>
                                 </Grid>
                             </Grid>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
+            <!-- Overlay de chargement pour ne pas casser le layout de la grille -->
+            <ActivityIndicator Grid.Row="2"
+                               IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}"
+                               Color="#66c0f4"
+                               HeightRequest="60"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               ZIndex="1"/>
+
         </Grid>
     </Grid>
 </ContentPage>
