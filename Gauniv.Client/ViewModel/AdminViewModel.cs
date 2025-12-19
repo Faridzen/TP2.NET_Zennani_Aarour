@@ -164,6 +164,7 @@ namespace Gauniv.Client.ViewModel
             }
         }
 
+
         [RelayCommand]
         private void SelectGame(GameDto game)
         {
@@ -186,7 +187,7 @@ namespace Gauniv.Client.ViewModel
                 bool local_success;
                 if (SelectedGame == null)
                 {
-                    // Upload new game with optional executable
+                    // Upload new game with optional executable and image
                     local_success = await _networkService.UploadGameAsync(
                         GameTitle, 
                         GameDescription, 

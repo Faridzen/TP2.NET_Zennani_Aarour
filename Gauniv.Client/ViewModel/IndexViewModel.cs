@@ -177,9 +177,12 @@ namespace Gauniv.Client.ViewModel
                     {
                         local_game.IsOwned = _ownedGameIds.Contains(local_game.Id);
                         
-                        // En mode serveur, on fait confiance au résultat renvoyé
-                        _allGames.Add(local_game);
-                        Games.Add(local_game);
+                        // Apply client-side price filter
+                        if (local_game.Price >= MinPrice && local_game.Price <= MaxPrice)
+                        {
+                            _allGames.Add(local_game);
+                            Games.Add(local_game);
+                        }
                     }
                 }
             }
@@ -213,8 +216,13 @@ namespace Gauniv.Client.ViewModel
                     foreach (var local_game in local_result.Items)
                     {
                         local_game.IsOwned = _ownedGameIds.Contains(local_game.Id);
-                        _allGames.Add(local_game);
-                        Games.Add(local_game);
+                        
+                        // Apply client-side price filter
+                        if (local_game.Price >= MinPrice && local_game.Price <= MaxPrice)
+                        {
+                            _allGames.Add(local_game);
+                            Games.Add(local_game);
+                        }
                     }
 
                     _currentOffset += local_result.Items.Count;

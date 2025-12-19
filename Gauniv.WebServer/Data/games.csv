@@ -1,230 +1,101 @@
 Title,Description,Price,Categories,ImageUrl
-Adventure Quest,An epic adventure game with stunning graphics and immersive gameplay.,29.99,"Adventure,RPG",https://picsum.photos/seed/adventure1/400/200
-Space Shooter,Fast-paced space combat with amazing visual effects.,19.99,"Action,Shooter",https://picsum.photos/seed/space1/400/200
-Puzzle Master,Challenge your mind with hundreds of unique puzzles.,9.99,"Puzzle,Casual",https://picsum.photos/seed/puzzle1/400/200
-Racing Champions,Experience the thrill of high-speed racing.,39.99,"Racing,Sports",https://picsum.photos/seed/racing1/400/200
-Free to Play MOBA,Join millions of players in this free-to-play multiplayer battle arena.,0.00,"MOBA,Multiplayer",https://picsum.photos/seed/moba1/400/200
-Dragon's Legacy,Embark on a legendary quest to save the kingdom from darkness.,49.99,"RPG,Adventure",https://picsum.photos/seed/dragon1/400/200
-Cyber Warfare,Futuristic tactical shooter with advanced AI opponents.,34.99,"Shooter,Action",https://picsum.photos/seed/cyber1/400/200
-Mystery Manor,Solve intricate puzzles in a haunted Victorian mansion.,14.99,"Puzzle,Mystery",https://picsum.photos/seed/mystery1/400/200
-Street Racer X,Dominate the underground racing scene in this adrenaline-pumping game.,29.99,"Racing,Action",https://picsum.photos/seed/street1/400/200
-Fantasy Kingdoms,Build and manage your own medieval empire.,24.99,"Strategy,Simulation",https://picsum.photos/seed/fantasy1/400/200
-Zombie Apocalypse,Survive waves of undead in this intense survival horror game.,19.99,"Horror,Action",https://picsum.photos/seed/zombie1/400/200
-Ocean Explorer,Dive into the depths and discover underwater mysteries.,17.99,"Adventure,Simulation",https://picsum.photos/seed/ocean1/400/200
-Card Master Pro,Compete in strategic card battles with unique decks.,12.99,"Card,Strategy",https://picsum.photos/seed/card1/400/200
-Ninja Warrior,Master the art of stealth and combat in feudal Japan.,27.99,"Action,Adventure",https://picsum.photos/seed/ninja1/400/200
-City Builder 2024,Create and manage the ultimate metropolis.,39.99,"Simulation,Strategy",https://picsum.photos/seed/city1/400/200
-Galactic Conquest,Command fleets in epic space battles across the galaxy.,44.99,"Strategy,Sci-Fi",https://picsum.photos/seed/galactic1/400/200
-Cooking Simulator,Master culinary arts in this realistic cooking game.,19.99,"Simulation,Casual",https://picsum.photos/seed/cooking1/400/200
-Dungeon Crawler,Explore procedurally generated dungeons filled with treasure and danger.,22.99,"RPG,Roguelike",https://picsum.photos/seed/dungeon1/400/200
-Tennis Grand Slam,Experience professional tennis with realistic physics.,29.99,"Sports,Simulation",https://picsum.photos/seed/tennis1/400/200
-Pixel Warriors,Retro-style platformer with modern gameplay mechanics.,14.99,"Platformer,Indie",https://picsum.photos/seed/pixel1/400/200
-Farming Paradise,Build your dream farm from the ground up.,24.99,"Simulation,Casual",https://picsum.photos/seed/farm1/400/200
-Mech Battle Arena,Pilot giant robots in intense multiplayer battles.,34.99,"Action,Multiplayer",https://picsum.photos/seed/mech1/400/200
-Detective Chronicles,Solve complex crimes in this narrative-driven mystery game.,29.99,"Mystery,Adventure",https://picsum.photos/seed/detective1/400/200
-Skateboard Pro,Pull off incredible tricks in this extreme sports game.,19.99,"Sports,Action",https://picsum.photos/seed/skate1/400/200
-Magic Academy,Learn spells and battle dark forces in this magical RPG.,32.99,"RPG,Fantasy",https://picsum.photos/seed/magic1/400/200
-Survival Island,Gather resources and build shelter on a deserted island.,21.99,"Survival,Adventure",https://picsum.photos/seed/island1/400/200
-Chess Grandmaster,Challenge AI opponents in the ultimate chess experience.,9.99,"Strategy,Board",https://picsum.photos/seed/chess1/400/200
-Horror Mansion,Escape from a nightmarish house filled with terrors.,24.99,"Horror,Puzzle",https://picsum.photos/seed/horror1/400/200
-Football Manager 2024,Lead your team to glory in this comprehensive football sim.,44.99,"Sports,Simulation",https://picsum.photos/seed/football1/400/200
-Pirate's Treasure,Sail the seven seas in search of legendary riches.,27.99,"Adventure,Action",https://picsum.photos/seed/pirate1/400/200
-Tower Defense Ultimate,Defend your base against endless waves of enemies.,16.99,"Strategy,Tower Defense",https://picsum.photos/seed/tower1/400/200
-Rhythm Master,Test your timing in this music-based rhythm game.,14.99,"Music,Rhythm",https://picsum.photos/seed/rhythm1/400/200
-Wild West Showdown,Experience the lawless frontier in this western shooter.,29.99,"Shooter,Western",https://picsum.photos/seed/west1/400/200
-Time Traveler,Journey through different eras to prevent a catastrophe.,39.99,"Adventure,Sci-Fi",https://picsum.photos/seed/time1/400/200
-Fishing Legends,Catch rare fish in beautiful locations around the world.,19.99,"Simulation,Casual",https://picsum.photos/seed/fishing1/400/200
-Samurai Legends,Honor and steel clash in this feudal Japan action game.,34.99,"Action,Adventure",https://picsum.photos/seed/samurai1/400/200
-Space Colony,Build and manage a thriving colony on an alien planet.,29.99,"Simulation,Strategy",https://picsum.photos/seed/colony1/400/200
-Parkour Runner,Master the art of freerunning in urban environments.,17.99,"Action,Sports",https://picsum.photos/seed/parkour1/400/200
-Ancient Civilizations,Lead your people from the stone age to the space age.,42.99,"Strategy,Historical",https://picsum.photos/seed/ancient1/400/200
-Sniper Elite,Take out targets with precision in tactical stealth missions.,32.99,"Shooter,Stealth",https://picsum.photos/seed/sniper1/400/200
-Match-3 Mania,Addictive puzzle gameplay with hundreds of levels.,0.00,"Puzzle,Casual",https://picsum.photos/seed/match1/400/200
-Robot Wars,Build and battle custom robots in arena combat.,24.99,"Action,Strategy",https://picsum.photos/seed/robot1/400/200
-Vampire Hunter,Track and eliminate creatures of the night.,27.99,"Action,Horror",https://picsum.photos/seed/vampire1/400/200
-Golf Championship,Play on world-famous courses in this realistic golf sim.,34.99,"Sports,Simulation",https://picsum.photos/seed/golf1/400/200
-Wizard's Quest,Master powerful spells in this magical adventure.,29.99,"RPG,Fantasy",https://picsum.photos/seed/wizard1/400/200
-Submarine Commander,Navigate treacherous waters in WWII submarine warfare.,26.99,"Simulation,Strategy",https://picsum.photos/seed/submarine1/400/200
-Candy Crush Saga,Sweet puzzle fun with colorful candies.,0.00,"Puzzle,Casual",https://picsum.photos/seed/candy1/400/200
-Gladiator Arena,Fight for glory in ancient Roman coliseums.,22.99,"Action,Historical",https://picsum.photos/seed/gladiator1/400/200
-Mountain Climber,Conquer the world's highest peaks in this climbing sim.,19.99,"Simulation,Sports",https://picsum.photos/seed/mountain1/400/200
-Cyber Detective,Solve crimes in a dystopian cyberpunk future.,31.99,"Mystery,Cyberpunk",https://picsum.photos/seed/cyberdetective1/400/200
-Alien Invasion,Defend Earth from extraterrestrial threats.,24.99,"Shooter,Sci-Fi",https://picsum.photos/seed/alien1/400/200
-Word Puzzle Pro,Expand your vocabulary with challenging word games.,7.99,"Puzzle,Educational",https://picsum.photos/seed/word1/400/200
-Motorcycle Madness,Race high-powered bikes on dangerous tracks.,27.99,"Racing,Sports",https://picsum.photos/seed/motorcycle1/400/200
-Castle Siege,Defend your fortress from invading armies.,18.99,"Strategy,Tower Defense",https://picsum.photos/seed/castle1/400/200
-Jungle Explorer,Discover ancient ruins hidden in dense rainforests.,23.99,"Adventure,Exploration",https://picsum.photos/seed/jungle1/400/200
-Hockey Champions,Fast-paced ice hockey action with realistic gameplay.,29.99,"Sports,Simulation",https://picsum.photos/seed/hockey1/400/200
-Steampunk Adventures,Explore a Victorian world powered by steam technology.,35.99,"Adventure,Steampunk",https://picsum.photos/seed/steampunk1/400/200
-Bubble Shooter Deluxe,Pop colorful bubbles in this relaxing puzzle game.,0.00,"Puzzle,Casual",https://picsum.photos/seed/bubble1/400/200
-Mercenary Squad,Lead elite soldiers on dangerous covert operations.,36.99,"Shooter,Tactical",https://picsum.photos/seed/mercenary1/400/200
-Dinosaur Park,Build and manage your own prehistoric theme park.,32.99,"Simulation,Strategy",https://picsum.photos/seed/dinosaur1/400/200
-Archery Master,Perfect your aim in this realistic archery simulator.,16.99,"Sports,Simulation",https://picsum.photos/seed/archery1/400/200
-Haunted Hospital,Survive the night in an abandoned medical facility.,21.99,"Horror,Survival",https://picsum.photos/seed/hospital1/400/200
-Basketball Stars,Compete in street basketball tournaments.,19.99,"Sports,Action",https://picsum.photos/seed/basketball1/400/200
-Medieval Warfare,Command armies in epic medieval battles.,38.99,"Strategy,Historical",https://picsum.photos/seed/medieval1/400/200
-Drift King,Master the art of drifting in this racing game.,25.99,"Racing,Sports",https://picsum.photos/seed/drift1/400/200
-Superhero City,Protect the city from villains with your superpowers.,28.99,"Action,Superhero",https://picsum.photos/seed/superhero1/400/200
-Mahjong Solitaire,Classic tile-matching puzzle with beautiful themes.,9.99,"Puzzle,Board",https://picsum.photos/seed/mahjong1/400/200
-Warplane Combat,Engage in aerial dogfights in historical aircraft.,33.99,"Simulation,Action",https://picsum.photos/seed/warplane1/400/200
-Treasure Hunter,Search for lost artifacts in exotic locations.,26.99,"Adventure,Puzzle",https://picsum.photos/seed/treasure1/400/200
-Volleyball Beach,Enjoy beach volleyball with friends in multiplayer mode.,17.99,"Sports,Casual",https://picsum.photos/seed/volleyball1/400/200
-Cyberpunk Racer,Race through neon-lit streets in a futuristic city.,31.99,"Racing,Cyberpunk",https://picsum.photos/seed/cyberpunkrace1/400/200
-Solitaire Classic,The timeless card game with multiple variants.,0.00,"Card,Casual",https://picsum.photos/seed/solitaire1/400/200
-Tank Commander,Lead armored divisions in strategic tank battles.,29.99,"Strategy,Military",https://picsum.photos/seed/tank1/400/200
-Yoga Simulator,Find inner peace with guided yoga sessions.,12.99,"Simulation,Wellness",https://picsum.photos/seed/yoga1/400/200
-Apocalypse Survival,Scavenge and survive in a post-apocalyptic wasteland.,27.99,"Survival,Action",https://picsum.photos/seed/apocalypse1/400/200
-Cricket World Cup,Experience international cricket at its finest.,24.99,"Sports,Simulation",https://picsum.photos/seed/cricket1/400/200
-Ninja Assassin,Execute silent takedowns in this stealth action game.,30.99,"Action,Stealth",https://picsum.photos/seed/ninjaassassin1/400/200
-Jigsaw Puzzles HD,Relax with beautiful high-definition jigsaw puzzles.,8.99,"Puzzle,Casual",https://picsum.photos/seed/jigsaw1/400/200
-Helicopter Rescue,Pilot rescue helicopters in dangerous missions.,22.99,"Simulation,Action",https://picsum.photos/seed/helicopter1/400/200
-Mythology Wars,Command gods and heroes from ancient mythologies.,41.99,"Strategy,Fantasy",https://picsum.photos/seed/mythology1/400/200
-BMX Tricks,Perform amazing stunts on your BMX bike.,18.99,"Sports,Action",https://picsum.photos/seed/bmx1/400/200
-Escape Room VR,Solve puzzles to escape from virtual reality rooms.,29.99,"Puzzle,VR",https://picsum.photos/seed/escaperoom1/400/200
-Rugby Champions,Intense rugby action with realistic physics.,26.99,"Sports,Simulation",https://picsum.photos/seed/rugby1/400/200
-Wizard Battle,Cast spells and duel other wizards in magical arenas.,23.99,"Action,Fantasy",https://picsum.photos/seed/wizardbattle1/400/200
-Crossword Master,Challenge yourself with thousands of crossword puzzles.,6.99,"Puzzle,Educational",https://picsum.photos/seed/crossword1/400/200
-Drone Racing,Race high-speed drones through obstacle courses.,21.99,"Racing,Simulation",https://picsum.photos/seed/drone1/400/200
-Pirate Battle,Engage in naval warfare on the high seas.,28.99,"Action,Strategy",https://picsum.photos/seed/piratebattle1/400/200
-Meditation Journey,Guided meditation experiences in serene environments.,11.99,"Simulation,Wellness",https://picsum.photos/seed/meditation1/400/200
-Snowboard Extreme,Carve through fresh powder in extreme snowboarding.,24.99,"Sports,Action",https://picsum.photos/seed/snowboard1/400/200
-Alien Planet,Explore and colonize distant alien worlds.,37.99,"Simulation,Sci-Fi",https://picsum.photos/seed/alienplanet1/400/200
-Sudoku Challenge,Classic number puzzle with varying difficulty levels.,5.99,"Puzzle,Logic",https://picsum.photos/seed/sudoku1/400/200
-Fighter Pilot,Experience modern air combat in advanced jets.,39.99,"Simulation,Action",https://picsum.photos/seed/fighterpilot1/400/200
-Werewolf Hunter,Track and hunt lycanthropes under the full moon.,25.99,"Action,Horror",https://picsum.photos/seed/werewolf1/400/200
-Table Tennis Pro,Fast-paced ping pong action with realistic physics.,15.99,"Sports,Simulation",https://picsum.photos/seed/tabletennis1/400/200
-Space Station Manager,Build and maintain a functioning orbital station.,34.99,"Simulation,Strategy",https://picsum.photos/seed/spacestation1/400/200
-Hidden Object Mystery,Find hidden items in beautifully illustrated scenes.,0.00,"Puzzle,Casual",https://picsum.photos/seed/hiddenobject1/400/200
-Monster Truck Rally,Crush cars and perform stunts in massive trucks.,23.99,"Racing,Action",https://picsum.photos/seed/monstertruck1/400/200
-Alchemy Lab,Mix ingredients to discover magical potions.,17.99,"Puzzle,Strategy",https://picsum.photos/seed/alchemy1/400/200
-Baseball Championship,America's favorite pastime in digital form.,27.99,"Sports,Simulation",https://picsum.photos/seed/baseball1/400/200
-Cyberpunk Hacker,Infiltrate corporate networks in a dystopian future.,32.99,"Strategy,Cyberpunk",https://picsum.photos/seed/hacker1/400/200
-Trivia Master,Test your knowledge across thousands of topics.,0.00,"Trivia,Educational",https://picsum.photos/seed/trivia1/400/200
-Demolition Derby,Smash and crash in chaotic vehicular combat.,20.99,"Racing,Action",https://picsum.photos/seed/demolition1/400/200
-Fairy Tale Kingdom,Build a magical realm filled with fantasy creatures.,29.99,"Simulation,Fantasy",https://picsum.photos/seed/fairytale1/400/200
-Bowling Strike,Realistic bowling physics and multiple game modes.,14.99,"Sports,Casual",https://picsum.photos/seed/bowling1/400/200
-Ghost Investigation,Use paranormal equipment to hunt spirits.,26.99,"Horror,Adventure",https://picsum.photos/seed/ghost1/400/200
-Badminton Tournament,Compete in fast-paced badminton matches.,16.99,"Sports,Simulation",https://picsum.photos/seed/badminton1/400/200
-Mage Tower,Defend your tower using powerful magic spells.,19.99,"Strategy,Fantasy",https://picsum.photos/seed/magetower1/400/200
-Memory Match,Improve your memory with card matching games.,4.99,"Puzzle,Educational",https://picsum.photos/seed/memory1/400/200
-Stunt Plane,Perform aerial acrobatics in vintage aircraft.,22.99,"Simulation,Action",https://picsum.photos/seed/stuntplane1/400/200
-Viking Conquest,Raid and conquer as a legendary Norse warrior.,35.99,"Action,Historical",https://picsum.photos/seed/viking1/400/200
-Pool Master,Play 8-ball and 9-ball pool with realistic physics.,12.99,"Sports,Casual",https://picsum.photos/seed/pool1/400/200
-Alien Artifact,Uncover the secrets of an ancient alien civilization.,30.99,"Adventure,Sci-Fi",https://picsum.photos/seed/artifact1/400/200
-Bingo Party,Join multiplayer bingo games with friends.,0.00,"Casual,Multiplayer",https://picsum.photos/seed/bingo1/400/200
-Rally Racing,Navigate treacherous rally courses at high speed.,28.99,"Racing,Sports",https://picsum.photos/seed/rally1/400/200
-Witch's Brew,Create magical concoctions in your witch's cottage.,18.99,"Simulation,Fantasy",https://picsum.photos/seed/witch1/400/200
-Darts Championship,Aim for the bullseye in this precision sports game.,11.99,"Sports,Casual",https://picsum.photos/seed/darts1/400/200
-Zombie Defense,Build defenses against the undead horde.,21.99,"Strategy,Horror",https://picsum.photos/seed/zombiedefense1/400/200
-Squash Pro,Fast-paced squash action in indoor courts.,17.99,"Sports,Simulation",https://picsum.photos/seed/squash1/400/200
-Dragon Rider,Soar through the skies on the back of a dragon.,33.99,"Adventure,Fantasy",https://picsum.photos/seed/dragonrider1/400/200
-Slots Casino,Spin the reels in this virtual slot machine game.,0.00,"Casino,Casual",https://picsum.photos/seed/slots1/400/200
-Off-Road Adventure,Conquer rough terrain in powerful 4x4 vehicles.,25.99,"Racing,Simulation",https://picsum.photos/seed/offroad1/400/200
-Potion Maker,Experiment with ingredients to create powerful elixirs.,16.99,"Puzzle,Strategy",https://picsum.photos/seed/potion1/400/200
-Fencing Master,Engage in elegant sword duels with precise controls.,19.99,"Sports,Action",https://picsum.photos/seed/fencing1/400/200
-Apocalypse Racer,Race through post-apocalyptic wastelands.,27.99,"Racing,Action",https://picsum.photos/seed/apocalypserace1/400/200
-Blackjack 21,Classic casino card game with multiple variants.,0.00,"Card,Casino",https://picsum.photos/seed/blackjack1/400/200
-Hovercraft Racing,Race futuristic hovercrafts at breakneck speeds.,29.99,"Racing,Sci-Fi",https://picsum.photos/seed/hovercraft1/400/200
-Enchanted Forest,Explore a magical woodland filled with mysteries.,24.99,"Adventure,Fantasy",https://picsum.photos/seed/forest1/400/200
-Curling Championship,Master the ice in this strategic winter sport.,15.99,"Sports,Simulation",https://picsum.photos/seed/curling1/400/200
-Necromancer's Lair,Raise the dead and command undead armies.,31.99,"Strategy,Horror",https://picsum.photos/seed/necromancer1/400/200
-Poker Night,Texas Hold'em poker with AI and multiplayer modes.,0.00,"Card,Casino",https://picsum.photos/seed/poker1/400/200
-Jet Ski Racing,Speed across water on high-performance watercraft.,23.99,"Racing,Sports",https://picsum.photos/seed/jetski1/400/200
-Crystal Quest,Search for magical crystals in enchanted lands.,26.99,"Adventure,Fantasy",https://picsum.photos/seed/crystal1/400/200
-Handball Tournament,Experience the intensity of professional handball.,18.99,"Sports,Simulation",https://picsum.photos/seed/handball1/400/200
-Demon Slayer,Vanquish demons with holy weapons and magic.,29.99,"Action,Fantasy",https://picsum.photos/seed/demonslayer1/400/200
-Roulette Royale,Spin the wheel in this classic casino game.,0.00,"Casino,Casual",https://picsum.photos/seed/roulette1/400/200
-Speedboat Racing,Race powerful speedboats across tropical waters.,24.99,"Racing,Sports",https://picsum.photos/seed/speedboat1/400/200
-Mystic Ruins,Uncover ancient secrets in forgotten temples.,28.99,"Adventure,Puzzle",https://picsum.photos/seed/ruins1/400/200
-Lacrosse Legends,Fast-paced lacrosse action with team management.,20.99,"Sports,Simulation",https://picsum.photos/seed/lacrosse1/400/200
-Shadow Warrior,Master the blade in this dark fantasy action game.,34.99,"Action,Fantasy",https://picsum.photos/seed/shadow1/400/200
-Craps Master,Roll the dice in this exciting casino game.,0.00,"Casino,Casual",https://picsum.photos/seed/craps1/400/200
-Drag Racing,Compete in quarter-mile drag races.,22.99,"Racing,Sports",https://picsum.photos/seed/dragracing1/400/200
-Elemental Mage,Control the elements in epic magical battles.,32.99,"RPG,Fantasy",https://picsum.photos/seed/elemental1/400/200
-Water Polo Challenge,Dive into competitive water polo matches.,17.99,"Sports,Simulation",https://picsum.photos/seed/waterpolo1/400/200
-Orc Invasion,Defend your realm from savage orc hordes.,25.99,"Strategy,Fantasy",https://picsum.photos/seed/orc1/400/200
-Baccarat Elite,High-stakes baccarat in luxurious casinos.,0.00,"Casino,Card",https://picsum.photos/seed/baccarat1/400/200
-Formula Racing,Experience the thrill of Formula 1 racing.,44.99,"Racing,Simulation",https://picsum.photos/seed/formula1/400/200
-Celestial Journey,Travel through the cosmos discovering new worlds.,36.99,"Adventure,Sci-Fi",https://picsum.photos/seed/celestial1/400/200
-Racquetball Pro,Fast-paced racquetball in indoor courts.,16.99,"Sports,Simulation",https://picsum.photos/seed/racquetball1/400/200
-Troll Hunter,Track and defeat trolls in Nordic landscapes.,27.99,"Action,Fantasy",https://picsum.photos/seed/troll1/400/200
-Keno Classic,Pick your lucky numbers in this lottery-style game.,0.00,"Casino,Casual",https://picsum.photos/seed/keno1/400/200
-Kart Racing Deluxe,Colorful kart racing with power-ups and shortcuts.,19.99,"Racing,Casual",https://picsum.photos/seed/kart1/400/200
-Atlantis Quest,Discover the lost city beneath the waves.,29.99,"Adventure,Mystery",https://picsum.photos/seed/atlantis1/400/200
-Jai Alai Championship,Experience the world's fastest ball sport.,18.99,"Sports,Simulation",https://picsum.photos/seed/jaialai1/400/200
-Goblin Slayer,Eliminate goblin infestations in fantasy realms.,23.99,"Action,Fantasy",https://picsum.photos/seed/goblin1/400/200
-Pai Gow Poker,Ancient Chinese poker variant in modern casinos.,0.00,"Casino,Card",https://picsum.photos/seed/paigow1/400/200
-Nascar Thunder,Oval track racing with authentic NASCAR experience.,39.99,"Racing,Sports",https://picsum.photos/seed/nascar1/400/200
-Phoenix Rising,Be reborn from ashes in this mythological adventure.,31.99,"Adventure,Fantasy",https://picsum.photos/seed/phoenix1/400/200
-Sepak Takraw Master,Master this acrobatic Southeast Asian sport.,15.99,"Sports,Action",https://picsum.photos/seed/sepaktakraw1/400/200
-Banshee Hunter,Silence the wailing spirits of Irish folklore.,26.99,"Action,Horror",https://picsum.photos/seed/banshee1/400/200
-Sic Bo Fortune,Roll three dice in this ancient Chinese game.,0.00,"Casino,Casual",https://picsum.photos/seed/sicbo1/400/200
-IndyCar Racing,Open-wheel racing on America's famous tracks.,37.99,"Racing,Sports",https://picsum.photos/seed/indycar1/400/200
-Kraken's Depths,Battle the legendary sea monster in naval combat.,33.99,"Action,Adventure",https://picsum.photos/seed/kraken1/400/200
-Kabaddi Warriors,Experience India's ancient contact sport.,17.99,"Sports,Action",https://picsum.photos/seed/kabaddi1/400/200
-Minotaur's Maze,Navigate the labyrinth and defeat the beast.,28.99,"Adventure,Puzzle",https://picsum.photos/seed/minotaur1/400/200
-Red Dog Poker,Fast-paced casino card game with simple rules.,0.00,"Casino,Card",https://picsum.photos/seed/reddog1/400/200
-Rally Cross,Mixed surface racing with intense competition.,26.99,"Racing,Sports",https://picsum.photos/seed/rallycross1/400/200
-Sphinx Riddles,Solve ancient Egyptian puzzles and mysteries.,21.99,"Puzzle,Adventure",https://picsum.photos/seed/sphinx1/400/200
-Pelota Championship,Master the Basque ball game in virtual courts.,16.99,"Sports,Simulation",https://picsum.photos/seed/pelota1/400/200
-Chimera Hunt,Track and capture mythical hybrid creatures.,29.99,"Action,Fantasy",https://picsum.photos/seed/chimera1/400/200
-Caribbean Stud,Tropical poker variant with progressive jackpots.,0.00,"Casino,Card",https://picsum.photos/seed/caribbean1/400/200
-Touring Car Championship,Professional touring car racing simulation.,34.99,"Racing,Simulation",https://picsum.photos/seed/touringcar1/400/200
-Hydra Battle,Face the multi-headed serpent of Greek legend.,32.99,"Action,Mythology",https://picsum.photos/seed/hydra1/400/200
-Hurling Heroes,Ireland's ancient Gaelic sport comes to life.,18.99,"Sports,Action",https://picsum.photos/seed/hurling1/400/200
-Basilisk's Gaze,Avoid the deadly stare of the legendary serpent.,27.99,"Adventure,Horror",https://picsum.photos/seed/basilisk1/400/200
-Three Card Poker,Quick casino poker with bonus payouts.,0.00,"Casino,Card",https://picsum.photos/seed/threecard1/400/200
-Endurance Racing,24-hour races testing driver and machine limits.,41.99,"Racing,Simulation",https://picsum.photos/seed/endurance1/400/200
-Cerberus Gate,Guard the gates of the underworld with the three-headed dog.,30.99,"Strategy,Mythology",https://picsum.photos/seed/cerberus1/400/200
-Camogie Championship,Women's version of hurling in competitive matches.,17.99,"Sports,Simulation",https://picsum.photos/seed/camogie1/400/200
-Gorgon's Curse,Break the petrifying curse of Medusa's sisters.,25.99,"Adventure,Mythology",https://picsum.photos/seed/gorgon1/400/200
-Let It Ride,Poker variant where you control your bets.,0.00,"Casino,Card",https://picsum.photos/seed/letitride1/400/200
-Hill Climb Racing,Conquer steep inclines in physics-based racing.,19.99,"Racing,Casual",https://picsum.photos/seed/hillclimb1/400/200
-Cyclops Island,Survive on an island inhabited by one-eyed giants.,28.99,"Survival,Mythology",https://picsum.photos/seed/cyclops1/400/200
-Shinty Showdown,Scottish Highland stick-and-ball sport simulation.,16.99,"Sports,Simulation",https://picsum.photos/seed/shinty1/400/200
-Harpy's Nest,Escape from the clutches of winged monsters.,24.99,"Action,Mythology",https://picsum.photos/seed/harpy1/400/200
-Casino War,Simple high-card casino game for quick play.,0.00,"Casino,Casual",https://picsum.photos/seed/casinowar1/400/200
-Time Trial Master,Race against the clock on challenging circuits.,23.99,"Racing,Sports",https://picsum.photos/seed/timetrial1/400/200
-Pegasus Flight,Soar through the clouds on a winged horse.,27.99,"Adventure,Fantasy",https://picsum.photos/seed/pegasus1/400/200
-Gaelic Football,Traditional Irish sport with modern gameplay.,18.99,"Sports,Simulation",https://picsum.photos/seed/gaelicfootball1/400/200
-Centaur Archer,Master archery as a mythical half-human warrior.,26.99,"Action,Mythology",https://picsum.photos/seed/centaur1/400/200
-Wheel of Fortune,Spin the wheel for casino prizes and bonuses.,0.00,"Casino,Casual",https://picsum.photos/seed/wheelfortune1/400/200
-Drift Championship,Master the art of controlled sliding.,29.99,"Racing,Sports",https://picsum.photos/seed/driftchamp1/400/200
-Siren's Song,Resist the enchanting call of sea nymphs.,25.99,"Adventure,Mythology",https://picsum.photos/seed/siren1/400/200
-Netball Nations,Fast-paced netball with international teams.,17.99,"Sports,Simulation",https://picsum.photos/seed/netball1/400/200
-Satyr's Grove,Explore the wild domain of forest spirits.,23.99,"Adventure,Fantasy",https://picsum.photos/seed/satyr1/400/200
-Money Wheel,Bet on segments in this simple casino game.,0.00,"Casino,Casual",https://picsum.photos/seed/moneywheel1/400/200
-Autocross Challenge,Navigate tight courses in timed runs.,21.99,"Racing,Sports",https://picsum.photos/seed/autocross1/400/200
-Titan's Wrath,Face the anger of the primordial giants.,34.99,"Action,Mythology",https://picsum.photos/seed/titan1/400/200
-Rounders Classic,Traditional bat-and-ball game simulation.,15.99,"Sports,Casual",https://picsum.photos/seed/rounders1/400/200
-Nymph's Sanctuary,Protect sacred groves from invaders.,22.99,"Strategy,Fantasy",https://picsum.photos/seed/nymph1/400/200
-Faro Gold Rush,Historic Wild West casino card game.,0.00,"Casino,Historical",https://picsum.photos/seed/faro1/400/200
-Sprint Racing,Short-distance high-speed racing action.,24.99,"Racing,Sports",https://picsum.photos/seed/sprint1/400/200
-Griffon Rider,Command a lion-eagle hybrid in aerial combat.,31.99,"Action,Fantasy",https://picsum.photos/seed/griffon1/400/200
-Stoolball Heritage,Ancient English bat-and-ball sport revival.,14.99,"Sports,Historical",https://picsum.photos/seed/stoolball1/400/200
-Manticore Hunt,Track the scorpion-tailed lion beast.,28.99,"Action,Mythology",https://picsum.photos/seed/manticore1/400/200
-Chuck-a-Luck,Three-dice casino game of chance.,0.00,"Casino,Casual",https://picsum.photos/seed/chuckaluck1/400/200
-Circuit Racing,Professional circuit racing with pit strategies.,36.99,"Racing,Simulation",https://picsum.photos/seed/circuit1/400/200
-Chimera's Lair,Infiltrate the den of the fire-breathing hybrid.,27.99,"Adventure,Mythology",https://picsum.photos/seed/chimeralair1/400/200
-Pesäpallo Pro,Finnish baseball variant with unique rules.,16.99,"Sports,Simulation",https://picsum.photos/seed/pesapallo1/400/200
-Echidna's Children,Battle the mother of all monsters.,30.99,"Action,Mythology",https://picsum.photos/seed/echidna1/400/200
-Hazard Historic,Medieval dice game brought to modern casinos.,0.00,"Casino,Historical",https://picsum.photos/seed/hazard1/400/200
-Enduro Challenge,Long-distance off-road motorcycle racing.,25.99,"Racing,Sports",https://picsum.photos/seed/enduro1/400/200
-Typhon's Storm,Survive the wrath of the father of monsters.,33.99,"Survival,Mythology",https://picsum.photos/seed/typhon1/400/200
-Vigoro Championship,Australian bat-and-ball sport for all.,15.99,"Sports,Casual",https://picsum.photos/seed/vigoro1/400/200
-Scylla's Strait,Navigate between the six-headed sea monster.,26.99,"Adventure,Mythology",https://picsum.photos/seed/scylla1/400/200
-Lansquenet Legacy,Renaissance-era card game revival.,0.00,"Casino,Historical",https://picsum.photos/seed/lansquenet1/400/200
-Gymkhana Master,Precision driving through complex obstacle courses.,23.99,"Racing,Sports",https://picsum.photos/seed/gymkhana1/400/200
-Charybdis Whirlpool,Escape the deadly maelstrom monster.,24.99,"Action,Mythology",https://picsum.photos/seed/charybdis1/400/200
-Brännboll Summer,Swedish bat-and-ball game in sunny settings.,14.99,"Sports,Casual",https://picsum.photos/seed/brannboll1/400/200
-Argus Watch,Evade the hundred-eyed guardian.,22.99,"Stealth,Mythology",https://picsum.photos/seed/argus1/400/200
-Basset Royale,French royal court card game.,0.00,"Casino,Historical",https://picsum.photos/seed/basset1/400/200
-Slalom Racing,Navigate through gates at high speed.,27.99,"Racing,Sports",https://picsum.photos/seed/slalom1/400/200
-Ladon's Garden,Steal golden apples from the dragon guardian.,29.99,"Adventure,Mythology",https://picsum.photos/seed/ladon1/400/200
-Oină Heritage,Romanian traditional bat-and-ball sport.,15.99,"Sports,Historical",https://picsum.photos/seed/oina1/400/200
-Orthrus Patrol,Face the two-headed guard dog of Geryon.,25.99,"Action,Mythology",https://picsum.photos/seed/orthrus1/400/200
-Trente et Quarante,Classic French casino card game.,0.00,"Casino,Historical",https://picsum.photos/seed/trentequarante1/400/200
-Grand Prix Legends,Historic Formula 1 racing from golden era.,42.99,"Racing,Historical",https://picsum.photos/seed/grandprix1/400/200
-Empusa's Deception,Unmask the shapeshifting demon.,28.99,"Mystery,Mythology",https://picsum.photos/seed/empusa1/400/200
-Schlagball Tournament,German bat-and-ball sport competition.,16.99,"Sports,Simulation",https://picsum.photos/seed/schlagball1/400/200
-Lamia's Curse,Break free from the child-eating demon's spell.,26.99,"Horror,Mythology",https://picsum.photos/seed/lamia1/400/200
+DOOM,"Now includes all three premium DLC packs (Unto the Evil, Hell Followed, and Bloodfall), maps, modes, and weapons, as well as all feature updates including Arcade Mode, Photo Mode, and the latest Update 6.66, which brings further multiplayer improvements as well as revamps multiplayer progression.",19.99,"FPS,Gore,Action",https://cdn.cloudflare.steamstatic.com/steam/apps/379720/header.jpg
+PLAYERUNKNOWN'S BATTLEGROUNDS,PLAYERUNKNOWN'S BATTLEGROUNDS is a battle royale shooter that pits 100 players against each other in a struggle for survival. Gather supplies and outwit your opponents to become the last person standing.,29.99,"Survival,Shooter,Multiplayer",https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg
+BATTLETECH,"Take command of your own mercenary outfit of 'Mechs and the MechWarriors that pilot them, struggling to stay afloat as you find yourself drawn into a brutal interstellar civil war.",39.99,"Mechs,Strategy,Turn-Based",https://cdn.cloudflare.steamstatic.com/steam/apps/637090/header.jpg
+DayZ,"The post-soviet country of Chernarus is struck by an unknown virus, turning the majority population into frenzied infected. Fighting over resources has bred a hostile mentality among survivors, driving what’s left of humanity to collapse. You are one of the few immune to the virus - how far will you go to survive?",44.99,"Survival,Zombies,Open World",https://cdn.cloudflare.steamstatic.com/steam/apps/221100/header.jpg
+EVE Online,"EVE Online is a community-driven spaceship MMO where players can play free, choosing their own path from countless options. Experience space exploration, immense PvP and PvE battles, mining, industry and a thriving player economy in an ever-expanding sandbox.",0.00,"Space,Massively Multiplayer,Sci-fi",https://cdn.cloudflare.steamstatic.com/steam/apps/8500/header.jpg
+Grand Theft Auto V: Premium Online Edition,Grand Theft Auto V: Premium Online Edition bundle,0.00,NaN,https://picsum.photos/seed/game/400/200
+Devil May Cry 5,"The ultimate Devil Hunter is back in style, in the game action fans have been waiting for.",59.99,"Action,Hack and Slash,Great Soundtrack",https://cdn.cloudflare.steamstatic.com/steam/apps/601150/header.jpg
+Human: Fall Flat,Human: Fall Flat is a quirky open-ended physics-based puzzle platformer set in floating dreamscapes. Your goal is to find the exit of these surreal levels by solving puzzles with nothing but your wits. Local co-op for 2 players and up to 8 online for even more mayhem!,14.99,"Funny,Multiplayer,Co-op",https://cdn.cloudflare.steamstatic.com/steam/apps/477160/header.jpg
+They Are Billions,They Are Billions is a Steampunk strategy game set on a post-apocalyptic planet. Build and defend colonies to survive against the billions of the infected that seek to annihilate the few remaining living humans. Can humanity survive after the zombie apocalypse?,29.99,"Early Access,Base Building,Strategy",https://cdn.cloudflare.steamstatic.com/steam/apps/644930/header.jpg
+Warhammer: Chaosbane,"In a world ravaged by war and dominated by magic, you must rise up to face the Chaos hordes. Playing solo or with up to four players in local or online co-op, choose a hero from four character classes and prepare for epic battles wielding some of the most powerful artefacts of the Old World.",49.99,"RPG,Adventure,Hack and Slash",https://cdn.cloudflare.steamstatic.com/steam/apps/774241/header.jpg
+For The King,"For The King is a strategic RPG that blends tabletop and roguelike elements in a challenging adventure that spans the realms. Set off on a single player experience or play cooperatively both online and locally. INTO THE DEEP ADVENTURE, NOW AVAILABLE FOR FREE!",19.99,"RPG,Turn-Based Combat,Adventure",https://cdn.cloudflare.steamstatic.com/steam/apps/527230/header.jpg
+Danganronpa V3: Killing Harmony,"A new cast of 16 characters find themselves kidnapped and imprisoned in a school. Inside, some will kill, some will die, and some will be punished. Reimagine what you thought high-stakes, fast-paced investigation was as you investigate twisted murder cases and condemn your new friends to death.",39.99,"Story Rich,Anime,Visual Novel",https://cdn.cloudflare.steamstatic.com/steam/apps/567640/header.jpg
+TERA,"From En Masse Entertainment, TERA is at the forefront of a new breed of MMO. With True Action Combat - aim, dodge, and time your attacks for intense and rewarding tactical combat. Add the deep social experience of a MMO to best-in-class action combat mechanics for a unique blend of both genres. Play now for free!",0.00,"Free to Play,MMORPG,Massively Multiplayer",https://cdn.cloudflare.steamstatic.com/steam/apps/323370/header.jpg
+Call of Duty®: Modern Warfare® Remastered,"One of the most critically-acclaimed games in history, Call of Duty: Modern Warfare is back, remastered in true high-definition, featuring improved textures, physically based rendering, high-dynamic range lighting and much more.",1.02,"FPS,Action,Shooter",https://cdn.cloudflare.steamstatic.com/steam/apps/393080/header.jpg
+Stonehearth,"Pioneer a living world full of warmth, heroism, and mystery. Help a small group of settlers build a home for themselves in a forgotten land. Establish a food supply, build shelter, defend your people, monitor their moods, and find a way to grow and expand, facing challenges at every step.",19.99,"City Builder,Building,Sandbox",https://cdn.cloudflare.steamstatic.com/steam/apps/253250/header.jpg
+Hearts of Iron IV: Mobilization Pack,Hearts of Iron IV: Mobilization Pack bundle,0.00,NaN,https://picsum.photos/seed/game/400/200
+Clone Drone in the Danger Zone,"Clone Drone in the Danger Zone is a third person sword fighter where any part of your body can be sliced off. With your mind downloaded into a robot gladiator, you must survive the sinister trials of the arena.",14.99,"Early Access,Robots,Action",https://cdn.cloudflare.steamstatic.com/steam/apps/597170/header.jpg
+GOD EATER 3,"Set in a post-apocalyptic setting, it’s up to your special team of God Eaters to take down god-like monsters devastating the world. With an epic story, unique characters, and all new God Arcs and Aragami, the latest evolution in ACTION is here!",59.99,"Anime,Action,Character Customization",https://cdn.cloudflare.steamstatic.com/steam/apps/899440/header.jpg
+War Robots,"War Robots is an online third-person 6v6 PvP shooter—we’re talking dozens of combat robots, hundreds of weapons combinations, and heated clan battles.",0.00,"Free to Play,Robots,Action",https://cdn.cloudflare.steamstatic.com/steam/apps/767560/header.jpg
+Halo Wars: Definitive Edition,"Halo Wars: Definitive Edition is an enhanced version of the real-time strategy classic, Halo Wars, updated to run natively on PC. Halo Wars: Definitive Edition includes improved graphics, new achievements and all of the DLC created for the landmark real-time strategy game.",19.99,"Strategy,RTS,Sci-fi",https://cdn.cloudflare.steamstatic.com/steam/apps/459220/header.jpg
+Call of Duty®: Black Ops,The biggest first-person action series of all time and the follow-up to critically acclaimed Call of Duty®: Modern Warfare 2 returns with Call of Duty®: Black Ops.,1.02,"Action,FPS,Zombies",https://cdn.cloudflare.steamstatic.com/steam/apps/42700/header.jpg
+Phoenix Wright: Ace Attorney Trilogy / 逆転裁判123 成歩堂セレクション,"Become Phoenix Wright and experience the thrill of battle as you fight to save your innocent clients in a court of law. Play all 14 episodes, spanning the first three games, in one gorgeous collection.",29.99,"Visual Novel,Story Rich,Great Soundtrack",https://cdn.cloudflare.steamstatic.com/steam/apps/787480/header.jpg
+Team Sonic Racing™,Team Sonic Racing combines the best elements of arcade and fast-paced competitive style racing as you face-off with friends in intense multiplayer racing.,39.99,"Racing,Multiplayer,Great Soundtrack",https://cdn.cloudflare.steamstatic.com/steam/apps/785260/header.jpg
+Titan Quest Anniversary Edition,"For its 10 year anniversary, Titan Quest will shine in new splendour. This Anniversary Edition combines both Titan Quest and Titan Quest Immortal Throne in one game, and has been given a massive overhaul for the ultimate ARPG experience.",19.99,"RPG,Hack and Slash,Mythology",https://cdn.cloudflare.steamstatic.com/steam/apps/475150/header.jpg
+Grand Theft Auto IV,"What does the American dream mean today? For Niko Bellic fresh off the boat from Europe, it is the hope he can escape from his past. For his cousin, Roman, it is the vision that together they can find fortune in Liberty City, gateway to the land of opportunity.",19.99,"Open World,Action,Bowling",https://cdn.cloudflare.steamstatic.com/steam/apps/12210/header.jpg
+Portal Bundle,Portal Bundle bundle,0.00,NaN,https://picsum.photos/seed/game/400/200
+Portal,"Portal™ is a new single player game from Valve. Set in the mysterious Aperture Science Laboratories, Portal has been called one of the most innovative new games on the horizon and will offer gamers hours of unique gameplay.",9.99,"Puzzle,First-Person,Singleplayer",https://cdn.cloudflare.steamstatic.com/steam/apps/400/header.jpg
+Viscera Cleanup Detail,"In Viscera Cleanup Detail, you step into the boots of a space-station janitor tasked with cleaning up after various horrific sci-fi horror events. Instead of machineguns and plasma-rifles, your tools are a mop and bucket. That hero left a mess, and it's up to you to deal with the aftermath.",12.99,"Simulation,Gore,First-Person",https://cdn.cloudflare.steamstatic.com/steam/apps/246900/header.jpg
+Neverwinter Nights: Enhanced Edition,Return to the Forgotten Realms in this bestselling Dungeons & Dragons roleplaying game. Combines all the content of Neverwinter Nights Diamond Edition with all-new enhanced features. Includes 100+ hours of award-winning adventures and the tools to create your own!,57.91,"RPG,Dungeons & Dragons,Fantasy",https://cdn.cloudflare.steamstatic.com/steam/apps/704450/header.jpg
+Ni no Kuni™ II: Revenant Kingdom,"Join the young king Evan as he sets out on an epic quest to found a new kingdom and, with the help of some new friends, unite his world, saving its people from a terrible evil.",59.99,"RPG,JRPG,Anime",https://cdn.cloudflare.steamstatic.com/steam/apps/589360/header.jpg
+Tree of Savior (English Ver.),Tree of Savior(abbreviated as TOS thereafter) is an MMORPG in which you embark on a journey to search for the goddesses in the world of chaos. Fairy-tale like colors accompanied with beautiful graphics in TOS will have you reminiscing about precious moments all throughout the game.,0.00,"MMORPG,Massively Multiplayer,Free to Play",https://cdn.cloudflare.steamstatic.com/steam/apps/372000/header.jpg
+Hellblade: Senua's Sacrifice,"From the makers of Heavenly Sword, Enslaved: Odyssey to the West, and DmC: Devil May Cry, comes a warrior’s brutal journey into myth and madness. Set in the Viking age, a broken Celtic warrior embarks on a haunting vision quest into Viking Hell to fight for the soul of her dead lover.",29.99,"Atmospheric,Psychological,Female Protagonist",https://cdn.cloudflare.steamstatic.com/steam/apps/414340/header.jpg
+Danganronpa 2: Goodbye Despair,"Jabberwock Island—You and your classmates were ready for fun in the sun until Monokuma returned to restart his murderous game! Trapped in a kill-or-be-killed situation, your only hope rests in solving the island’s mysteries.",19.99,"Anime,Detective,Visual Novel",https://cdn.cloudflare.steamstatic.com/steam/apps/413420/header.jpg
+Yakuza 0,"SEGA’s legendary Japanese series finally comes to PC. Fight like hell through Tokyo and Osaka as junior yakuza Kiryu and Majima. Take a front row seat to 1980s life in Japan in an experience unlike anything else in video gaming, with uncapped framerates and 4K resolutions. A legend is born.",19.99,"Story Rich,Action,Beat 'em up",https://cdn.cloudflare.steamstatic.com/steam/apps/638970/header.jpg
+The Escapists 2,"Craft, Steal, Brawl and Escape! It’s time to bust out of the toughest prisons in the world as you return to the life of an inmate in The Escapists 2, now with multiplayer! Have you got what it takes to escape?",19.99,"Multiplayer,Strategy,Pixel Graphics",https://cdn.cloudflare.steamstatic.com/steam/apps/641990/header.jpg
+"Star Wars: Battlefront 2 (Classic, 2005)","Join the rise of Darth Vader’s elite 501st Legion of Stormtroopers as you fight through an all new story-based saga where every action you take impacts the battlefront and, ultimately, the fate of the Star Wars galaxy.",9.99,"Star Wars,Action,Multiplayer",https://cdn.cloudflare.steamstatic.com/steam/apps/6060/header.jpg
+Wizard101,"On our 10th anniversary, join over 50 million Wizards and help save Wizard City! Enroll in the Ravenwood School of Magical Arts, master powerful spells against tough bosses, and explore fantastical worlds across The Spiral!",0.00,"Massively Multiplayer,RPG,Magic",https://cdn.cloudflare.steamstatic.com/steam/apps/799960/header.jpg
+Life is Strange 2,"After a tragic incident, brothers Sean and Daniel Diaz run away from home. Fearing the police, and dealing with Daniel's new telekinetic power, the boys head to Mexico. Each stop on their journey brings new friends and new challenges.",7.99,"Choices Matter,Story Rich,Adventure",https://cdn.cloudflare.steamstatic.com/steam/apps/532210/header.jpg
+Kingdoms of Amalur: Reckoning™,The Legend of Dead Kel DLC is now available! The legendary pirate Dead Kel and his Hanged Men have returned to haunt the seas of northern Amalur.,19.99,"RPG,Fantasy,Open World",https://cdn.cloudflare.steamstatic.com/steam/apps/102500/header.jpg
+Doom Classic Complete,Doom Classic Complete bundle,14.99,NaN,https://picsum.photos/seed/game/400/200
+"Warhammer 40,000: Dawn of War II: Retribution",Command any of the six unique factions in the next standalone expansion of the critically acclaimed Dawn of War real-time strategy franchise. Choose to build a massive army or lead a small squad of elite heroes into battle and experience a single player campaign customized to your favorite race.,29.99,"Warhammer 40K,Strategy,RTS",https://cdn.cloudflare.steamstatic.com/steam/apps/56437/header.jpg
+GOD WARS The Complete Legend,The latest in full-scale Tactical RPG receiving great reviews all around the world is finally on PC Steam! Enjoy the ensemble cast of heroes who fought in ancient Japan and capture the best in Tactical RPG consisting an overwhelming game volume of 142 battle stages and 160 hours in total play time.,29.99,"RPG,Adventure,Simulation",https://cdn.cloudflare.steamstatic.com/steam/apps/1038810/header.jpg
+Counter-Strike: Source,"Just updated to include player stats, achievements, new scoreboards and more!",9.99,"Shooter,Action,FPS",https://cdn.cloudflare.steamstatic.com/steam/apps/240/header.jpg
+The Evil Within,"Developed by Shinji Mikami -- creator of the seminal Resident Evil series -- and the talented team at Tango Gameworks, The Evil Within embodies the meaning of pure survival horror. Highly-crafted environments, horrifying anxiety, and an intricate story are combined to create an immersive world that will bring you to the height of tension.",19.99,"Horror,Survival Horror,Psychological Horror",https://cdn.cloudflare.steamstatic.com/steam/apps/268050/header.jpg
+The Binding of Isaac: Rebirth Complete Bundle,The Binding of Isaac: Rebirth Complete Bundle bundle,0.00,NaN,https://picsum.photos/seed/game/400/200
+Bright Memory(Early Access) / 光明记忆,《Bright Memory》is developed by an independent game developer FYQD in his spare time.Travel to the sky of land to prevent SAI from digging out the secrets of the rebirth of ancient creatures.This is a war between future science and ancient civilization.,6.99,"Early Access,FPS,Female Protagonist",https://cdn.cloudflare.steamstatic.com/steam/apps/955050/header.jpg
+STAR WARS™ Empire at War - Gold Pack,"Command or corrupt an entire galaxy in the definitive Star Wars strategy collection. It is a time of galactic civil war. Will you take up the reins of the Rebellion, assume control of the Empire, or rule the Star Wars Underworld?",19.99,"Strategy,Star Wars,RTS",https://cdn.cloudflare.steamstatic.com/steam/apps/32470/header.jpg
+Dishonored®: Death of the Outsider™,"From the award-winning developers at Arkane® Studios comes Dishonored®: Death of the Outsider, the next standalone adventure in the critically-acclaimed Dishonored® series.",29.99,"Stealth,Action,First-Person",https://cdn.cloudflare.steamstatic.com/steam/apps/614570/header.jpg
+Street Fighter V,"Experience the intensity of head-to-head battles with Street Fighter® V! Choose from 16 iconic characters, then battle against friends online or offline with a robust variety of match options.",19.99,"Fighting,Multiplayer,2D Fighter",https://cdn.cloudflare.steamstatic.com/steam/apps/310950/header.jpg
+The Jackbox Party Pack 2,"The sequel to the party game phenomenon The Jackbox Party Pack, featuring FIVE fresh, rib-tickling party games! Your phones or tablets are your controllers – no big mess of controllers needed. For up to 8 players plus an Audience of up to 10,000! It’s a game-night riot in a box… without the box!",24.99,"Local Multiplayer,Casual,Comedy",https://cdn.cloudflare.steamstatic.com/steam/apps/397460/header.jpg
+Armored Battle Crew [World War 1] - Tank Warfare and Crew Management Simulator,"Armored Battle Crew is a Tank and Crew Management Simulation game, where your skills as a Tank commander is tested. Customize your tank carefully and make strategic battle choices to achieve mission success! The fate of your crew lies in your hands!",19.99,"Early Access,Tanks,World War I",https://cdn.cloudflare.steamstatic.com/steam/apps/814740/header.jpg
+Battlefleet Gothic: Armada 2,"Battlefleet Gothic: Armada 2 is the new real-time strategy game adapted from Games Workshop’s famous tabletop game that portrays the epic space battles of the Warhammer 40,000 universe.",39.99,"Warhammer 40K,Strategy,Space",https://cdn.cloudflare.steamstatic.com/steam/apps/573100/header.jpg
+RUNNING WITH RIFLES,"RUNNING WITH RIFLES is a top-down tactical shooter with open world RPG elements. In RWR, you join the ranks of an army as a common soldier, just like the thousands around you.",14.99,"Action,Tactical,Shooter",https://cdn.cloudflare.steamstatic.com/steam/apps/270150/header.jpg
+The Witcher: Enhanced Edition Director's Cut,"Become The Witcher, Geralt of Rivia, a legendary monster slayer caught in a web of intrigue woven by forces vying for control of the world. Make difficult decisions and live with the consequences in a game that will immerse you in an extraordinary tale like no other.",9.99,"RPG,Fantasy,Story Rich",https://cdn.cloudflare.steamstatic.com/steam/apps/20900/header.jpg
+Middle-earth™: Shadow of War™,"Experience an epic open-world brought to life by the award-winning Nemesis System. Forge a new Ring of Power, conquer Fortresses in massive battles and dominate Mordor with your personal orc army in Middle-earth™: Shadow of War™.",0.00,"Open World,Action,RPG",https://cdn.cloudflare.steamstatic.com/steam/apps/356190/header.jpg
+Forts,"Forts is a physics-based RTS where foes design and build custom bases, arm them to the teeth and blast their opponent's creations to rubble.",14.99,"Strategy,Base Building,Action",https://cdn.cloudflare.steamstatic.com/steam/apps/410900/header.jpg
+The Lord of the Rings Online™,Join the world’s greatest fellowship of players in the award-winning online re-creation of J. R. R. Tolkien’s legendary Middle-earth.,0.00,"Free to Play,MMORPG,Massively Multiplayer",https://cdn.cloudflare.steamstatic.com/steam/apps/212500/header.jpg
+Stellaris: Ascension Pack,Stellaris: Ascension Pack bundle,0.00,NaN,https://picsum.photos/seed/game/400/200
+Dungeon Munchies,Hunt down monsters to cook and eat them! You’ve been revived in a massive underground complex and you must leave this bizarre facility.,13.99,"Early Access,Indie,Action",https://cdn.cloudflare.steamstatic.com/steam/apps/799640/header.jpg
+Grand Theft Auto IV: Complete Edition,"PLEASE NOTE: Microsoft no longer supports creating Games for Windows-LIVE accounts within Grand Theft Auto IV. You can create an account through account.xbox.com and then log into your account in game. This standalone retail title spans three distinct stories, interwoven to create one of the most unique and engaging single-player...",29.99,"Open World,Action,Bowling",https://cdn.cloudflare.steamstatic.com/steam/apps/901583/header.jpg
+Pillars of Eternity,"Prepare to be enchanted by a world where the choices you make and the paths you choose shape your destiny. Obsidian Entertainment, the developer of Fallout: New Vegas™ and South Park: The Stick of Truth™, together with Paradox Interactive is proud to present Pillars of Eternity.",59.98,"RPG,Fantasy,Isometric",https://cdn.cloudflare.steamstatic.com/steam/apps/291650/header.jpg
+Graveyard Keeper,"Build and manage a medieval graveyard while facing ethical dilemmas and making questionable decisions. Welcome to Graveyard Keeper, the most inaccurate medieval cemetery sim of the year.",19.99,"Pixel Graphics,Crafting,RPG",https://cdn.cloudflare.steamstatic.com/steam/apps/599140/header.jpg
+The Elder Scrolls®: Legends™,The Elder Scrolls: Legends™ is an award- winning free-to-play strategy card game based on the world and lore of the Elder Scrolls series. Play for hours or minutes across many game modes that are easy to learn but challenging to master.,0.00,"Free to Play,Card Game,Trading Card Game",https://cdn.cloudflare.steamstatic.com/steam/apps/364470/header.jpg
+RESIDENT EVIL 2 / BIOHAZARD RE:2 Deluxe Edition,RESIDENT EVIL 2 / BIOHAZARD RE:2 Deluxe Edition bundle,69.99,NaN,https://picsum.photos/seed/game/400/200
+Northgard,Northgard is a strategy game based on Norse mythology in which you control a clan of Vikings vying for the control of a mysterious newfound continent.,29.99,"Strategy,City Builder,RTS",https://cdn.cloudflare.steamstatic.com/steam/apps/466560/header.jpg
+Realm Royale,Be the last Champion standing in Realm Royale! Loot deadly weapons and powerful abilities to create your own Champion. Explore a fantasy world from horseback while outrunning the deadly fog. Can you survive the first 100-person fantasy Battle Royale?,0.00,"Early Access,Battle Royale,Free to Play",https://cdn.cloudflare.steamstatic.com/steam/apps/813820/header.jpg
+Sid Meier’s Civilization VI Gold Edition,Sid Meier’s Civilization VI Gold Edition bundle,0.00,NaN,https://picsum.photos/seed/game/400/200
+Gang Beasts,"Gang Beasts is a silly multiplayer party game with surly gelatinous characters, brutal slapstick fight sequences, and absurd hazardous environments, set in the mean streets of Beef City.",19.99,"Funny,Multiplayer,Fighting",https://cdn.cloudflare.steamstatic.com/steam/apps/285900/header.jpg
+Age of Empires Legacy Bundle,Age of Empires Legacy Bundle bundle,0.00,NaN,https://picsum.photos/seed/game/400/200
+Total War: MEDIEVAL II – Definitive Edition,"Spanning the most turbulent era in Western history, your quest for territory and power takes you through Europe, Africa, the Middle East, and even onto the shores of the New World.",24.99,"Strategy,Medieval,Historical",https://cdn.cloudflare.steamstatic.com/steam/apps/4700/header.jpg
+Tales of Vesperia: Definitive Edition,Celebrate the 10th anniversary of Tales of Vesperia and the return of this fan-favorite with the Definitive Edition!,49.99,"JRPG,RPG,Anime",https://cdn.cloudflare.steamstatic.com/steam/apps/738540/header.jpg
+FINAL FANTASY X/X-2 HD Remaster,"FINAL FANTASY X/X-2 HD Remaster celebrates two of the most cherished and beloved entries to the world-renowned franchise, completely remastered in gorgeous High Definition & now available on PC / Windows!",29.99,"JRPG,Story Rich,RPG",https://cdn.cloudflare.steamstatic.com/steam/apps/359870/header.jpg
+Return of the Obra Dinn,Lost at sea 1803 ~ The good ship Obra Dinn.,19.99,"Detective,Mystery,Story Rich",https://cdn.cloudflare.steamstatic.com/steam/apps/653530/header.jpg
+Castle Crashers®,"Hack, slash, and smash your way to victory in this award winning 2D arcade adventure from The Behemoth!",14.99,"Co-op,Action,Multiplayer",https://cdn.cloudflare.steamstatic.com/steam/apps/204360/header.jpg
+FINAL FANTASY XV EPISODE ARDYN COMPLETE EDITION,FINAL FANTASY XV EPISODE ARDYN COMPLETE EDITION bundle,0.00,NaN,https://picsum.photos/seed/game/400/200
+Call of Duty®: WWII,Call of Duty® returns to its roots with Call of Duty®: WWII - a breathtaking experience that redefines World War II for a new gaming generation.,1.02,"World War II,FPS,Multiplayer",https://cdn.cloudflare.steamstatic.com/steam/apps/476600/header.jpg
+MudRunner,"MudRunner is the ultimate off-road experience putting the players in the driver seat and dares them to take charge of incredible all-terrain vehicles, venturing across extreme Siberian landscapes with only a map and compass as guides!",24.99,"Offroad,Simulation,Driving",https://cdn.cloudflare.steamstatic.com/steam/apps/675010/header.jpg
+Keep Talking and Nobody Explodes,"Find yourself trapped alone in a room with a ticking time bomb. Your friends have the manual to defuse it, but they can't see the bomb, so you're going to have to talk it out – fast!",76.95,"Co-op,Puzzle,Local Co-Op",https://cdn.cloudflare.steamstatic.com/steam/apps/341800/header.jpg
+SPORE™,"From Single Cell to Galactic God, evolve your creature in a universe of your own creations. Play through Spore's five evolutionary stages: Cell, Creature, Tribe, Civilization, and Space. Each stage has its own unique style, challenges, and goals.",19.99,"Simulation,Sandbox,Open World",https://cdn.cloudflare.steamstatic.com/steam/apps/17390/header.jpg
+Contra Anniversary Collection,The Contra Anniversary Collection brings this classic Run and Gun franchise back to modern platforms and a new generation of gamers.,19.99,"Action,2D,Classic",https://cdn.cloudflare.steamstatic.com/steam/apps/1018020/header.jpg
+Fishing Planet,"Fishing Planet is a FREE to play unique and highly realistic online first-person multiplayer fishing simulator developed for anglers to bring you the full thrill of actual fishing! Choose your lures, make your trophy catches, discover new possibilities and sharpen your real angling skills anywhere, anytime with your friends!",19.99,"Fishing,Free to Play,Simulation",https://cdn.cloudflare.steamstatic.com/steam/apps/380600/header.jpg
+Grand Theft Auto V: Premium Online Edition & Great White Shark Card Bundle,Grand Theft Auto V: Premium Online Edition & Great White Shark Card Bundle bundle,0.00,NaN,https://picsum.photos/seed/game/400/200
+Just Cause™ 3,"With over 1000 km² of complete freedom from sky to seabed, Rico Rodriguez returns to unleash chaos in the most creative and explosive ways imaginable.",19.99,"Open World,Action,Destruction",https://cdn.cloudflare.steamstatic.com/steam/apps/225540/header.jpg
+BioShock Infinite,"Indebted to the wrong people, with his life on the line, veteran of the U.S. Cavalry and now hired gun, Booker DeWitt has only one opportunity to wipe his slate clean. He must rescue Elizabeth, a mysterious girl imprisoned since childhood and locked up in the flying city of Columbia.",29.99,"FPS,Story Rich,Action",https://cdn.cloudflare.steamstatic.com/steam/apps/8870/header.jpg
+Men of War: Assault Squad 2,Men of War: Assault Squad 2 features new single player style skirmish modes that take players from extreme tank combat to deadly sniper stealth missions. Commanders can now faceoff against opponents on various new multiplayer 1v1 – 8v8 maps.,84.97,"Strategy,World War II,War",https://cdn.cloudflare.steamstatic.com/steam/apps/244450/header.jpg
+Dungeons & Dragons Online®,Enter a world of danger and adventure with Dungeons & Dragons Online® based on the beloved RPG that started it all.,0.00,"Free to Play,RPG,MMORPG",https://cdn.cloudflare.steamstatic.com/steam/apps/206480/header.jpg
+NecroDancer ULTIMATE PACK,NecroDancer ULTIMATE PACK bundle,58.89,NaN,https://picsum.photos/seed/game/400/200
+JUMP FORCE,"Create your own avatar to fight alongside the most powerful Manga heroes in an original Story Mode, or head to the Online Lobby to challenge other players and discover lots of modes and activities.",59.99,"Fighting,Anime,Action",https://cdn.cloudflare.steamstatic.com/steam/apps/816020/header.jpg
+Desert Skies,"Desert Skies takes survival to the air! Build an airship and fly on an adventure through the deserts of the Wild West. Look for places to land and scavenge for loot, expand your airship and craft new equipment, but beware the dangers lurking beneath the sands!",19.99,"Early Access,Indie,Action",https://cdn.cloudflare.steamstatic.com/steam/apps/1048950/header.jpg
+Ring of Elysium,"Escape an astonishing disaster in Ring of Elysium, a battle royale shooter developed by Aurora Studio.",0.00,"Early Access,Free to Play,Battle Royale",https://cdn.cloudflare.steamstatic.com/steam/apps/755790/header.jpg
+Super Neptunia RPG / 勇者ネプテューヌ /勇者戰幾少女,"Neptune, stricken with amnesia, awakes in a mysterious world where 2D reigns supreme. With a little help from her friends, Neptune embark on a journey to regain her memory, save the world, and 3D games as we know it.",39.99,"RPG,Anime,JRPG",https://cdn.cloudflare.steamstatic.com/steam/apps/1016960/header.jpg
+METAL GEAR SOLID V: THE PHANTOM PAIN,"Ushering in a new era for the METAL GEAR franchise with cutting-edge technology powered by the Fox Engine, METAL GEAR SOLID V: The Phantom Pain, will provide players a first-rate gaming experience as they are offered tactical freedom to carry out open-world missions.",19.99,"Stealth,Open World,Story Rich",https://cdn.cloudflare.steamstatic.com/steam/apps/287700/header.jpg
+TEKKEN 7,"Discover the epic conclusion of the long-time clan warfare between members of the Mishima family. Powered by Unreal Engine 4, the legendary fighting game franchise fights back with stunning story-driven cinematic battles and intense duels that can be enjoyed with friends and rivals.",39.99,"Fighting,Multiplayer,Action",https://cdn.cloudflare.steamstatic.com/steam/apps/389730/header.jpg
+Golf It!,"Golf It! is a multiplayer Minigolf game with focus on a dynamic, fun and creative multiplayer experience. One of the most exciting features is a Multiplayer Editor, where you can build and play custom maps together with your friends.",8.99,"Early Access,Mini Golf,Golf",https://cdn.cloudflare.steamstatic.com/steam/apps/571740/header.jpg
+Shadow Tactics: Blades of the Shogun,"Shadow Tactics is a hardcore tactical stealth game set in Japan around the Edo period. A new Shogun seizes power over Japan and enforces nationwide peace. In his battle against conspiracy and rebellion, he recruits five specialists with extraordinary skills for assassination, sabotage and espionage.",39.99,"Stealth,Tactical,Ninja",https://cdn.cloudflare.steamstatic.com/steam/apps/418240/header.jpg
+Heroes & Generals,"Shoot, blow sh!t up, fly or bark orders in the ultimate Free-to-Play, large scale, multiplayer, shooter experience. Thousands of players in multiple battles fighting one massive war of nations. The first to capture 15 cities takes the glory.",0.00,"Free to Play,World War II,FPS",https://cdn.cloudflare.steamstatic.com/steam/apps/227940/header.jpg
+Ultimate Doom,"The complete megahit game that set the world afire. Plus All-New Episode IV: Thy Flesh Consumed. The demons came and the marines died. Except one. You are the last defense against these hell-spawned hordes. Prepare for the most intense mutant-laden, blood-splattered action ever!",14.99,"Classic,FPS,Action",https://cdn.cloudflare.steamstatic.com/steam/apps/2280/header.jpg
+GORN,"GORN is a ludicrously violent VR gladiator simulator, made by Free Lives, the developers of Broforce and Genital Jousting.",19.99,"Early Access,VR,Violent",https://cdn.cloudflare.steamstatic.com/steam/apps/578620/header.jpg
+DRAGON BALL FighterZ,DRAGON BALL FighterZ is born from what makes the DRAGON BALL series so loved and famous: endless spectacular fights with its all-powerful fighters.,59.99,"Fighting,Anime,2D Fighter",https://cdn.cloudflare.steamstatic.com/steam/apps/678950/header.jpg
+Fantasy Grounds,Fantasy Grounds is a hybrid application which allows you to play and create your own RPG games. It facilitates this play and provides some optional add-on Adventure modules which can be loaded and played with very little preparation. Each game will require a GameMaster (GM) and one or more players.,7.99,"RPG,Strategy,Software",https://cdn.cloudflare.steamstatic.com/steam/apps/252690/header.jpg

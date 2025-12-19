@@ -138,6 +138,7 @@ namespace Gauniv.Client.Services
                         PropertyNameCaseInsensitive = true
                     });
 
+
                     return local_result ?? new PagedResultDto<GameDto>();
                 }
 
@@ -165,6 +166,7 @@ namespace Gauniv.Client.Services
                         PropertyNameCaseInsensitive = true
                     });
 
+
                     return local_result ?? new PagedResultDto<GameDto>();
                 }
 
@@ -191,6 +193,7 @@ namespace Gauniv.Client.Services
                     {
                         PropertyNameCaseInsensitive = true
                     });
+
 
                     return local_game;
                 }

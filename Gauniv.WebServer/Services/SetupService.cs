@@ -99,28 +99,35 @@ namespace Gauniv.WebServer.Services
                     
                     if (File.Exists(local_csvPath))
                     {
-                        var local_lines = File.ReadAllLines(local_csvPath);
-                        // Skip header line
-                        for (int i = 1; i < local_lines.Length; i++)
+                        using (var local_reader = new StreamReader(local_csvPath))
                         {
-                            var local_parts = local_lines[i].Split(',');
-                            if (local_parts.Length >= 5)
+                            // Skip header
+                            local_reader.ReadLine();
+                            
+                            while (!local_reader.EndOfStream)
                             {
-                                var local_title = local_parts[0];
-                                var local_description = local_parts[1];
-                                var local_price = decimal.Parse(local_parts[2]);
-                                var local_categories = local_parts[3].Trim('"').Split(',').Select(c => c.Trim()).ToList();
-                                var local_imageUrl = local_parts[4];
+                                var local_line = local_reader.ReadLine();
+                                if (string.IsNullOrWhiteSpace(local_line)) continue;
                                 
-                                local_sampleGames.Add(new Game
+                                var local_parts = ParseCsvLine(local_line);
+                                if (local_parts.Count >= 5)
                                 {
-                                    Title = local_title,
-                                    Description = local_description,
-                                    Price = local_price,
-                                    Categories = local_categories,
-                                    ImageUrl = local_imageUrl,
-                                    payload = Encoding.UTF8.GetBytes($"Sample game binary for {local_title}")
-                                });
+                                    var local_title = local_parts[0];
+                                    var local_description = local_parts[1];
+                                    var local_price = decimal.Parse(local_parts[2]);
+                                    var local_categories = local_parts[3].Split(',').Select(c => c.Trim()).ToList();
+                                    var local_imageUrl = local_parts[4];
+                                    
+                                    local_sampleGames.Add(new Game
+                                    {
+                                        Title = local_title,
+                                        Description = local_description,
+                                        Price = local_price,
+                                        Categories = local_categories,
+                                        ImageUrl = local_imageUrl,
+                                        payload = Encoding.UTF8.GetBytes($"Sample game binary for {local_title}")
+                                    });
+                                }
                             }
                         }
                     }
@@ -143,6 +150,34 @@ namespace Gauniv.WebServer.Services
             }
         }
 
+        private static List<string> ParseCsvLine(string line)
+        {
+            var result = new List<string>();
+            var current = new System.Text.StringBuilder();
+            bool inQuotes = false;
+
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+
+                if (c == '"')
+                {
+                    inQuotes = !inQuotes;
+                }
+                else if (c == ',' && !inQuotes)
+                {
+                    result.Add(current.ToString());
+                    current.Clear();
+                }
+                else
+                {
+                    current.Append(c);
+                }
+            }
+
+            result.Add(current.ToString());
+            return result;
+        }
         public Task StopAsync(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
