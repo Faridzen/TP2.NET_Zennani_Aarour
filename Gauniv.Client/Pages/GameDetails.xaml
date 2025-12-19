@@ -151,6 +151,14 @@
                                        VerticalOptions="Center"/>
                             </HorizontalStackLayout>
                             
+                            <VerticalStackLayout IsVisible="{Binding IsDownloading}" Spacing="5" Margin="0,0,0,10">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Text="Téléchargement..." FontSize="12" TextColor="#66c0f4"/>
+                                    <Label Grid.Column="1" Text="{Binding DownloadProgress, StringFormat='{0:P0}'}" FontSize="12" TextColor="#66c0f4"/>
+                                </Grid>
+                                <ProgressBar Progress="{Binding DownloadProgress}" ProgressColor="#66c0f4" HeightRequest="10"/>
+                            </VerticalStackLayout>
+
                             <Button Text="Télécharger"
                                     Command="{Binding DownloadCommand}"
                                     BackgroundColor="#66c0f4"
@@ -162,6 +170,10 @@
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsDownloaded}" Value="True">
                                         <Setter Property="IsVisible" Value="False"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsDownloading}" Value="True">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Setter Property="Opacity" Value="0.6"/>
                                     </DataTrigger>
                                 </Button.Triggers>
                             </Button>
@@ -179,9 +191,8 @@
                                         <Setter Property="IsVisible" Value="False"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsRunning}" Value="True">
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                        <Setter Property="BackgroundColor" Value="#3a4f0a"/>
-                                        <Setter Property="Text" Value="⏸️ En cours..."/>
+                                        <Setter Property="BackgroundColor" Value="#c23030"/>
+                                        <Setter Property="Text" Value="🛑 Arrêter"/>
                                     </DataTrigger>
                                 </Button.Triggers>
                             </Button>

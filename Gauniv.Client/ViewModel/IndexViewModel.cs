@@ -106,11 +106,7 @@ namespace Gauniv.Client.ViewModel
             }
         }
 
-        private async Task LoadInitialDataAsync()
-        {
-            await LoadCategoriesAsync();
-            await LoadGamesAsync();
-        }
+
 
        
         private async Task LoadCategoriesAsync()
@@ -142,35 +138,55 @@ namespace Gauniv.Client.ViewModel
         }
 
         [RelayCommand]
-        private async Task LoadGamesAsync()
+        public async Task LoadInitialDataAsync()
         {
-            IsLoading = true;
-            StatusMessage = "Chargement des jeux...";
-            _currentOffset = 0;
-
-            try
+            if (IsLoading) return;
+            
+            try 
             {
-                var local_result = await _networkService.GetGamesAsync(offset: 0, limit: PageSize);
-                _totalCount = local_result.TotalCount;
-
+                IsLoading = true;
                 _allGames.Clear();
-                foreach (var local_game in local_result.Items)
-                {
-                    local_game.IsOwned = _ownedGameIds.Contains(local_game.Id);
-                    _allGames.Add(local_game);
-                }
+                Games.Clear();
+                _currentOffset = 0;
 
-                _currentOffset = local_result.Items.Count;
-                ApplyFilters();
-                StatusMessage = $"{_totalCount} jeu(x) disponible(s)";
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Erreur: {ex.Message}";
+                await LoadCategoriesAsync();
+                await LoadGamesAsync();
             }
             finally
             {
                 IsLoading = false;
+            }
+        }
+
+        private async Task LoadGamesAsync()
+        {
+            try
+            {
+                var local_selectedCategories = CategoryItems.Where(c => c.IsSelected).Select(c => c.Name).ToArray();
+                var local_result = await _networkService.GetGamesAsync(
+                    offset: _currentOffset, 
+                    limit: PageSize, 
+                    categories: local_selectedCategories,
+                    search: SearchText);
+
+                if (local_result != null)
+                {
+                    _totalCount = local_result.TotalCount;
+                    
+                    foreach (var local_game in local_result.Items)
+                    {
+                        local_game.IsOwned = _ownedGameIds.Contains(local_game.Id);
+                        
+                        // En mode serveur, on fait confiance au résultat renvoyé
+                        _allGames.Add(local_game);
+                        Games.Add(local_game);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"LoadGames error: {ex.Message}");
+                StatusMessage = "Erreur lors du chargement des jeux";
             }
         }
 
@@ -185,45 +201,24 @@ namespace Gauniv.Client.ViewModel
 
             try
             {
-                var local_result = await _networkService.GetGamesAsync(offset: _currentOffset, limit: PageSize);
+                var local_selectedCategories = CategoryItems.Where(c => c.IsSelected).Select(c => c.Name).ToArray();
+                var local_result = await _networkService.GetGamesAsync(
+                    offset: _currentOffset, 
+                    limit: PageSize,
+                    categories: local_selectedCategories,
+                    search: SearchText);
 
-                foreach (var local_game in local_result.Items)
+                if (local_result != null)
                 {
-                    local_game.IsOwned = _ownedGameIds.Contains(local_game.Id);
-                    _allGames.Add(local_game);
-                    
-                    // Appliquer les filtres au nouveau jeu avant de l'ajouter
-                    bool local_passesFilters = true;
-                    
-                    // Filtre par catégorie (multi-sélection)
-                    var local_selectedCategories = CategoryItems.Where(c => c.IsSelected).Select(c => c.Name).ToList();
-                    if (local_selectedCategories.Any())
+                    foreach (var local_game in local_result.Items)
                     {
-                        local_passesFilters = local_game.Categories != null && 
-                            local_game.Categories.Any(c => local_selectedCategories.Contains(c, StringComparer.OrdinalIgnoreCase));
-                    }
-                    
-                    // Filtre par prix
-                    if (local_passesFilters)
-                    {
-                        local_passesFilters = local_game.Price >= MinPrice && local_game.Price <= MaxPrice;
-                    }
-                    
-                    // Filtre par recherche
-                    if (local_passesFilters && !string.IsNullOrWhiteSpace(SearchText))
-                    {
-                        local_passesFilters = local_game.Title.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                            local_game.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
-                    }
-                    
-                    // Ajouter seulement si passe tous les filtres
-                    if (local_passesFilters)
-                    {
+                        local_game.IsOwned = _ownedGameIds.Contains(local_game.Id);
+                        _allGames.Add(local_game);
                         Games.Add(local_game);
                     }
-                }
 
-                _currentOffset += local_result.Items.Count;
+                    _currentOffset += local_result.Items.Count;
+                }
             }
             catch (Exception ex)
             {
@@ -286,34 +281,74 @@ namespace Gauniv.Client.ViewModel
             }
         }
 
-        private void ApplyFilters()
+        private CancellationTokenSource? _searchCts;
+
+        private async void ApplyFilters()
         {
-            var local_filtered = _allGames.AsEnumerable();
+            // Annuler la recherche précédente si elle est encore en cours (debounce)
+            _searchCts?.Cancel();
+            _searchCts = new CancellationTokenSource();
+            var local_token = _searchCts.Token;
+
+            try
+            {
+                // Attendre un peu pour éviter de surcharger le serveur si l'utilisateur tape vite
+                await Task.Delay(500, local_token);
+
+                if (local_token.IsCancellationRequested) return;
+
+                _currentOffset = 0;
+                _allGames.Clear();
+                Games.Clear();
+                
+                IsLoading = true;
+                await LoadGamesAsync();
+            }
+            catch (TaskCanceledException)
+            {
+                // Normal si on tape vite
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ApplyFilters error: {ex.Message}");
+            }
+            finally
+            {
+                if (!local_token.IsCancellationRequested)
+                    IsLoading = false;
+            }
+        }
+
+        private bool PassesFilters(Dtos.GameDto game)
+        {
+            if (game == null) return false;
 
             // Filtre par catégorie (multi-sélection)
             var local_selectedCategories = CategoryItems.Where(c => c.IsSelected).Select(c => c.Name).ToList();
             if (local_selectedCategories.Any())
             {
-                local_filtered = local_filtered.Where(g => 
-                    g.Categories != null && g.Categories.Any(c => local_selectedCategories.Contains(c, StringComparer.OrdinalIgnoreCase)));
+                bool local_hasCategory = game.Categories != null && 
+                    game.Categories.Any(c => local_selectedCategories.Contains(c, StringComparer.OrdinalIgnoreCase));
+                
+                if (!local_hasCategory) return false;
             }
 
             // Filtre par prix
-            local_filtered = local_filtered.Where(g => g.Price >= MinPrice && g.Price <= MaxPrice);
+            if (game.Price < MinPrice || game.Price > MaxPrice)
+                return false;
 
             // Filtre par recherche
-            if (!string.IsNullOrWhiteSpace(SearchText))
+            var local_searchText = SearchText?.Trim();
+            if (!string.IsNullOrWhiteSpace(local_searchText))
             {
-                local_filtered = local_filtered.Where(g => 
-                    g.Title.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                    g.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+                bool local_titleMatch = game.Title != null && game.Title.Contains(local_searchText, StringComparison.OrdinalIgnoreCase);
+                bool local_descMatch = game.Description != null && game.Description.Contains(local_searchText, StringComparison.OrdinalIgnoreCase);
+                
+                if (!local_titleMatch && !local_descMatch)
+                    return false;
             }
 
-            Games.Clear();
-            foreach (var local_game in local_filtered)
-            {
-                Games.Add(local_game);
-            }
+            return true;
         }
 
      

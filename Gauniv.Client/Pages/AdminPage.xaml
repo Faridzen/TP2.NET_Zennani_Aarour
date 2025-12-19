@@ -68,9 +68,28 @@
                         <Label Text="Éditer / Ajouter un Jeu" FontAttributes="Bold" TextColor="#66c0f4"/>
                         <Entry Placeholder="Titre" Text="{Binding GameTitle}" TextColor="White" PlaceholderColor="#8f98a0"/>
                         <Editor Placeholder="Description" Text="{Binding GameDescription}" HeightRequest="80" TextColor="White" PlaceholderColor="#8f98a0"/>
-                        <Entry Placeholder="Prix" Text="{Binding GamePrice}" Keyboard="Numeric" TextColor="White" PlaceholderColor="#8f98a0"/>
+                        <HorizontalStackLayout Spacing="10">
+                            <Label Text="Prix :" VerticalOptions="Center" TextColor="#8f98a0" WidthRequest="60"/>
+                            <Picker ItemsSource="{Binding AvailablePrices}" SelectedItem="{Binding GamePrice}" 
+                                    TextColor="White" BackgroundColor="#2a475e" HorizontalOptions="FillAndExpand"/>
+                        </HorizontalStackLayout>
+                        
                         <Entry Placeholder="URL Image" Text="{Binding GameImageUrl}" TextColor="White" PlaceholderColor="#8f98a0"/>
-                        <Entry Placeholder="Catégories (Action, RPG...)" Text="{Binding GameCategoriesCsv}" TextColor="White" PlaceholderColor="#8f98a0"/>
+                        
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <Picker Grid.Column="0" 
+                                    Title="Choisir une catégorie"
+                                    ItemsSource="{Binding Categories}"
+                                    SelectedItem="{Binding SelectedCategoryToAdd}"
+                                    ItemDisplayBinding="{Binding Name}"
+                                    TextColor="White"
+                                    BackgroundColor="#2a475e"/>
+                            <Button Grid.Column="1" Text="Ajouter" Command="{Binding AddCategoryToGameCommand}" 
+                                    BackgroundColor="#2a475e" TextColor="White"/>
+                        </Grid>
+                        
+                        <Entry Placeholder="Catégories sélectionnées" Text="{Binding GameCategoriesCsv}" IsReadOnly="True" 
+                               TextColor="#8f98a0" PlaceholderColor="#8f98a0" FontSize="11"/>
                         
                         <VerticalStackLayout Spacing="5" Margin="0,5">
                             <Label Text="Exécutable du jeu (.exe)" TextColor="#66c0f4" FontSize="12" FontAttributes="Bold"/>

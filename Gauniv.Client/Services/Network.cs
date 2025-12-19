@@ -109,7 +109,7 @@ namespace Gauniv.Client.Services
         }
 
        
-        public async Task<PagedResultDto<GameDto>> GetGamesAsync(int offset = 0, int limit = 10, string[]? categories = null)
+        public async Task<PagedResultDto<GameDto>> GetGamesAsync(int offset = 0, int limit = 10, string[]? categories = null, string? search = null)
         {
             try
             {
@@ -121,6 +121,11 @@ namespace Gauniv.Client.Services
                     {
                         local_queryParams += $"&category={Uri.EscapeDataString(local_category)}";
                     }
+                }
+
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    local_queryParams += $"&search={Uri.EscapeDataString(search)}";
                 }
 
                 var local_response = await httpClient.GetAsync($"{BaseUrl}List{local_queryParams}");
@@ -271,16 +276,34 @@ namespace Gauniv.Client.Services
         }
 
         
-        public async Task<bool> DownloadGameAsync(int gameId, string savePath)
+        public async Task<bool> DownloadGameAsync(int gameId, string savePath, IProgress<double>? progress = null)
         {
             try
             {
-                var local_response = await httpClient.GetAsync($"{BaseUrl}Download/{gameId}");
+                // Utiliser ResponseHeadersRead pour ne pas charger tout en mémoire immédiatement
+                using var local_response = await httpClient.GetAsync($"{BaseUrl}Download/{gameId}", HttpCompletionOption.ResponseHeadersRead);
 
                 if (local_response.IsSuccessStatusCode)
                 {
-                    var local_fileBytes = await local_response.Content.ReadAsByteArrayAsync();
-                    await File.WriteAllBytesAsync(savePath, local_fileBytes);
+                    var local_totalBytes = local_response.Content.Headers.ContentLength;
+                    using var local_contentStream = await local_response.Content.ReadAsStreamAsync();
+                    using var local_fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
+
+                    var local_buffer = new byte[8192];
+                    long local_totalBytesRead = 0;
+                    int local_bytesRead;
+
+                    while ((local_bytesRead = await local_contentStream.ReadAsync(local_buffer, 0, local_buffer.Length)) != 0)
+                    {
+                        await local_fileStream.WriteAsync(local_buffer, 0, local_bytesRead);
+                        local_totalBytesRead += local_bytesRead;
+
+                        if (local_totalBytes.HasValue)
+                        {
+                            progress?.Report((double)local_totalBytesRead / local_totalBytes.Value);
+                        }
+                    }
+
                     return true;
                 }
 
@@ -315,7 +338,7 @@ namespace Gauniv.Client.Services
                 
                 local_content.Add(new StringContent(title), "title");
                 local_content.Add(new StringContent(description ?? ""), "description");
-                local_content.Add(new StringContent(price.ToString()), "price");
+                local_content.Add(new StringContent(price.ToString(System.Globalization.CultureInfo.InvariantCulture)), "price");
                 local_content.Add(new StringContent(categoriesCsv ?? ""), "categories");
 
                 if (!string.IsNullOrEmpty(executablePath) && File.Exists(executablePath))

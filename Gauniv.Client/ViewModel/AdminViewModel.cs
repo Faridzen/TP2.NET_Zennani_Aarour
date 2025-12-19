@@ -56,11 +56,45 @@ namespace Gauniv.Client.ViewModel
         [ObservableProperty]
         private string executableFileName = "Aucun fichier sélectionné";
 
+        [ObservableProperty]
+        private ObservableCollection<decimal> availablePrices = new();
+
+        [ObservableProperty]
+        private CategoryDto? selectedCategoryToAdd;
+
         public bool HasSelectedExecutable => !string.IsNullOrEmpty(ExecutablePath);
 
         public AdminViewModel()
         {
             _networkService = NetworkService.Instance;
+            InitializePrices();
+        }
+
+        private void InitializePrices()
+        {
+            AvailablePrices = new ObservableCollection<decimal>
+            {
+                0m, 4.99m, 9.99m, 14.99m, 19.99m, 29.99m, 39.99m, 49.99m, 59.99m, 69.99m
+            };
+        }
+
+        [RelayCommand]
+        private void AddCategoryToGame()
+        {
+            if (SelectedCategoryToAdd == null) return;
+
+            var local_catName = SelectedCategoryToAdd.Name;
+            var local_currentCats = GameCategoriesCsv?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                                     .Select(c => c.Trim())
+                                                     .ToList() ?? new List<string>();
+
+            if (!local_currentCats.Contains(local_catName, StringComparer.OrdinalIgnoreCase))
+            {
+                local_currentCats.Add(local_catName);
+                GameCategoriesCsv = string.Join(", ", local_currentCats);
+            }
+            
+            SelectedCategoryToAdd = null; // Reset selection
         }
 
         [RelayCommand]

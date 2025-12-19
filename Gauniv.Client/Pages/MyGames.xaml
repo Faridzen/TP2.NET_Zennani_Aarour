@@ -56,8 +56,12 @@
                            BorderColor="#2a475e"
                            BackgroundColor="#16202d"
                            HeightRequest="380">
-                        
                         <Grid RowDefinitions="180,*,Auto">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyGamesViewModel}}, Path=ViewGameDetailsCommand}"
+                                    CommandParameter="{Binding .}"/>
+                            </Grid.GestureRecognizers>
                             
                             <!-- Image du jeu -->
                             <Frame Grid.Row="0"

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Gauniv.Client.ViewModel
 {
-    public partial class MyGamesViewModel: ObservableObject
+    public partial class MyGamesViewModel : ObservableObject
     {
         private readonly NetworkService _networkService;
         private bool _hasLoadedOnce = false;
@@ -23,25 +23,22 @@ namespace Gauniv.Client.ViewModel
         private bool _isLoadingMore = false;
 
         // Collection observable pour afficher les jeux dans l'UI
-        [ObservableProperty]
-        private ObservableCollection<Dtos.GameDto> games = new();
+        [ObservableProperty] private ObservableCollection<Dtos.GameDto> games = new();
 
-        [ObservableProperty]
-        private bool isLoading = false;
+        [ObservableProperty] private bool isLoading = false;
 
-        [ObservableProperty]
-        private string statusMessage = "";
+        [ObservableProperty] private string statusMessage = "";
 
         public MyGamesViewModel()
         {
             _networkService = NetworkService.Instance;
-            
+
             // Écouter l'événement de connexion
             _networkService.OnConnected += OnUserConnected;
-            
+
             // Écouter l'événement d'achat de jeu
             _networkService.OnGamePurchased += OnGamePurchased;
-            
+
             // Charger les jeux si déjà connecté
             if (!string.IsNullOrEmpty(_networkService.Token))
             {
@@ -145,6 +142,23 @@ namespace Gauniv.Client.ViewModel
                 {
                     StatusMessage = "Échec du téléchargement";
                 }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Erreur: {ex.Message}";
+            }
+        }
+
+        [RelayCommand]
+        private async Task ViewGameDetailsAsync(Dtos.GameDto game)
+        {
+            if (game == null) return;
+            
+            StatusMessage = $"Ouverture de {game.Title}...";
+
+            try
+            {
+                await Shell.Current.GoToAsync($"///gamedetails?gameId={game.Id}");
             }
             catch (Exception ex)
             {

@@ -35,4 +35,13 @@ public partial class Index : ContentPage
 		InitializeComponent();
 		BindingContext = new ViewModel.IndexViewModel();
 	}
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is ViewModel.IndexViewModel local_vm)
+        {
+            await local_vm.LoadInitialDataAsync();
+        }
+    }
 }

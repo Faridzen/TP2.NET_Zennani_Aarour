@@ -167,12 +167,20 @@ namespace Gauniv.Client.ViewModel
             }
         }
 
+        [ObservableProperty]
+        private double downloadProgress = 0;
+
+        [ObservableProperty]
+        private bool isDownloading = false;
+
         [RelayCommand]
         private async Task DownloadAsync()
         {
             if (Game == null) return;
 
             StatusMessage = "Téléchargement en cours...";
+            IsDownloading = true;
+            DownloadProgress = 0;
 
             try
             {
@@ -186,7 +194,8 @@ namespace Gauniv.Client.ViewModel
                 // Créer le dossier si nécessaire
                 Directory.CreateDirectory(Path.GetDirectoryName(local_savePath)!);
 
-                bool local_success = await _networkService.DownloadGameAsync(Game.Id, local_savePath);
+                var local_progress = new Progress<double>(p => DownloadProgress = p);
+                bool local_success = await _networkService.DownloadGameAsync(Game.Id, local_savePath, local_progress);
 
                 if (local_success)
                 {
@@ -205,6 +214,10 @@ namespace Gauniv.Client.ViewModel
                 StatusMessage = $"❌ Erreur de téléchargement: {ex.Message}";
                 Debug.WriteLine($"Download error: {ex}");
             }
+            finally
+            {
+                IsDownloading = false;
+            }
         }
 
         [RelayCommand]
@@ -216,7 +229,21 @@ namespace Gauniv.Client.ViewModel
             {
                 if (IsRunning)
                 {
-                    StatusMessage = "⚠️ Le jeu est déjà en cours d'exécution";
+                    StatusMessage = "🛑 Arrêt du jeu...";
+                    try 
+                    {
+                        if (_gameProcess != null && !_gameProcess.HasExited)
+                        {
+                            _gameProcess.Kill();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Error killing process: {ex.Message}");
+                    }
+                    
+                    IsRunning = false;
+                    StatusMessage = "✅ Jeu arrêté de force";
                     return;
                 }
 
@@ -238,8 +265,11 @@ namespace Gauniv.Client.ViewModel
                 {
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
-                        IsRunning = false;
-                        StatusMessage = "✅ Le jeu s'est terminé";
+                        if (IsRunning) // Si on n'a pas arrêté de force
+                        {
+                            IsRunning = false;
+                            StatusMessage = "✅ Le jeu s'est terminé";
+                        }
                         _gameProcess?.Dispose();
                         _gameProcess = null;
                     });
@@ -251,7 +281,7 @@ namespace Gauniv.Client.ViewModel
             catch (Exception ex)
             {
                 IsRunning = false;
-                StatusMessage = $"❌ Erreur lors du lancement: {ex.Message}";
+                StatusMessage = $"❌ Erreur: {ex.Message}";
             }
         }
 

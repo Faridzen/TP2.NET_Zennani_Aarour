@@ -59,50 +59,41 @@ namespace Gauniv.WebServer.Api
         public async Task<ActionResult<PagedResultDto<GameDto>>> List(
             [FromQuery] int offset = 0,
             [FromQuery] int limit = 10,
-            [FromQuery] string[]? category = null)
+            [FromQuery] string[]? category = null,
+            [FromQuery] string? search = null)
         {
             try
             {
                 var local_query = appDbContext.Games.AsQueryable();
 
+                // Get all and filter in memory for complex collection properties in SQLite/In-Memory
+                var local_allGames = await local_query.ToListAsync();
+
                 // Filter by categories if provided
                 if (category != null && category.Length > 0)
                 {
-                    // Note: Some EF providers (like in-memory or older versions) can't translate Any on collection properties.
-                    // If this fails, we might need to fetch all and filter in memory, but for now we try to keep it as efficient as possible.
-                    // Actually, let's fetch IDs first if it fails, or just fetch all if the dataset is small.
-                    // For this project, we'll fetch and filter in memory to be safe across all environments.
-                    var local_allGames = await local_query.ToListAsync();
-                    local_allGames = local_allGames.Where(g => g.Categories.Any(c => category.Contains(c))).ToList();
-                    
-                    var local_count = local_allGames.Count;
-                    var local_paged = local_allGames.Skip(offset).Take(limit).ToList();
-                    var local_dtos = mapper.Map<List<GameDto>>(local_paged);
-
-                    return Ok(new PagedResultDto<GameDto>
-                    {
-                        Items = local_dtos,
-                        TotalCount = local_count,
-                        PageNumber = (offset / limit) + 1,
-                        PageSize = limit
-                    });
+                    local_allGames = local_allGames.Where(g => 
+                        g.Categories != null && 
+                        g.Categories.Any(c => category.Contains(c, StringComparer.OrdinalIgnoreCase))).ToList();
                 }
 
-                var local_totalCount = await local_query.CountAsync();
-                var local_pageNumber = (offset / limit) + 1;
+                // Filter by search text
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    local_allGames = local_allGames.Where(g => 
+                        (g.Title != null && g.Title.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
+                        (g.Description != null && g.Description.Contains(search, StringComparison.OrdinalIgnoreCase))).ToList();
+                }
 
-                var local_games = await local_query
-                    .Skip(offset)
-                    .Take(limit)
-                    .ToListAsync();
-
-                var local_gameDtos = mapper.Map<List<GameDto>>(local_games);
+                var local_totalCount = local_allGames.Count;
+                var local_paged = local_allGames.Skip(offset).Take(limit).ToList();
+                var local_dtos = mapper.Map<List<GameDto>>(local_paged);
 
                 return Ok(new PagedResultDto<GameDto>
                 {
-                    Items = local_gameDtos,
+                    Items = local_dtos,
                     TotalCount = local_totalCount,
-                    PageNumber = local_pageNumber,
+                    PageNumber = (offset / limit) + 1,
                     PageSize = limit
                 });
             }
