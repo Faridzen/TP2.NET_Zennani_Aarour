@@ -38,13 +38,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
 using X.PagedList.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using Gauniv.WebServer.Dtos;
-using System.Collections.Generic;
 namespace Gauniv.WebServer.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class HomeController(ILogger<HomeController> logger, ApplicationDbContext applicationDbContext, UserManager<User> userManager) : Controller
     { 
 
@@ -52,11 +47,44 @@ namespace Gauniv.WebServer.Controllers
         private readonly ApplicationDbContext applicationDbContext = applicationDbContext;
         private readonly UserManager<User> userManager = userManager;
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(new List<Game> { new() { Id = 0 } });
+            var local_games = await applicationDbContext.Games
+                                .OrderBy(g => g.Title)
+                                .ToListAsync();
+            return View(local_games);
         }
 
+        [Authorize]
+        [HttpGet("Library")]
+        public async Task<IActionResult> Library()
+        {
+            var local_user = await userManager.GetUserAsync(User);
+            if (local_user == null) return Challenge();
+
+            var local_ownedIds = local_user.purchasedGames
+                                    .Select(idStr => int.TryParse(idStr, out var id) ? id : -1)
+                                    .Where(id => id != -1)
+                                    .ToList();
+
+            var local_games = await applicationDbContext.Games
+                                .Where(g => local_ownedIds.Contains(g.Id))
+                                .OrderBy(g => g.Title)
+                                .ToListAsync();
+
+            return View(local_games);
+        }
+
+        [HttpGet("Details/{id}")]
+        public async Task<IActionResult> Details(int id)
+        {
+            var local_game = await applicationDbContext.Games
+                                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (local_game == null) return NotFound();
+
+            return View(local_game);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

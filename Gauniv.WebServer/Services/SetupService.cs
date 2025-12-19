@@ -61,6 +61,17 @@ namespace Gauniv.WebServer.Services
                     throw new Exception("ApplicationDbContext is null");
                 }
 
+                var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+
+                // Ensure roles exist
+                if (roleManager != null)
+                {
+                    if (!roleManager.RoleExistsAsync("Admin").Result)
+                    {
+                        roleManager.CreateAsync(new IdentityRole("Admin")).Wait();
+                    }
+                }
+
                 // Create Admin account
                 if (userSignInManager?.FindByNameAsync("admin").Result == null)
                 {
@@ -74,6 +85,10 @@ namespace Gauniv.WebServer.Services
                         LastName = "Admin"
                     };
                     var local_res = userSignInManager.CreateAsync(local_adminUser, "admin").Result;
+                    if (local_res.Succeeded)
+                    {
+                        userSignInManager.AddToRoleAsync(local_adminUser, "Admin").Wait();
+                    }
                 }
 
                 // Create User account

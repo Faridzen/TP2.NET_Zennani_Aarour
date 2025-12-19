@@ -9,7 +9,46 @@
        Shell.FlyoutBehavior="Flyout"
        Shell.NavBarIsVisible="true"
        Title="Gauniv"
-       BindingContext="{vm:MenuViewModel}">
+       BindingContext="{vm:MenuViewModel}"
+       FlyoutBackgroundColor="{StaticResource BgMain}">
+
+    <Shell.FlyoutHeader>
+        <Grid HeightRequest="200" BackgroundColor="#0d1117">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                <Label Text="GAUNIV" 
+                       FontSize="30" 
+                       FontAttributes="Bold" 
+                       TextColor="{StaticResource Primary}" 
+                       CharacterSpacing="6"
+                       HorizontalOptions="Center"/>
+                <Label Text="{Binding UserName}" 
+                       FontSize="16" 
+                       TextColor="White" 
+                       HorizontalOptions="Center"/>
+                <Label Text="{Binding UserEmail}" 
+                       FontSize="12" 
+                       TextColor="{StaticResource TextMuted}" 
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Padding="20,12" ColumnDefinitions="45,*">
+                <Label Text="{Binding Icon}" 
+                       FontSize="22" 
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center"/>
+                <Label Grid.Column="1" 
+                       Text="{Binding Title}" 
+                       FontSize="16" 
+                       TextColor="White" 
+                       VerticalOptions="Center" 
+                       Margin="10,0,0,0"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
 
     <FlyoutItem Title="Catalogue"
                 Icon="🎮"
