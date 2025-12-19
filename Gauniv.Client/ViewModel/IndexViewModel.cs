@@ -54,7 +54,20 @@ namespace Gauniv.Client.ViewModel
         private bool isConnected = false;
 
         [ObservableProperty]
+        private bool isNoGamesFound = false;
+
+        private void UpdateNoGamesFound()
+        {
+            IsNoGamesFound = !IsLoading && (Games == null || Games.Count == 0);
+        }
+
+        [ObservableProperty]
         private bool isLoading = false;
+
+        partial void OnIsLoadingChanged(bool value)
+        {
+            UpdateNoGamesFound();
+        }
 
         [ObservableProperty]
         private string statusMessage = "";
@@ -76,8 +89,7 @@ namespace Gauniv.Client.ViewModel
             // Vérifier l'état initial
             UpdateConnectionStatus();
             UpdateAdminStatus();
-            
-            _ = LoadInitialDataAsync();
+            UpdateNoGamesFound();
         }
 
         private void UpdateAdminStatus()
@@ -427,7 +439,7 @@ namespace Gauniv.Client.ViewModel
                     {
                         { "Game", game }
                     };
-                    await Shell.Current.GoToAsync("///purchasesuccess", local_navParam);
+                    await Shell.Current.GoToAsync("purchasesuccess", local_navParam);
                 }
                 else
                 {
@@ -447,11 +459,13 @@ namespace Gauniv.Client.ViewModel
 
             try
             {
-                await Shell.Current.GoToAsync($"///gamedetails?gameId={game.Id}");
+                // Navigation relative (enregistrée dans AppShell.xaml.cs)
+                await Shell.Current.GoToAsync($"gamedetails?gameId={game.Id}");
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Erreur: {ex.Message}";
+                StatusMessage = $"Erreur navigation: {ex.Message}";
+                Debug.WriteLine($"Navigation error: {ex}");
             }
         }
 

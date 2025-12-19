@@ -3,159 +3,146 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Gauniv.Client.ViewModel"
              xmlns:dto="clr-namespace:Gauniv.Client.Dtos"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Gauniv.Client.Pages.AdminPage"
+             x:Name="PageRoot"
              Title="Administration"
-             x:DataType="vm:AdminViewModel"
-             BackgroundColor="#1b2838">
+             BackgroundColor="#0a0c10">
 
     <Grid RowDefinitions="Auto,Auto,*">
         
-        <!-- Header Banner -->
-        <Grid Grid.Row="0" HeightRequest="100" BackgroundColor="#171a21">
-            <Label Text="PANNEAU D'ADMINISTRATION"
-                   FontSize="24"
+        <!-- Header -->
+        <Grid Grid.Row="0" HeightRequest="60" BackgroundColor="#111827">
+            <Label Text="PANNEAU ADMIN"
+                   FontSize="18"
                    FontAttributes="Bold"
                    TextColor="White"
                    HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   CharacterSpacing="2"/>
+                   VerticalOptions="Center"/>
         </Grid>
 
-        <!-- Status Bar -->
-        <Grid Grid.Row="1" BackgroundColor="#2a475e" Padding="10">
+        <!-- Status -->
+        <Grid Grid.Row="1" BackgroundColor="#1e1b4b" Padding="5">
             <Label Text="{Binding StatusMessage}" 
-                   TextColor="#66c0f4" 
+                   TextColor="#10b981" 
                    HorizontalOptions="Center"
-                   FontSize="12"/>
+                   FontSize="10"/>
         </Grid>
 
-        <!-- Main Content -->
+        <!-- Main -->
         <Grid Grid.Row="2" ColumnDefinitions="*,*">
             
-            <!-- Section Jeux (Gauche) -->
-            <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" Padding="20">
-                <Label Text="GESTION DES JEUX" FontSize="18" FontAttributes="Bold" TextColor="#c7d5e0" Margin="0,0,0,10"/>
-                
-                <CollectionView Grid.Row="1" ItemsSource="{Binding Games}" SelectionMode="None">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="dto:GameDto">
-                            <Frame BackgroundColor="#16202d" BorderColor="#2a475e" Margin="0,0,0,5" Padding="10">
-                                <Grid ColumnDefinitions="*,Auto,Auto">
-                                    <VerticalStackLayout>
-                                        <Label Text="{Binding Title}" FontAttributes="Bold" TextColor="White"/>
-                                        <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="12" TextColor="#beee11"/>
-                                    </VerticalStackLayout>
-                                    
-                                    <Button Grid.Column="1" Text="✎" 
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminViewModel}}, Path=SelectGameCommand}"
-                                            CommandParameter="{Binding .}"
-                                            BackgroundColor="Transparent" TextColor="#66c0f4" FontSize="18"/>
-                                    
-                                    <Button Grid.Column="2" Text="🗑" 
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminViewModel}}, Path=DeleteGameCommand}"
-                                            CommandParameter="{Binding .}"
-                                            BackgroundColor="Transparent" TextColor="#ff4d4d" FontSize="18"/>
-                                </Grid>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+            <!-- Section Jeux -->
+            <ScrollView Grid.Column="0">
+                <VerticalStackLayout Padding="10" Spacing="15">
+                    
+                    <!-- Formulaire Jeu (En haut maintenant) -->
+                    <Label Text="AJOUTER / MODIFIER UN JEU" FontAttributes="Bold" TextColor="#4f46e5" FontSize="14"/>
+                    <Frame BackgroundColor="#111827" BorderColor="#4f46e5" Padding="15" CornerRadius="12">
+                        <VerticalStackLayout Spacing="8">
+                            <Entry Placeholder="Titre du jeu" Text="{Binding GameTitle}" BackgroundColor="#1f2937" TextColor="White"/>
+                            <Editor Placeholder="Description" Text="{Binding GameDescription}" BackgroundColor="#1f2937" TextColor="White" HeightRequest="80"/>
+                            
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <Label Text="Prix :" VerticalOptions="Center" TextColor="Gray"/>
+                                <Picker Grid.Column="1" ItemsSource="{Binding AvailablePrices}" SelectedItem="{Binding GamePrice}" BackgroundColor="#1f2937" TextColor="White"/>
+                            </Grid>
+                            
+                            <Entry Placeholder="Image URL" Text="{Binding GameImageUrl}" BackgroundColor="#1f2937" TextColor="White"/>
 
-                <!-- Formulaire Jeu -->
-                <Frame Grid.Row="2" BackgroundColor="#171a21" BorderColor="#66c0f4" Padding="15" Margin="0,10,0,0">
-                    <VerticalStackLayout Spacing="10">
-                        <Label Text="Éditer / Ajouter un Jeu" FontAttributes="Bold" TextColor="#66c0f4"/>
-                        <Entry Placeholder="Titre" Text="{Binding GameTitle}" TextColor="White" PlaceholderColor="#8f98a0"/>
-                        <Editor Placeholder="Description" Text="{Binding GameDescription}" HeightRequest="80" TextColor="White" PlaceholderColor="#8f98a0"/>
-                        <HorizontalStackLayout Spacing="10">
-                            <Label Text="Prix :" VerticalOptions="Center" TextColor="#8f98a0" WidthRequest="60"/>
-                            <Picker ItemsSource="{Binding AvailablePrices}" SelectedItem="{Binding GamePrice}" 
-                                    TextColor="White" BackgroundColor="#2a475e" HorizontalOptions="FillAndExpand"/>
-                        </HorizontalStackLayout>
-                        
-                        <Entry Placeholder="URL Image" Text="{Binding GameImageUrl}" TextColor="White" PlaceholderColor="#8f98a0"/>
-                        
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                            <Picker Grid.Column="0" 
-                                    Title="Choisir une catégorie"
-                                    ItemsSource="{Binding Categories}"
-                                    SelectedItem="{Binding SelectedCategoryToAdd}"
-                                    ItemDisplayBinding="{Binding Name}"
-                                    TextColor="White"
-                                    BackgroundColor="#2a475e"/>
-                            <Button Grid.Column="1" Text="Ajouter" Command="{Binding AddCategoryToGameCommand}" 
-                                    BackgroundColor="#2a475e" TextColor="White"/>
-                        </Grid>
-                        
-                        <Entry Placeholder="Catégories sélectionnées" Text="{Binding GameCategoriesCsv}" IsReadOnly="True" 
-                               TextColor="#8f98a0" PlaceholderColor="#8f98a0" FontSize="11"/>
-                        
-                        <VerticalStackLayout Spacing="5" Margin="0,5">
-                            <Label Text="Exécutable du jeu (.exe)" TextColor="#66c0f4" FontSize="12" FontAttributes="Bold"/>
-                            <HorizontalStackLayout Spacing="10">
-                                <Button Text="Choisir un fichier" 
-                                        Command="{Binding PickExecutableCommand}"
-                                        BackgroundColor="#2a475e" TextColor="White"
-                                        FontSize="12" Padding="10,0"/>
-                                <Label Text="{Binding ExecutableFileName}" 
-                                       TextColor="#8f98a0" VerticalOptions="Center" FontSize="12"
-                                       LineBreakMode="HeadTruncation"/>
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                <Picker Grid.Column="0" 
+                                        Title="Ajouter Catégorie"
+                                        ItemsSource="{Binding Categories}"
+                                        SelectedItem="{Binding SelectedCategoryToAdd}"
+                                        ItemDisplayBinding="{Binding Name}"
+                                        BackgroundColor="#1f2937"
+                                        TextColor="White"/>
+                                <Button Grid.Column="1" Text="+" Command="{Binding AddCategoryToGameCommand}" 
+                                        BackgroundColor="#4f46e5" TextColor="White" WidthRequest="40"/>
+                            </Grid>
+                            <Label Text="{Binding GameCategoriesCsv}" TextColor="Gray" FontSize="10" MaxLines="1"/>
+
+                            <!-- Executable Picking -->
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Exécutable (.exe)" TextColor="#4f46e5" FontSize="11" FontAttributes="Bold"/>
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                    <Label Text="{Binding ExecutableFileName}" TextColor="Gray" FontSize="11" VerticalOptions="Center" LineBreakMode="TailTruncation"/>
+                                    <Button Grid.Column="1" Text="Parcourir" Command="{Binding PickExecutableCommand}"
+                                            BackgroundColor="#1f2937" TextColor="White" FontSize="11" Padding="10,5"/>
+                                </Grid>
+                            </VerticalStackLayout>
+                            
+                            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,10,0,0">
+                                <Button Text="Enregistrer" Command="{Binding SaveGameCommand}" BackgroundColor="#4f46e5" TextColor="White" WidthRequest="120"/>
+                                <Button Text="Vider" Command="{Binding PrepareNewGameCommand}" BackgroundColor="#374151" TextColor="White" WidthRequest="100"/>
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
-                        
-                        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-                            <Button Text="Enregistrer" Command="{Binding SaveGameCommand}" BackgroundColor="#66c0f4" TextColor="White"/>
-                            <Button Text="Nouveau" Command="{Binding PrepareNewGameCommand}" BackgroundColor="#2a475e" TextColor="White"/>
-                        </HorizontalStackLayout>
+                    </Frame>
+
+                    <Label Text="LISTE DES JEUX" FontAttributes="Bold" TextColor="White" Margin="0,10,0,0"/>
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Games}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:GameDto">
+                                <Frame BackgroundColor="#1f2937" BorderColor="#374151" Padding="10" Margin="0,0,0,5">
+                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding Title}" TextColor="White" FontAttributes="Bold"/>
+                                            <Label Text="{Binding Price, StringFormat='{0:C}'}" TextColor="#10b981" FontSize="11"/>
+                                        </VerticalStackLayout>
+                                        <Button Grid.Column="1" Text="✎" 
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=BindingContext.SelectGameCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="Transparent" TextColor="White" WidthRequest="40" FontSize="18"/>
+                                        <Button Grid.Column="2" Text="🗑" 
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=BindingContext.DeleteGameCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="Transparent" TextColor="#ef4444" WidthRequest="40" FontSize="18"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
                     </VerticalStackLayout>
-                </Frame>
-            </Grid>
+                </VerticalStackLayout>
+            </ScrollView>
 
-            <!-- Section Catégories (Droite) -->
-            <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto" Padding="20" BackgroundColor="#171a21">
-                <Label Text="GESTION DES CATÉGORIES" FontSize="18" FontAttributes="Bold" TextColor="#c7d5e0" Margin="0,0,0,10"/>
+            <!-- Section Catégories -->
+            <ScrollView Grid.Column="1" BackgroundColor="#111827">
+                <VerticalStackLayout Padding="10" Spacing="10">
+                    <Label Text="GESTION DES CATÉGORIES" FontAttributes="Bold" TextColor="White"/>
 
-                <CollectionView Grid.Row="1" ItemsSource="{Binding Categories}" SelectionMode="None">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="dto:CategoryDto">
-                            <Frame BackgroundColor="#1b2838" BorderColor="#2a475e" Margin="0,0,0,5" Padding="10">
-                                <Grid ColumnDefinitions="*,Auto,Auto">
-                                    <Label Text="{Binding Name}" VerticalOptions="Center" TextColor="White"/>
-                                    
-                                    <Button Grid.Column="1" Text="✎" 
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminViewModel}}, Path=SelectCategoryCommand}"
-                                            CommandParameter="{Binding .}"
-                                            BackgroundColor="Transparent" TextColor="#66c0f4" FontSize="18"/>
+                    <Frame BackgroundColor="#1f2937" BorderColor="#4f46e5" Padding="15">
+                        <VerticalStackLayout Spacing="5">
+                            <Entry Placeholder="Nom de la catégorie" Text="{Binding CategoryName}" BackgroundColor="#111827" TextColor="White"/>
+                            <Button Text="Enregistrer" Command="{Binding SaveCategoryCommand}" BackgroundColor="#4f46e5" TextColor="White" Margin="0,5,0,0"/>
+                        </VerticalStackLayout>
+                    </Frame>
 
-                                    <Button Grid.Column="2" Text="🗑" 
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AdminViewModel}}, Path=DeleteCategoryCommand}"
-                                            CommandParameter="{Binding .}"
-                                            BackgroundColor="Transparent" TextColor="#ff4d4d" FontSize="18"/>
-                                </Grid>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-
-                <!-- Formulaire Catégorie -->
-                <Frame Grid.Row="2" BackgroundColor="#1b2838" BorderColor="#66c0f4" Padding="15" Margin="0,10,0,0">
-                    <VerticalStackLayout Spacing="10">
-                        <Label Text="Éditer / Ajouter une Catégorie" FontAttributes="Bold" TextColor="#66c0f4"/>
-                        <Entry Placeholder="Nom de la catégorie" Text="{Binding CategoryName}" TextColor="White" PlaceholderColor="#8f98a0"/>
-                        
-                        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-                            <Button Text="Enregistrer" Command="{Binding SaveCategoryCommand}" BackgroundColor="#66c0f4" TextColor="White"/>
-                            <Button Text="Nouveau" Command="{Binding PrepareNewCategoryCommand}" BackgroundColor="#2a475e" TextColor="White"/>
-                        </HorizontalStackLayout>
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Categories}" Margin="0,10,0,0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:CategoryDto">
+                                <Frame BackgroundColor="#1f2937" BorderColor="#374151" Padding="10" Margin="0,0,0,5">
+                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                        <Label Text="{Binding Name}" TextColor="White" VerticalOptions="Center"/>
+                                        <Button Grid.Column="1" Text="✎" 
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=BindingContext.SelectCategoryCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="Transparent" TextColor="White" WidthRequest="40"/>
+                                        <Button Grid.Column="2" Text="🗑" 
+                                                Command="{Binding Source={x:Reference PageRoot}, Path=BindingContext.DeleteCategoryCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="Transparent" TextColor="#ef4444" WidthRequest="40"/>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
                     </VerticalStackLayout>
-                </Frame>
-            </Grid>
+                </VerticalStackLayout>
+            </ScrollView>
         </Grid>
 
         <!-- Loading Overlay -->
-        <Grid Grid.RowSpan="3" BackgroundColor="#80000000" IsVisible="{Binding IsLoading}">
-            <ActivityIndicator IsRunning="True" Color="#66c0f4" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="50" HeightRequest="50"/>
+        <Grid Grid.RowSpan="3" BackgroundColor="Black" Opacity="0.5" IsVisible="{Binding IsLoading}">
+            <ActivityIndicator IsRunning="{Binding IsLoading}" Color="#4f46e5" HorizontalOptions="Center" VerticalOptions="Center"/>
         </Grid>
     </Grid>
 </ContentPage>

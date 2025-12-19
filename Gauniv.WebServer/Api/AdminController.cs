@@ -36,7 +36,7 @@ namespace Gauniv.WebServer.Api
 
         [HttpPost]
         public async Task<ActionResult<GameDto>> UploadGame([FromForm] string title, [FromForm] string description, 
-            [FromForm] decimal price, [FromForm] string? categories, [FromForm] IFormFile? executable)
+            [FromForm] decimal price, [FromForm] string? categories, [FromForm] string? imageUrl, [FromForm] IFormFile? executable)
         {
             try
             {
@@ -48,6 +48,7 @@ namespace Gauniv.WebServer.Api
                     Title = title,
                     Description = description ?? "",
                     Price = price,
+                    ImageUrl = imageUrl ?? "",
                     Categories = string.IsNullOrWhiteSpace(categories) 
                         ? new List<string>() 
                         : categories.Split(',').Select(c => c.Trim()).ToList()

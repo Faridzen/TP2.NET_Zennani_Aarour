@@ -13,7 +13,7 @@
        FlyoutBackgroundColor="{StaticResource BgMain}">
 
     <Shell.FlyoutHeader>
-        <Grid HeightRequest="200" BackgroundColor="#0d1117">
+        <Grid HeightRequest="200" Background="{StaticResource BlackBrush}">
             <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
                 <Label Text="GAUNIV" 
                        FontSize="30" 
@@ -35,14 +35,15 @@
 
     <Shell.ItemTemplate>
         <DataTemplate>
-            <Grid Padding="20,12" ColumnDefinitions="45,*">
+            <Grid Padding="20,12" ColumnDefinitions="40,*">
                 <Label Text="{Binding Icon}" 
-                       FontSize="22" 
+                       FontSize="20" 
+                       TextColor="White"
                        VerticalOptions="Center" 
                        HorizontalOptions="Center"/>
                 <Label Grid.Column="1" 
                        Text="{Binding Title}" 
-                       FontSize="16" 
+                       FontSize="15" 
                        TextColor="White" 
                        VerticalOptions="Center" 
                        Margin="10,0,0,0"/>
@@ -76,11 +77,7 @@
         <ShellContent ContentTemplate="{DataTemplate local:Profile}" />
     </FlyoutItem>
 
-    <ShellContent Route="gamedetails"
-                  FlyoutItemIsVisible="False"
-                  ContentTemplate="{DataTemplate local:GameDetails}" />
 
-    <ShellContent Route="purchasesuccess"
-                  FlyoutItemIsVisible="False"
-                  ContentTemplate="{DataTemplate local:PurchaseSuccessPage}" />
+
+
 </Shell>

@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Gauniv.Client.ViewModel"
              x:Class="Gauniv.Client.Pages.GameDetails"
-             Title="Détails du jeu"
+             Title="{Binding Game.Title, FallbackValue='Détails du jeu'}"
              x:DataType="vm:GameDetailsViewModel"
-             BackgroundColor="#1b2838"
+             BackgroundColor="#0a0c10"
              Shell.NavBarIsVisible="True">
 
     <ContentPage.ToolbarItems>
@@ -13,8 +13,8 @@
                      Command="{Binding GoBackCommand}"/>
     </ContentPage.ToolbarItems>
 
-    <ScrollView>
-        <VerticalStackLayout Padding="0" Spacing="0">
+    <ScrollView BackgroundColor="#0a0c10">
+        <VerticalStackLayout Padding="0" Spacing="0" BackgroundColor="#0a0c10">
             
             <!-- Loading Indicator -->
             <ActivityIndicator IsRunning="{Binding IsLoading}"
@@ -187,8 +187,8 @@
                             <Button Text="SUPPRIMER"
                                     Command="{Binding DeleteCommand}"
                                     BackgroundColor="Transparent"
-                                    Stroke="{StaticResource Primary}"
-                                    StrokeThickness="1"
+                                    BorderColor="{StaticResource Primary}"
+                                    BorderWidth="1"
                                     TextColor="{StaticResource Primary}"
                                     FontAttributes="Bold"
                                     FontSize="14"

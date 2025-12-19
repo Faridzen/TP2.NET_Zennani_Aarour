@@ -33,6 +33,9 @@ namespace Gauniv.Client
         public AppShell()
         {
             InitializeComponent();
+
+            Routing.RegisterRoute("gamedetails", typeof(Pages.GameDetails));
+            Routing.RegisterRoute("purchasesuccess", typeof(Pages.PurchaseSuccessPage));
         }
     }
 }

@@ -344,12 +344,22 @@ namespace Gauniv.Client.Services
                 var local_json = JsonSerializer.Serialize(game);
                 var local_content = new StringContent(local_json, Encoding.UTF8, "application/json");
                 var local_response = await httpClient.PostAsync($"{AdminUrl}AddGame", local_content);
-                return local_response.IsSuccessStatusCode;
+                
+                if (!local_response.IsSuccessStatusCode)
+                {
+                    var local_error = await local_response.Content.ReadAsStringAsync();
+                    throw new Exception(local_error);
+                }
+                return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Serveur:")) throw;
+                throw new Exception($"Erreur réseau: {ex.Message}");
+            }
         }
 
-        public async Task<bool> UploadGameAsync(string title, string description, decimal price, string categoriesCsv, string executablePath)
+        public async Task<bool> UploadGameAsync(string title, string description, decimal price, string categoriesCsv, string executablePath, string imageUrl)
         {
             try
             {
@@ -359,6 +369,7 @@ namespace Gauniv.Client.Services
                 local_content.Add(new StringContent(description ?? ""), "description");
                 local_content.Add(new StringContent(price.ToString(System.Globalization.CultureInfo.InvariantCulture)), "price");
                 local_content.Add(new StringContent(categoriesCsv ?? ""), "categories");
+                local_content.Add(new StringContent(imageUrl ?? ""), "imageUrl");
 
                 if (!string.IsNullOrEmpty(executablePath) && File.Exists(executablePath))
                 {
@@ -368,7 +379,13 @@ namespace Gauniv.Client.Services
                 }
 
                 var local_response = await httpClient.PostAsync($"{AdminUrl}UploadGame", local_content);
-                return local_response.IsSuccessStatusCode;
+                
+                if (!local_response.IsSuccessStatusCode)
+                {
+                    var local_error = await local_response.Content.ReadAsStringAsync();
+                    throw new Exception($"Échec upload: {local_error}");
+                }
+                return true;
             }
             catch (Exception ex)
             {
@@ -384,9 +401,18 @@ namespace Gauniv.Client.Services
                 var local_json = JsonSerializer.Serialize(game);
                 var local_content = new StringContent(local_json, Encoding.UTF8, "application/json");
                 var local_response = await httpClient.PutAsync($"{AdminUrl}UpdateGame/{game.Id}", local_content);
-                return local_response.IsSuccessStatusCode;
+                
+                if (!local_response.IsSuccessStatusCode)
+                {
+                    var local_error = await local_response.Content.ReadAsStringAsync();
+                    throw new Exception(local_error);
+                }
+                return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erreur mise à jour: {ex.Message}");
+            }
         }
 
         public async Task<bool> DeleteGameAsync(int gameId)
@@ -407,9 +433,18 @@ namespace Gauniv.Client.Services
                 var local_json = JsonSerializer.Serialize(local_cat);
                 var local_content = new StringContent(local_json, Encoding.UTF8, "application/json");
                 var local_response = await httpClient.PostAsync($"{AdminUrl}AddCategory", local_content);
-                return local_response.IsSuccessStatusCode;
+                
+                if (!local_response.IsSuccessStatusCode)
+                {
+                    var local_error = await local_response.Content.ReadAsStringAsync();
+                    throw new Exception(local_error);
+                }
+                return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erreur catégorie: {ex.Message}");
+            }
         }
 
         public async Task<bool> UpdateCategoryAsync(int id, string newName)
@@ -420,9 +455,18 @@ namespace Gauniv.Client.Services
                 var local_json = JsonSerializer.Serialize(local_cat);
                 var local_content = new StringContent(local_json, Encoding.UTF8, "application/json");
                 var local_response = await httpClient.PutAsync($"{AdminUrl}UpdateCategory/{id}", local_content);
-                return local_response.IsSuccessStatusCode;
+                
+                if (!local_response.IsSuccessStatusCode)
+                {
+                    var local_error = await local_response.Content.ReadAsStringAsync();
+                    throw new Exception(local_error);
+                }
+                return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erreur catégorie: {ex.Message}");
+            }
         }
 
         public async Task<bool> DeleteCategoryAsync(int id)

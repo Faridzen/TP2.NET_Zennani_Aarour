@@ -7,9 +7,9 @@
              x:Class="Gauniv.Client.Pages.Index"
              Title="Catalogue de Jeux"
              x:DataType="vm:IndexViewModel"
-             BackgroundColor="#1b2838">
+             BackgroundColor="{StaticResource BgMain}">
 
-    <Grid ColumnDefinitions="280,*">
+    <Grid ColumnDefinitions="300,*" VerticalOptions="Fill" HorizontalOptions="Fill">
         
         <!-- Panneau de filtres à gauche -->
         <ScrollView Grid.Column="0" BackgroundColor="#0d1117" Padding="15">
@@ -42,50 +42,32 @@
                 <!-- Séparateur -->
                 <BoxView HeightRequest="1" BackgroundColor="#2a475e"/>
 
-                <!-- Catégories -->
-                <toolkit:Expander IsExpanded="True">
-                    <toolkit:Expander.Header>
-                        <Grid ColumnDefinitions="*,Auto" Padding="0,5">
-                            <Label Text="Catégories"
-                                   FontSize="14"
-                                   FontAttributes="Bold"
-                                   TextColor="#8f98a0"
-                                   VerticalOptions="Center"/>
-                            <Label Grid.Column="1" 
-                                   Text="▼" 
-                                   TextColor="#8f98a0"
-                                   VerticalOptions="Center">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label" 
-                                                 Binding="{Binding Source={RelativeSource AncestorType={x:Type toolkit:Expander}}, Path=IsExpanded}" 
-                                                 Value="True">
-                                        <Setter Property="Text" Value="▲"/>
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                        </Grid>
-                    </toolkit:Expander.Header>
-                    <toolkit:Expander.Content>
-                        <CollectionView ItemsSource="{Binding CategoryItems}"
-                                        SelectionMode="None"
-                                        Margin="0,10,0,0">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="vm:CategoryItem">
-                                    <Grid ColumnDefinitions="Auto,*" Padding="5,2">
-                                        <CheckBox IsChecked="{Binding IsSelected}"
-                                                  Color="#66c0f4"/>
-                                        <Label Grid.Column="1"
-                                               Text="{Binding Name}"
-                                               TextColor="#c7d5e0"
-                                               FontSize="13"
-                                               VerticalOptions="Center"
-                                               Margin="5,0,0,0"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </toolkit:Expander.Content>
-                </toolkit:Expander>
+                <!-- Catégories Secton -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Catégories"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#8f98a0"
+                           Padding="0,5"/>
+                    <CollectionView ItemsSource="{Binding CategoryItems}"
+                                    SelectionMode="None"
+                                    HeightRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="vm:CategoryItem">
+                                <Grid ColumnDefinitions="Auto,*" Padding="5,2">
+                                    <CheckBox IsChecked="{Binding IsSelected}"
+                                              Color="{StaticResource Primary}"/>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Name}"
+                                           TextColor="{StaticResource TextMain}"
+                                           FontSize="13"
+                                           VerticalOptions="Center"
+                                           Margin="5,0,0,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
 
                 <!-- Séparateur -->
                 <BoxView HeightRequest="1" BackgroundColor="#2a475e"/>
@@ -129,7 +111,7 @@
         </ScrollView>
 
         <!-- Contenu principal -->
-        <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*">
+        <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*" VerticalOptions="Fill" HorizontalOptions="Fill" BackgroundColor="{StaticResource BgMain}">
             
             <!-- Bannière Moderne -->
             <Grid Grid.Row="0" HeightRequest="180" Margin="0,0,0,10">
@@ -171,12 +153,23 @@
             <!-- Status message -->
             <Label Grid.Row="1"
                    Text="{Binding StatusMessage}"
-                   TextColor="#8f98a0"
+                   TextColor="{StaticResource TextMuted}"
                    FontSize="13"
                    Padding="20,10"
+                   HorizontalOptions="Center"
                    IsVisible="{Binding StatusMessage, Converter={StaticResource IsNotNullConverter}}"/>
 
-            <!-- Grille des jeux avec Infinite Scroll -->
+            <!-- Empty State -->
+            <VerticalStackLayout Grid.Row="2"
+                                Spacing="10"
+                                VerticalOptions="Center"
+                                IsVisible="{Binding IsNoGamesFound}">
+                <Label Text="🎮" FontSize="60" HorizontalOptions="Center" Opacity="0.5"/>
+                <Label Text="Aucun jeu trouvé dans cette catégorie"
+                       TextColor="{StaticResource TextMuted}"
+                       FontSize="16"
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
             <CollectionView Grid.Row="2"
                            ItemsSource="{Binding Games}"
                            SelectionMode="None"
@@ -208,7 +201,7 @@
                                 <Border Grid.Row="0"
                                       Padding="0"
                                       StrokeThickness="0"
-                                      StrokeShape="RoundRectangle 12,12,0,0">
+                                      StrokeShape="RoundRectangle 12">
                                     <Image Source="{Binding ImageUrl}"
                                           Aspect="AspectFill"/>
                                 </Border>
@@ -225,7 +218,7 @@
                                                Wrap="Wrap">
                                         <BindableLayout.ItemTemplate>
                                             <DataTemplate x:DataType="x:String">
-                                                <Border Background="#1Affffff" Padding="8,2" Margin="0,0,4,4" StrokeThickness="0" StrokeShape="RoundRectangle 8">
+                                                <Border Background="{StaticResource GlassBackgroundBrush}" Padding="8,2" Margin="0,0,4,4" StrokeThickness="0" StrokeShape="RoundRectangle 8">
                                                     <Label Text="{Binding .}"
                                                            FontSize="10"
                                                            TextColor="{StaticResource Primary}"/>

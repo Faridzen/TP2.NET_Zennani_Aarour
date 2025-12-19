@@ -197,7 +197,8 @@ namespace Gauniv.Client.ViewModel
                         GameDescription, 
                         GamePrice, 
                         GameCategoriesCsv, 
-                        ExecutablePath);
+                        ExecutablePath,
+                        GameImageUrl);
                 }
                 else
                 {
