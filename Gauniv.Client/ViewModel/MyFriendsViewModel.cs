@@ -57,20 +57,27 @@ namespace Gauniv.Client.ViewModel
             try
             {
                 var local_list = await _networkService.GetFriendsAsync();
+                System.Diagnostics.Debug.WriteLine($"[CLIENT] Received {local_list.Count} friends from API");
+                
                 Friends.Clear();
                 IncomingRequests.Clear();
                 OutgoingRequests.Clear();
 
                 foreach (var f in local_list)
                 {
+                    System.Diagnostics.Debug.WriteLine($"[CLIENT] Friend: {f.UserName}, Status={f.Status}");
+                    
                     if (f.Status == "Accepted") Friends.Add(f);
                     else if (f.Status == "Received") IncomingRequests.Add(f);
                     else if (f.Status == "Sent") OutgoingRequests.Add(f);
                 }
+
+                System.Diagnostics.Debug.WriteLine($"[CLIENT] Friends={Friends.Count}, Incoming={IncomingRequests.Count}, Outgoing={OutgoingRequests.Count}");
             }
             catch (Exception ex)
             {
                 StatusMessage = $"Erreur: {ex.Message}";
+                System.Diagnostics.Debug.WriteLine($"[CLIENT] ERROR: {ex.Message}");
             }
             finally
             {

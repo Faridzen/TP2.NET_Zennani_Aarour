@@ -9,8 +9,13 @@ namespace Gauniv.Client.Dtos
         [CommunityToolkit.Mvvm.ComponentModel.ObservableProperty]
         private bool isOnline;
 
-        [CommunityToolkit.Mvvm.ComponentModel.ObservableProperty]
-        private string status = "Accepted"; // Accepted, Sent, Received
+        // Status must be public for JSON deserialization
+        private string _status = "Accepted";
+        public string Status
+        {
+            get => _status;
+            set => SetProperty(ref _status, value);
+        }
         
         public DateTime AddedAt { get; set; }
     }

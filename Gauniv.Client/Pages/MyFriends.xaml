@@ -34,10 +34,12 @@
             <VerticalStackLayout Spacing="20">
                 
                 <!-- Pending Requests -->
-                <VerticalStackLayout IsVisible="{Binding IncomingRequests.Count, Converter={StaticResource IntToBoolConverter}}"> 
-                    <!-- Note: assuming we have converter, if not default behavior might be needed or just show header -->
+                <VerticalStackLayout>
                     <Label Text="Demandes Reçues" FontSize="18" TextColor="#66c0f4" FontAttributes="Bold" Margin="0,0,0,10"/>
                     <CollectionView ItemsSource="{Binding IncomingRequests}">
+                        <CollectionView.EmptyView>
+                            <Label Text="Aucune demande reçue" TextColor="#8f98a0" FontSize="12" Margin="0,0,0,10"/>
+                        </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="dto:FriendDto">
                                 <Frame BackgroundColor="#2a475e" BorderColor="#66c0f4" CornerRadius="8" Padding="15" Margin="0,0,0,10">
@@ -57,16 +59,19 @@
                 </VerticalStackLayout>
 
                 <!-- Outgoing Requests -->
-                <VerticalStackLayout IsVisible="{Binding OutgoingRequests.Count, Converter={StaticResource IntToBoolConverter}}">
-                    <Label Text="Demandes Envoyées" FontSize="18" TextColor="#TextMuted" FontAttributes="Bold" Margin="0,0,0,10"/>
+                <VerticalStackLayout>
+                    <Label Text="Demandes Envoyées" FontSize="18" TextColor="#8f98a0" FontAttributes="Bold" Margin="0,0,0,10"/>
                     <CollectionView ItemsSource="{Binding OutgoingRequests}">
+                        <CollectionView.EmptyView>
+                            <Label Text="Aucune demande envoyée" TextColor="#8f98a0" FontSize="12" Margin="0,0,0,10"/>
+                        </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="dto:FriendDto">
                                 <Frame BackgroundColor="#16202d" BorderColor="#2a475e" CornerRadius="8" Padding="15" Margin="0,0,0,10">
                                     <Grid ColumnDefinitions="*,Auto">
-                                        <Label Grid.Column="0" Text="{Binding UserName}" FontSize="18" TextColor="#TextMuted" VerticalOptions="Center"/>
-                                        <Button Grid.Column="1" Text="Annuler" BackgroundColor="Transparent" TextColor="#TextMuted"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyFriendsViewModel}}, Path=RemoveFriendCommand}"
+                                        <Label Grid.Column="0" Text="{Binding UserName}" FontSize="18" TextColor="#8f98a0" VerticalOptions="Center"/>
+                                        <Button Grid.Column="1" Text="Annuler" BackgroundColor="Transparent" TextColor="#8f98a0"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyFriendsViewModel}}, Path=Remove FriendCommand}"
                                                 CommandParameter="{Binding .}"/>
                                     </Grid>
                                 </Frame>
@@ -80,7 +85,7 @@
                     <Label Text="Mes Amis" FontSize="20" TextColor="White" FontAttributes="Bold" Margin="0,0,0,10"/>
                     <CollectionView ItemsSource="{Binding Friends}">
                         <CollectionView.EmptyView>
-                            <Label Text="Aucun ami pour le moment." TextColor="#TextMuted" HorizontalOptions="Center" Margin="20"/>
+                            <Label Text="Aucun ami pour le moment." TextColor="#8f98a0" HorizontalOptions="Center" Margin="20"/>
                         </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="dto:FriendDto">
@@ -90,7 +95,7 @@
                                             <Label Text="{Binding UserName}" FontSize="18" FontAttributes="Bold" TextColor="White"/>
                                             <HorizontalStackLayout Spacing="5">
                                                 <Label Text="🟢" IsVisible="{Binding IsOnline}" FontSize="12"/>
-                                                <Label Text="{Binding IsOnline, Converter={StaticResource BoolToStringConverter}, ConverterParameter='En ligne|Hors ligne'}" TextColor="{StaticResource TextMuted}" FontSize="12"/>
+                                                <Label Text="{Binding IsOnline, Converter={StaticResource BoolToStringConverter}, ConverterParameter='En ligne|Hors ligne'}" TextColor="#8f98a0" FontSize="12"/>
                                             </HorizontalStackLayout>
                                         </VerticalStackLayout>
                                         <Button Grid.Column="1" Text="X" TextColor="#ff6b6b" BackgroundColor="Transparent"
