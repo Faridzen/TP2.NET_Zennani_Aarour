@@ -47,7 +47,7 @@ namespace Gauniv.WebServer.Controllers
         private readonly ApplicationDbContext applicationDbContext = applicationDbContext;
         private readonly UserManager<User> userManager = userManager;
         [HttpGet]
-        public async Task<IActionResult> Index(string search, decimal? maxPrice, List<string> categories)
+        public async Task<IActionResult> Index(string search, decimal? minPrice, decimal? maxPrice, List<string> categories)
         {
             var local_allGames = await applicationDbContext.Games
                                 .OrderBy(g => g.Title)
@@ -62,7 +62,13 @@ namespace Gauniv.WebServer.Controllers
                     (g.Description != null && g.Description.Contains(search, StringComparison.OrdinalIgnoreCase)));
             }
 
-            if (maxPrice.HasValue)
+            if (minPrice.HasValue && minPrice.Value > 0)
+            {
+                local_filtered = local_filtered.Where(g => g.Price >= minPrice.Value);
+            }
+
+            // If maxPrice is 100, treat it as no limit
+            if (maxPrice.HasValue && maxPrice.Value < 100)
             {
                 local_filtered = local_filtered.Where(g => g.Price <= maxPrice.Value);
             }
@@ -84,6 +90,7 @@ namespace Gauniv.WebServer.Controllers
                 Games = local_filtered.ToList(),
                 AllCategories = local_allCats,
                 Search = search ?? "",
+                MinPrice = minPrice,
                 MaxPrice = maxPrice,
                 SelectedCategories = categories ?? new List<string>(),
                 IsLibrary = false
@@ -94,10 +101,14 @@ namespace Gauniv.WebServer.Controllers
 
         [Authorize]
         [HttpGet("Library")]
-        public async Task<IActionResult> Library(string search, decimal? maxPrice, List<string> categories)
+        public async Task<IActionResult> Library(string search, decimal? minPrice, decimal? maxPrice, List<string> categories)
         {
             var local_user = await userManager.GetUserAsync(User);
-            if (local_user == null) return Challenge();
+            if (local_user == null)
+            {
+                TempData["Error"] = "Vous devez être connecté pour accéder à votre bibliothèque.";
+                return RedirectToAction(nameof(Index));
+            }
 
             var local_ownedIds = local_user.purchasedGames
                                     .Select(idStr => int.TryParse(idStr, out var id) ? id : -1)
@@ -118,7 +129,13 @@ namespace Gauniv.WebServer.Controllers
                     (g.Description != null && g.Description.Contains(search, StringComparison.OrdinalIgnoreCase)));
             }
 
-            if (maxPrice.HasValue)
+            if (minPrice.HasValue && minPrice.Value > 0)
+            {
+                local_filtered = local_filtered.Where(g => g.Price >= minPrice.Value);
+            }
+
+            // If maxPrice is 100, treat it as no limit
+            if (maxPrice.HasValue && maxPrice.Value < 100)
             {
                 local_filtered = local_filtered.Where(g => g.Price <= maxPrice.Value);
             }
@@ -140,6 +157,7 @@ namespace Gauniv.WebServer.Controllers
                 Games = local_filtered.ToList(),
                 AllCategories = local_allCats,
                 Search = search ?? "",
+                MinPrice = minPrice,
                 MaxPrice = maxPrice,
                 SelectedCategories = categories ?? new List<string>(),
                 IsLibrary = true
@@ -169,7 +187,6 @@ namespace Gauniv.WebServer.Controllers
             return View(local_game);
         }
 
-        [Authorize]
         [HttpPost("Purchase/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Purchase(int id)
@@ -178,7 +195,12 @@ namespace Gauniv.WebServer.Controllers
             if (local_game == null) return NotFound();
 
             var local_user = await userManager.GetUserAsync(User);
-            if (local_user == null) return Challenge();
+            if (local_user == null) 
+            {
+                // Redirect to home with message instead of Challenge()
+                TempData["Error"] = "Vous devez être connecté pour acheter un jeu.";
+                return RedirectToAction(nameof(Index));
+            }
 
             // Add game to user's library if not already owned
             if (!local_user.purchasedGames.Contains(id.ToString()))

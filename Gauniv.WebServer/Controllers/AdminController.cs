@@ -60,6 +60,57 @@ namespace Gauniv.WebServer.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditGame(int id)
+        {
+            var local_game = await _db.Games.FindAsync(id);
+            if (local_game == null) return NotFound();
+
+            ViewBag.AvailableCategories = await _db.Categories.OrderBy(c => c.Name).ToListAsync();
+            ViewBag.SelectedCategories = local_game.Categories ?? new List<string>();
+            return View(local_game);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGame(int id, Game game, string categoriesCsv, IFormFile? executable)
+        {
+            try
+            {
+                var local_existingGame = await _db.Games.FindAsync(id);
+                if (local_existingGame == null) return NotFound();
+
+                // Update basic properties
+                local_existingGame.Title = game.Title;
+                local_existingGame.Description = game.Description;
+                local_existingGame.Price = game.Price;
+                local_existingGame.ImageUrl = game.ImageUrl;
+
+                // Update executable if provided
+                if (executable != null && executable.Length > 0)
+                {
+                    using var local_ms = new MemoryStream();
+                    await executable.CopyToAsync(local_ms);
+                    local_existingGame.payload = local_ms.ToArray();
+                }
+
+                // Update categories
+                local_existingGame.Categories = string.IsNullOrWhiteSpace(categoriesCsv) 
+                    ? new List<string>() 
+                    : categoriesCsv.Split(',').Select(c => c.Trim()).ToList();
+
+                await _db.SaveChangesAsync();
+                
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                ViewBag.AvailableCategories = await _db.Categories.OrderBy(c => c.Name).ToListAsync();
+                ViewBag.SelectedCategories = game.Categories ?? new List<string>();
+                return View(game);
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteGame(int id)

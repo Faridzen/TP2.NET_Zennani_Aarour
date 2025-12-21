@@ -56,28 +56,55 @@ namespace Gauniv.Client.ViewModel
             IsLoading = true;
             try
             {
+                System.Diagnostics.Debug.WriteLine($"[CLIENT] LoadFriendsAsync called. Token: {(!string.IsNullOrEmpty(_networkService.Token) ? "Present" : "Missing")}");
+                
                 var local_list = await _networkService.GetFriendsAsync();
-                System.Diagnostics.Debug.WriteLine($"[CLIENT] Received {local_list.Count} friends from API");
+                System.Diagnostics.Debug.WriteLine($"[CLIENT] Received {local_list?.Count ?? 0} friends from API");
                 
                 Friends.Clear();
                 IncomingRequests.Clear();
                 OutgoingRequests.Clear();
 
-                foreach (var f in local_list)
+                if (local_list == null || local_list.Count == 0)
                 {
-                    System.Diagnostics.Debug.WriteLine($"[CLIENT] Friend: {f.UserName}, Status={f.Status}");
-                    
-                    if (f.Status == "Accepted") Friends.Add(f);
-                    else if (f.Status == "Received") IncomingRequests.Add(f);
-                    else if (f.Status == "Sent") OutgoingRequests.Add(f);
+                    System.Diagnostics.Debug.WriteLine("[CLIENT] No friends returned from API");
+                    StatusMessage = "Aucun ami pour le moment";
+                    return;
                 }
 
-                System.Diagnostics.Debug.WriteLine($"[CLIENT] Friends={Friends.Count}, Incoming={IncomingRequests.Count}, Outgoing={OutgoingRequests.Count}");
+                foreach (var f in local_list)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[CLIENT] Processing Friend: UserName={f.UserName}, Status='{f.Status}', IsOnline={f.IsOnline}");
+                    
+                    if (f.Status == "Accepted")
+                    {
+                        Friends.Add(f);
+                        System.Diagnostics.Debug.WriteLine($"[CLIENT] Added {f.UserName} to Friends list");
+                    }
+                    else if (f.Status == "Received")
+                    {
+                        IncomingRequests.Add(f);
+                        System.Diagnostics.Debug.WriteLine($"[CLIENT] Added {f.UserName} to IncomingRequests list");
+                    }
+                    else if (f.Status == "Sent")
+                    {
+                        OutgoingRequests.Add(f);
+                        System.Diagnostics.Debug.WriteLine($"[CLIENT] Added {f.UserName} to OutgoingRequests list");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[CLIENT] WARNING: Unknown status '{f.Status}' for {f.UserName}");
+                    }
+                }
+
+                System.Diagnostics.Debug.WriteLine($"[CLIENT] FINAL COUNTS: Friends={Friends.Count}, Incoming={IncomingRequests.Count}, Outgoing={OutgoingRequests.Count}");
+                StatusMessage = $"{Friends.Count} ami(s)";
             }
             catch (Exception ex)
             {
                 StatusMessage = $"Erreur: {ex.Message}";
-                System.Diagnostics.Debug.WriteLine($"[CLIENT] ERROR: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[CLIENT] ERROR in LoadFriendsAsync: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[CLIENT] Stack trace: {ex.StackTrace}");
             }
             finally
             {

@@ -24,15 +24,11 @@ namespace Gauniv.WebServer.Api
                 var local_userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (local_userId == null) return Unauthorized();
 
-                Console.WriteLine($"[FRIENDS] Getting friends for userId: {local_userId}");
-
                 var local_allLinks = await _db.UserFriends
                     .Include(f => f.SourceUser)
                     .Include(f => f.TargetUser)
                     .Where(f => f.SourceUserId == local_userId || f.TargetUserId == local_userId)
                     .ToListAsync();
-
-                Console.WriteLine($"[FRIENDS] Found {local_allLinks.Count} friend links");
 
                 var local_connectedUserIds = _onlineService?.GetConnectedUserIds() ?? new List<string>();
 
@@ -52,8 +48,6 @@ namespace Gauniv.WebServer.Api
                         local_status = local_isSource ? "Sent" : "Received";
                     }
 
-                    Console.WriteLine($"[FRIENDS] Link: {f.SourceUserId} -> {f.TargetUserId}, IsSource={local_isSource}, Status={local_status}, OtherUser={local_otherUser.UserName}");
-
                     return new FriendDto
                     {
                         UserId = local_otherUserId,
@@ -64,13 +58,11 @@ namespace Gauniv.WebServer.Api
                     };
                 }).ToList();
 
-                Console.WriteLine($"[FRIENDS] Returning {local_result.Count} friends");
                 return Ok(local_result);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[FRIENDS] ERROR: {ex.Message}");
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, "Internal server error");
             }
         }
 

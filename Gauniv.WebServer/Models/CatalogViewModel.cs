@@ -7,6 +7,7 @@ namespace Gauniv.WebServer.Models
         public List<Game> Games { get; set; } = new();
         public List<string> AllCategories { get; set; } = new();
         public string Search { get; set; } = "";
+        public decimal? MinPrice { get; set; }
         public decimal? MaxPrice { get; set; }
         public List<string> SelectedCategories { get; set; } = new();
         public bool IsLibrary { get; set; } = false;

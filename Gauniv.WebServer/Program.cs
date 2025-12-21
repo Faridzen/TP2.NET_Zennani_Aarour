@@ -151,12 +151,30 @@ app.MapGroup("Bearer").MapPost("/login", async Task<Results<Ok<AccessTokenRespon
             ([FromBody] LoginRequest login, [FromQuery] bool? useCookies, [FromQuery] bool? useSessionCookies, [FromServices] IServiceProvider sp) =>
         {
             var signInManager = sp.GetRequiredService<SignInManager<User>>();
+            var userManager = sp.GetRequiredService<UserManager<User>>();
 
             var useCookieScheme = (useCookies == true) || (useSessionCookies == true);
             var isPersistent = (useCookies == true) && (useSessionCookies != true);
             signInManager.AuthenticationScheme = useCookieScheme ? IdentityConstants.ApplicationScheme : IdentityConstants.BearerScheme;
 
-            var result = await signInManager.PasswordSignInAsync(login.Email, login.Password, isPersistent, lockoutOnFailure: true);
+            string loginIdentifier = login.Email;
+            User? user = null;
+            
+            if (!loginIdentifier.Contains("@"))
+            {
+                user = await userManager.FindByNameAsync(loginIdentifier);
+            }
+            else
+            {
+                user = await userManager.FindByEmailAsync(loginIdentifier);
+            }
+            
+            if (user == null || user.UserName == null)
+            {
+                return TypedResults.Problem("Invalid login attempt", statusCode: StatusCodes.Status401Unauthorized);
+            }
+
+            var result = await signInManager.PasswordSignInAsync(user.UserName, login.Password, isPersistent, lockoutOnFailure: true);
 
             if (result.RequiresTwoFactor)
             {
@@ -178,6 +196,57 @@ app.MapGroup("Bearer").MapPost("/login", async Task<Results<Ok<AccessTokenRespon
             // The signInManager already produced the needed response in the form of a cookie or bearer token.
             return TypedResults.Empty;
         });
+
+app.MapPost("/Bearer/register", async ([FromBody] Microsoft.AspNetCore.Identity.Data.RegisterRequest request, [FromServices] UserManager<User> userManager) =>
+{
+    string username = request.Email.Contains("@") 
+        ? request.Email.Substring(0, request.Email.IndexOf("@")) 
+        : request.Email;
+    
+    var user = new User
+    {
+        UserName = username,
+        Email = request.Email,
+        FirstName = "",
+        LastName = ""
+    };
+
+    var result = await userManager.CreateAsync(user, request.Password);
+
+    if (result.Succeeded)
+    {
+        return Results.Ok(new { message = "User created successfully" });
+    }
+
+    return Results.BadRequest(result.Errors);
+});
+
+app.MapPut("/Bearer/account/profile", async ([FromBody] UpdateProfileRequest request, HttpContext context, [FromServices] UserManager<User> userManager) =>
+{
+    var userId = context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+    {
+        return Results.Unauthorized();
+    }
+
+    var user = await userManager.FindByIdAsync(userId);
+    if (user == null)
+    {
+        return Results.NotFound();
+    }
+
+    user.FirstName = request.FirstName ?? user.FirstName;
+    user.LastName = request.LastName ?? user.LastName;
+
+    var result = await userManager.UpdateAsync(user);
+
+    if (result.Succeeded)
+    {
+        return Results.Ok(new { message = "Profile updated successfully" });
+    }
+
+    return Results.BadRequest(result.Errors);
+}).RequireAuthorization();
 
 app.UseSwaggerUI(options =>
 {

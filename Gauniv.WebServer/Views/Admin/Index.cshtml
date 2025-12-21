@@ -44,6 +44,9 @@
                         <a asp-controller="Home" asp-action="Details" asp-route-id="@local_game.Id" class="btn btn-sm btn-outline-light">
                             <i class="bi bi-eye"></i>
                         </a>
+                        <a asp-action="EditGame" asp-route-id="@local_game.Id" class="btn btn-sm btn-outline-info">
+                            <i class="bi bi-pencil"></i>
+                        </a>
                         <form asp-action="DeleteGame" asp-route-id="@local_game.Id" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce jeu ?');">
                             <button type="submit" class="btn btn-sm btn-danger">
                                 <i class="bi bi-trash"></i>

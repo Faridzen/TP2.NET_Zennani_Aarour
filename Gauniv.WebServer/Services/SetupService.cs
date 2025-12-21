@@ -41,7 +41,6 @@ namespace Gauniv.WebServer.Services
     {
         private ApplicationDbContext? applicationDbContext;
         private readonly IServiceProvider serviceProvider;
-        private Task? task;
 
         public SetupService(IServiceProvider serviceProvider)
         {

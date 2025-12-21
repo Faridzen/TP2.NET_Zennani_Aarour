@@ -36,7 +36,8 @@
                        CornerRadius="4"
                        HasShadow="False"
                        BackgroundColor="#16202d"
-                       BorderColor="Transparent">
+                       BorderColor="Transparent"
+                       IsVisible="{Binding ShowRegisterForm, Converter={StaticResource InvertedBoolConverter}}">
                     <VerticalStackLayout Spacing="15">
                         <Label Text="Connexion"
                                FontSize="20"
@@ -44,11 +45,11 @@
                                TextColor="#c7d5e0"/>
                         
                         <VerticalStackLayout Spacing="8">
-                            <Label Text="Email"
+                            <Label Text="Email ou Username"
                                    FontSize="14"
                                    TextColor="#8f98a0"/>
                             <Entry Text="{Binding Email}"
-                                   Placeholder="Votre email"
+                                   Placeholder="Votre email ou username"
                                    Keyboard="Email"
                                    FontSize="16"
                                    BackgroundColor="#1b2838"
@@ -79,6 +80,115 @@
                                 HeightRequest="50"
                                 Margin="0,10,0,0"/>
                         
+                        <Button Text="Créer un compte"
+                                Command="{Binding ToggleRegisterFormCommand}"
+                                BackgroundColor="#2a475e"
+                                TextColor="White"
+                                FontSize="14"
+                                CornerRadius="3"
+                                HeightRequest="40"/>
+                        
+                        <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                          IsVisible="{Binding IsLoading}"
+                                          Color="#66c0f4"
+                                          HeightRequest="40"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Register Form -->
+                <Frame Padding="20"
+                       CornerRadius="4"
+                       HasShadow="False"
+                       BackgroundColor="#16202d"
+                       BorderColor="Transparent"
+                       IsVisible="{Binding ShowRegisterForm}">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Créer un compte"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="#c7d5e0"/>
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Prénom"
+                                   FontSize="14"
+                                   TextColor="#8f98a0"/>
+                            <Entry Text="{Binding FirstName}"
+                                   Placeholder="Votre prénom"
+                                   FontSize="16"
+                                   BackgroundColor="#1b2838"
+                                   TextColor="#c7d5e0"
+                                   PlaceholderColor="#8f98a0"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Nom"
+                                   FontSize="14"
+                                   TextColor="#8f98a0"/>
+                            <Entry Text="{Binding LastName}"
+                                   Placeholder="Votre nom"
+                                   FontSize="16"
+                                   BackgroundColor="#1b2838"
+                                   TextColor="#c7d5e0"
+                                   PlaceholderColor="#8f98a0"/>
+                        </VerticalStackLayout>
+                        
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Email"
+                                   FontSize="14"
+                                   TextColor="#8f98a0"/>
+                            <Entry Text="{Binding Email}"
+                                   Placeholder="Votre email"
+                                   Keyboard="Email"
+                                   FontSize="16"
+                                   BackgroundColor="#1b2838"
+                                   TextColor="#c7d5e0"
+                                   PlaceholderColor="#8f98a0"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Mot de passe"
+                                   FontSize="14"
+                                   TextColor="#8f98a0"/>
+                            <Entry Text="{Binding Password}"
+                                   Placeholder="Votre mot de passe"
+                                   IsPassword="True"
+                                   FontSize="16"
+                                   BackgroundColor="#1b2838"
+                                   TextColor="#c7d5e0"
+                                   PlaceholderColor="#8f98a0"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Confirmer le mot de passe"
+                                   FontSize="14"
+                                   TextColor="#8f98a0"/>
+                            <Entry Text="{Binding ConfirmPassword}"
+                                   Placeholder="Confirmez votre mot de passe"
+                                   IsPassword="True"
+                                   FontSize="16"
+                                   BackgroundColor="#1b2838"
+                                   TextColor="#c7d5e0"
+                                   PlaceholderColor="#8f98a0"/>
+                        </VerticalStackLayout>
+
+                        <Button Text="Créer le compte"
+                                Command="{Binding RegisterCommand}"
+                                BackgroundColor="#5c7e10"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                CornerRadius="3"
+                                HeightRequest="50"
+                                Margin="0,10,0,0"/>
+                        
+                        <Button Text="Retour à la connexion"
+                                Command="{Binding ToggleRegisterFormCommand}"
+                                BackgroundColor="#2a475e"
+                                TextColor="White"
+                                FontSize="14"
+                                CornerRadius="3"
+                                HeightRequest="40"/>
+                        
                         <ActivityIndicator IsRunning="{Binding IsLoading}"
                                           IsVisible="{Binding IsLoading}"
                                           Color="#66c0f4"
@@ -87,7 +197,7 @@
                 </Frame>
             </VerticalStackLayout>
 
-            <!-- Logout Section -->
+            <!-- Profile Management (when connected) -->
             <VerticalStackLayout Spacing="15" 
                                 Margin="0,20,0,0"
                                 IsVisible="{Binding IsConnected}">
@@ -98,7 +208,7 @@
                        BackgroundColor="#16202d"
                        BorderColor="Transparent">
                     <VerticalStackLayout Spacing="15">
-                        <Label Text="Compte connecté"
+                        <Label Text="Informations du compte"
                                FontSize="20"
                                FontAttributes="Bold"
                                TextColor="#c7d5e0"/>
@@ -108,18 +218,50 @@
                                HasShadow="False"
                                BackgroundColor="#1b2838"
                                BorderColor="#66c0f4">
-                            <HorizontalStackLayout Spacing="10">
-                                <VerticalStackLayout Spacing="5">
-                                    <Label Text="{Binding Email}"
-                                           FontSize="16"
-                                           FontAttributes="Bold"
-                                           TextColor="#c7d5e0"/>
-                                    <Label Text="Connecté"
-                                           FontSize="13"
-                                           TextColor="#beee11"/>
-                                </VerticalStackLayout>
-                            </HorizontalStackLayout>
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="{Binding Email}"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="#c7d5e0"/>
+                                <Label Text="✅ Connecté"
+                                       FontSize="13"
+                                       TextColor="#beee11"/>
+                            </VerticalStackLayout>
                         </Frame>
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Prénom"
+                                   FontSize="14"
+                                   TextColor="#8f98a0"/>
+                            <Entry Text="{Binding FirstName}"
+                                   Placeholder="Votre prénom"
+                                   FontSize="16"
+                                   BackgroundColor="#1b2838"
+                                   TextColor="#c7d5e0"
+                                   PlaceholderColor="#8f98a0"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Nom"
+                                   FontSize="14"
+                                   TextColor="#8f98a0"/>
+                            <Entry Text="{Binding LastName}"
+                                   Placeholder="Votre nom"
+                                   FontSize="16"
+                                   BackgroundColor="#1b2838"
+                                   TextColor="#c7d5e0"
+                                   PlaceholderColor="#8f98a0"/>
+                        </VerticalStackLayout>
+
+                        <Button Text="Mettre à jour le profil"
+                                Command="{Binding UpdateProfileCommand}"
+                                BackgroundColor="#66c0f4"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                CornerRadius="3"
+                                HeightRequest="50"
+                                Margin="0,10,0,0"/>
 
                         <Button Text="Accéder au Panneau Admin"
                                 Command="{Binding GoToAdminCommand}"

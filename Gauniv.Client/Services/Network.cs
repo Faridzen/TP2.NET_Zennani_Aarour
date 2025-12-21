@@ -135,6 +135,54 @@ namespace Gauniv.Client.Services
             }
         }
 
+        public async Task<bool> RegisterAsync(string email, string password, string firstName, string lastName)
+        {
+            try
+            {
+                var registerRequest = new
+                {
+                    Email = email,
+                    Password = password,
+                    FirstName = firstName,
+                    LastName = lastName
+                };
+
+                var json = JsonSerializer.Serialize(registerRequest);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PostAsync("http://localhost:5231/Bearer/register", content);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Register error: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateProfileAsync(string firstName, string lastName)
+        {
+            try
+            {
+                var updateRequest = new
+                {
+                    FirstName = firstName,
+                    LastName = lastName
+                };
+
+                var json = JsonSerializer.Serialize(updateRequest);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PutAsync("http://localhost:5231/Bearer/account/profile", content);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Update profile error: {ex.Message}");
+                return false;
+            }
+        }
+
         private async Task InitializeSignalR()
         {
             try

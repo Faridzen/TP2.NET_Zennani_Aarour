@@ -74,7 +74,9 @@ namespace Gauniv.WebServer.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FirstName = user.FirstName,
+                LastName = user.LastName
             };
         }
 
@@ -111,6 +113,19 @@ namespace Gauniv.WebServer.Areas.Identity.Pages.Account.Manage
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
+                    return RedirectToPage();
+                }
+            }
+
+            // Update FirstName and LastName
+            if (user.FirstName != Input.FirstName || user.LastName != Input.LastName)
+            {
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (!updateResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to update profile.";
                     return RedirectToPage();
                 }
             }

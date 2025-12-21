@@ -12,18 +12,127 @@
         </div>
 
         <div class="filter-group">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <label class="filter-label mb-0">Prix Max</label>
-                <span class="price-value" id="priceDisplay">@(Model.MaxPrice?.ToString("0") ?? "100")€</span>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <label class="filter-label mb-0">Fourchette de prix</label>
+                <span class="price-value" id="priceRangeDisplay">@(Model.MinPrice?.ToString("0") ?? "0")€ - @(Model.MaxPrice?.ToString("0") ?? "100")€</span>
             </div>
-            <input type="range" name="maxPrice" min="0" max="100" step="5" 
-                   value="@(Model.MaxPrice ?? 100)" class="filter-range" id="priceRange"
-                   oninput="document.getElementById('priceDisplay').innerText = this.value + '€'">
-            <div class="d-flex justify-content-between mt-1 text-muted" style="font-size: 0.7rem;">
+            
+            <!-- Hidden inputs for form submission -->
+            <input type="hidden" name="minPrice" id="minPriceInput" value="@(Model.MinPrice ?? 0)" />
+            <input type="hidden" name="maxPrice" id="maxPriceInput" value="@(Model.MaxPrice ?? 100)" />
+            
+            <!-- Dual Range Slider -->
+            <div class="dual-range-slider">
+                <div class="slider-track"></div>
+                <div class="slider-range" id="sliderRange"></div>
+                <input type="range" min="0" max="100" step="5" value="@(Model.MinPrice ?? 0)" id="rangeMin" class="range-input">
+                <input type="range" min="0" max="100" step="5" value="@(Model.MaxPrice ?? 100)" id="rangeMax" class="range-input">
+            </div>
+            
+            <div class="d-flex justify-content-between mt-2 text-muted" style="font-size: 0.7rem;">
                 <span>0€</span>
                 <span>100€+</span>
             </div>
         </div>
+
+        <script>
+            (function() {
+                const rangeMin = document.getElementById('rangeMin');
+                const rangeMax = document.getElementById('rangeMax');
+                const sliderRange = document.getElementById('sliderRange');
+                const priceDisplay = document.getElementById('priceRangeDisplay');
+                const minPriceInput = document.getElementById('minPriceInput');
+                const maxPriceInput = document.getElementById('maxPriceInput');
+
+                function updateSlider() {
+                    let minVal = parseInt(rangeMin.value);
+                    let maxVal = parseInt(rangeMax.value);
+
+                    // Prevent overlap
+                    if (maxVal - minVal < 5) {
+                        if (this === rangeMin) {
+                            rangeMin.value = maxVal - 5;
+                            minVal = maxVal - 5;
+                        } else {
+                            rangeMax.value = minVal + 5;
+                            maxVal = minVal + 5;
+                        }
+                    }
+
+                    // Update display
+                    const maxDisplay = maxVal >= 100 ? '100€+' : maxVal + '€';
+                    priceDisplay.innerText = minVal + '€ - ' + maxDisplay;
+                    minPriceInput.value = minVal;
+                    maxPriceInput.value = maxVal;
+
+                    // Update visual range
+                    const percentMin = (minVal / 100) * 100;
+                    const percentMax = (maxVal / 100) * 100;
+                    sliderRange.style.left = percentMin + '%';
+                    sliderRange.style.width = (percentMax - percentMin) + '%';
+                }
+
+                rangeMin.addEventListener('input', updateSlider);
+                rangeMax.addEventListener('input', updateSlider);
+
+                // Initialize
+                updateSlider.call(rangeMin);
+            })();
+        </script>
+
+        <style>
+            .dual-range-slider {
+                position: relative;
+                height: 6px;
+                margin: 15px 0;
+            }
+
+            .slider-track {
+                position: absolute;
+                width: 100%;
+                height: 6px;
+                background: #2a475e;
+                border-radius: 3px;
+            }
+
+            .slider-range {
+                position: absolute;
+                height: 6px;
+                background: var(--primary, #66c0f4);
+                border-radius: 3px;
+            }
+
+            .range-input {
+                position: absolute;
+                width: 100%;
+                height: 6px;
+                background: none;
+                pointer-events: none;
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            .range-input::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                pointer-events: all;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: var(--primary, #66c0f4);
+                cursor: pointer;
+                border: 2px solid #1b2838;
+            }
+
+            .range-input::-moz-range-thumb {
+                pointer-events: all;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: var(--primary, #66c0f4);
+                cursor: pointer;
+                border: 2px solid #1b2838;
+            }
+        </style>
 
         <div class="filter-group">
             <label class="filter-label">Catégories</label>

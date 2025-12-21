@@ -37,9 +37,12 @@
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Library">Ma Bibliothèque</a>
-                            </li>
+                            @if (!User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Library">Ma Bibliothèque</a>
+                                </li>
+                            }
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
@@ -64,8 +67,8 @@
 
     <footer class="footer-gauniv text-center">
         <div class="container">
-            <p class="mb-0">&copy; 2025 - <strong>Gauniv</strong> Distribution. Propulsion par l'excellence.</p>
-            <small class="text-muted">Projet TP2.NET - Zennani & Aarour</small>
+            <p class="mb-0">&copy; 2025 - <strong>Gauniv</strong>. Projet réalisé par Zennani & Aarour</p>
+            <small class="text-muted">TP2.NET - M2 MIAGE</small>
         </div>
     </footer>
 

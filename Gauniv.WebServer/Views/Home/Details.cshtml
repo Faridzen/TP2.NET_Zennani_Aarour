@@ -60,6 +60,7 @@
                     else
                     {
                         <form asp-action="Purchase" asp-route-id="@Model.Id" method="post">
+                            @Html.AntiForgeryToken()
                             <button class="game-btn py-3 fs-3 w-100" @(Model.Price > 0 || Model.Price == 0 ? "" : "disabled")>
                                 <i class="bi bi-cart-plus me-2"></i> @(Model.Price == 0 ? "Ajouter à la bibliothèque" : "Acheter maintenant")
                             </button>

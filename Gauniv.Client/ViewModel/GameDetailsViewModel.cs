@@ -182,12 +182,9 @@ namespace Gauniv.Client.ViewModel
                     // Recharger pour être sûr
                     await CheckOwnershipAsync();
 
-                    // Naviguer vers la page de succès
-                    var local_navParam = new Dictionary<string, object>
-                    {
-                        { "Game", Game }
-                    };
-                    await Shell.Current.GoToAsync("///purchasesuccess", local_navParam);
+                    // Naviguer vers les jeux possédés
+                    StatusMessage = "✅ Jeu ajouté à votre bibliothèque !";
+                    await Shell.Current.GoToAsync("///mygames");
                 }
                 else
                 {

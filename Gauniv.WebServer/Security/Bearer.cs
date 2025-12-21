@@ -10,10 +10,6 @@ internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvi
     public async Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
         var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
-        foreach (var authScheme in authenticationSchemes)
-        {
-            Console.WriteLine(authScheme.Name); // Affichez les noms pour vérifier
-        }
         if (authenticationSchemes.Any(authScheme => authScheme.Name == "Identity.Bearer"))
         {
             // Add the security scheme at the document level

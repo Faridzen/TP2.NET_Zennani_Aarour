@@ -97,9 +97,8 @@ namespace Gauniv.WebServer.Websocket
                     await Clients.Clients(local_connectionIds).SendAsync(method, userId);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error notifying friends: {ex.Message}");
             }
         }
     }

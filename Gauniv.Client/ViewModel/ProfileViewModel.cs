@@ -20,6 +20,18 @@ namespace Gauniv.Client.ViewModel
         private string password = "";
 
         [ObservableProperty]
+        private string firstName = "";
+
+        [ObservableProperty]
+        private string lastName = "";
+
+        [ObservableProperty]
+        private string confirmPassword = "";
+
+        [ObservableProperty]
+        private bool showRegisterForm = false;
+
+        [ObservableProperty]
         private string statusMessage = "Non connecté";
 
         [ObservableProperty]
@@ -62,7 +74,13 @@ namespace Gauniv.Client.ViewModel
 
                 if (local_success)
                 {
-                    await _networkService.GetProfileAsync();
+                    var profile = await _networkService.GetProfileAsync();
+                    if (profile != null)
+                    {
+                        FirstName = profile.FirstName ?? "";
+                        LastName = profile.LastName ?? "";
+                        Email = profile.Email ?? Email;
+                    }
                     IsConnected = true;
                     IsAdmin = _networkService.IsAdmin;
                     StatusMessage = "✅ Connexion réussie !";
@@ -99,6 +117,84 @@ namespace Gauniv.Client.ViewModel
         private async Task GoToAdminAsync()
         {
             await Shell.Current.GoToAsync("///admin");
+        }
+
+        [RelayCommand]
+        private void ToggleRegisterForm()
+        {
+            ShowRegisterForm = !ShowRegisterForm;
+            StatusMessage = ShowRegisterForm ? "Créer un compte" : (IsConnected ? "✅ Connecté" : "❌ Non connecté");
+        }
+
+        [RelayCommand]
+        private async Task RegisterAsync()
+        {
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+            {
+                StatusMessage = "⚠️ Email et mot de passe requis";
+                return;
+            }
+
+            if (Password != ConfirmPassword)
+            {
+                StatusMessage = "⚠️ Les mots de passe ne correspondent pas";
+                return;
+            }
+
+            IsLoading = true;
+            StatusMessage = "Création du compte...";
+
+            try
+            {
+                bool success = await _networkService.RegisterAsync(Email, Password, FirstName, LastName);
+
+                if (success)
+                {
+                    StatusMessage = "✅ Compte créé ! Connexion...";
+                    await LoginAsync();
+                }
+                else
+                {
+                    StatusMessage = "❌ Échec de la création du compte";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"❌ Erreur: {ex.Message}";
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task UpdateProfileAsync()
+        {
+            IsLoading = true;
+            StatusMessage = "Mise à jour du profil...";
+
+            try
+            {
+                bool success = await _networkService.UpdateProfileAsync(FirstName, LastName);
+
+                if (success)
+                {
+                    StatusMessage = "✅ Profil mis à jour !";
+                }
+                else
+                {
+                    StatusMessage = "❌ Échec de la mise à jour";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"❌ Erreur: {ex.Message}";
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
     }
 }

@@ -9,37 +9,26 @@
              BackgroundColor="#1b2838">
 
     <Grid RowDefinitions="Auto,Auto,Auto,*">
-        
         <!-- Header -->
-        <Grid Grid.Row="0" Padding="20,15" BackgroundColor="#171a21">
-            <Label Text="Mes Amis" FontSize="28" FontAttributes="Bold" TextColor="#c7d5e0"/>
-        </Grid>
-
-        <!-- Add Friend -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Padding="20" ColumnSpacing="10">
-            <Entry Grid.Column="0" Placeholder="Rechercher un pseudo..." 
-                   Text="{Binding FriendSearchText}" 
-                   BackgroundColor="#2a475e" TextColor="White"/>
-            <Button Grid.Column="1" Text="Ajouter" 
-                    Command="{Binding AddFriendCommand}" 
-                    BackgroundColor="#66c0f4"/>
-        </Grid>
-        <Label Grid.Row="1" Text="{Binding StatusMessage}" TextColor="#ff6b6b" 
-               VerticalOptions="End" HorizontalOptions="Center" Margin="0,55,0,0"/>
-
-        <!-- Tabs (Simple Buttons for now, or Sections) -->
-        <!-- We will just list them all with headers for simplicity in V1 of sections -->
+        <Label Grid.Row="0" Text="Mes Amis" FontSize="32" FontAttributes="Bold" TextColor="#c7d5e0" Margin="20,20,20,10"/>
         
+        <!-- Search Bar -->
+        <Frame Grid.Row="1" BackgroundColor="#16202d" BorderColor="Transparent" CornerRadius="8" Padding="10" Margin="20,0">
+            <Grid ColumnDefinitions="*,Auto">
+                <Entry Grid.Column="0" Text="{Binding FriendSearchText}" Placeholder="Rechercher un ami..." PlaceholderColor="#8f98a0" TextColor="White" BackgroundColor="Transparent"/>
+                <Button Grid.Column="1" Text="Ajouter" Command="{Binding AddFriendCommand}" BackgroundColor="#66c0f4" TextColor="White" CornerRadius="8"/>
+            </Grid>
+        </Frame>
+
+
+
         <ScrollView Grid.Row="3" Padding="20">
             <VerticalStackLayout Spacing="20">
                 
-                <!-- Pending Requests -->
-                <VerticalStackLayout>
+                <!-- Pending Requests - EN HAUT (priorité) - MASQUÉ SI VIDE -->
+                <VerticalStackLayout IsVisible="{Binding IncomingRequests.Count, Converter={StaticResource IntToBoolConverter}}">
                     <Label Text="Demandes Reçues" FontSize="18" TextColor="#66c0f4" FontAttributes="Bold" Margin="0,0,0,10"/>
                     <CollectionView ItemsSource="{Binding IncomingRequests}">
-                        <CollectionView.EmptyView>
-                            <Label Text="Aucune demande reçue" TextColor="#8f98a0" FontSize="12" Margin="0,0,0,10"/>
-                        </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="dto:FriendDto">
                                 <Frame BackgroundColor="#2a475e" BorderColor="#66c0f4" CornerRadius="8" Padding="15" Margin="0,0,0,10">
@@ -58,20 +47,17 @@
                     </CollectionView>
                 </VerticalStackLayout>
 
-                <!-- Outgoing Requests -->
-                <VerticalStackLayout>
+                <!-- Outgoing Requests - MASQUÉ SI VIDE -->
+                <VerticalStackLayout IsVisible="{Binding OutgoingRequests.Count, Converter={StaticResource IntToBoolConverter}}">
                     <Label Text="Demandes Envoyées" FontSize="18" TextColor="#8f98a0" FontAttributes="Bold" Margin="0,0,0,10"/>
                     <CollectionView ItemsSource="{Binding OutgoingRequests}">
-                        <CollectionView.EmptyView>
-                            <Label Text="Aucune demande envoyée" TextColor="#8f98a0" FontSize="12" Margin="0,0,0,10"/>
-                        </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="dto:FriendDto">
                                 <Frame BackgroundColor="#16202d" BorderColor="#2a475e" CornerRadius="8" Padding="15" Margin="0,0,0,10">
                                     <Grid ColumnDefinitions="*,Auto">
                                         <Label Grid.Column="0" Text="{Binding UserName}" FontSize="18" TextColor="#8f98a0" VerticalOptions="Center"/>
                                         <Button Grid.Column="1" Text="Annuler" BackgroundColor="Transparent" TextColor="#8f98a0"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyFriendsViewModel}}, Path=Remove FriendCommand}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyFriendsViewModel}}, Path=RemoveFriendCommand}"
                                                 CommandParameter="{Binding .}"/>
                                     </Grid>
                                 </Frame>
@@ -79,13 +65,13 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </VerticalStackLayout>
-
-                <!-- My Friends -->
+                
+                <!-- MY FRIENDS -->
                 <VerticalStackLayout>
                     <Label Text="Mes Amis" FontSize="20" TextColor="White" FontAttributes="Bold" Margin="0,0,0,10"/>
                     <CollectionView ItemsSource="{Binding Friends}">
                         <CollectionView.EmptyView>
-                            <Label Text="Aucun ami pour le moment." TextColor="#8f98a0" HorizontalOptions="Center" Margin="20"/>
+                            <Label Text="Veuillez vous connecter pour accéder à votre liste d'amis" TextColor="#8f98a0" HorizontalOptions="Center" Margin="20"/>
                         </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="dto:FriendDto">
