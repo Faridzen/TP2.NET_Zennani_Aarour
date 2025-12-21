@@ -101,7 +101,7 @@ JOIN User u1 ON uf.SourceUserId = u1.Id
 JOIN User u2 ON uf.TargetUserId = u2.Id;
 ```
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
 ### Interface Web (Admin)
 
