@@ -2,7 +2,7 @@
 
 Une plateforme complète de distribution de jeux vidéo avec interface web d'administration et client MAUI cross-platform (MacOS et windows ).
 
-## 📥 Installation
+## Installation
 
 1. **Cloner le projet**
 
@@ -106,24 +106,24 @@ JOIN User u2 ON uf.TargetUserId = u2.Id;
 ### Interface Web (Admin)
 
 **Actions Administrateur :**
-- ✅ Ajouter/Modifier/Supprimer des jeux
-- ✅ Gérer les catégories
-- ✅ Upload d'images pour les jeux
-- ✅ Consulter tous les jeux et utilisateurs
+-  Ajouter/Modifier/Supprimer des jeux
+-  Gérer les catégories
+-  Upload d'images pour les jeux
+-  Consulter tous les jeux et utilisateurs
 
 **URL** : http://localhost:5231/Admin
 
 ### Client MAUI:
 
 **Fonctionnalités :**
-- ✅ **Catalogue** : Parcourir tous les jeux avec filtres (prix, catégorie, possédé)
-- ✅ **Détails** : Voir description, prix, catégories
-- ✅ **Achat** : Acheter des jeux
-- ✅ **Bibliothèque** : Gérer vos jeux achetés
-- ✅ **Téléchargement** : Télécharger et lancer les jeux
-- ✅ **Amis** : Ajouter/Accepter/Voir amis avec statut en ligne
-- ✅ **Profil** : Modifier prénom, nom, email
-- ✅ **Admin** : Accès admin pour gérer les jeux 
+-  **Catalogue** : Parcourir tous les jeux avec filtres (prix, catégorie, possédé)
+-  **Détails** : Voir description, prix, catégories
+-  **Achat** : Acheter des jeux
+-  **Bibliothèque** : Gérer vos jeux achetés
+-  **Téléchargement** : Télécharger et lancer les jeux
+-  **Amis** : Ajouter/Accepter/Voir amis avec statut en ligne
+-  **Profil** : Modifier prénom, nom, email
+-  **Admin** : Accès admin pour gérer les jeux 
 
 ### API REST
 
@@ -139,7 +139,7 @@ JOIN User u2 ON uf.TargetUserId = u2.Id;
 
 **Documentation API** : http://localhost:5231/openapi/v1.json
 
-## 🔐 Sécurité
+## Sécurité
 
 - **Authentification** : ASP.NET Identity avec tokens Bearer
 - **Autorisation** : Rôles Admin/User
